@@ -235,7 +235,7 @@ $(function() {
   KeyEventListener()
   loadImages()
   // load frame
-  setInterval(() => { Frame() }, 10)
+  frame()
   // All click events
   $('#canvas').on('mousedown', function(event) {
     Game.mousedown = true
@@ -313,89 +313,3 @@ $(function() {
 
 
 })
-
-async function Frame() {
-  /*if(SHA256($("#adminpassInput").val()) == "7e87ccd85d4abbdc98f19c2005268d1b772f722a9ec19d96418a2727616342f5") {
-    player.admin = true
-  } else {
-    player.admin = false
-  }*/
-  framecount++
-  // Reset screen. becouse there might be chances
-  screen.width = window.innerWidth
-  screen.height = window.innerHeight
-  // set canvas to screen
-  canvas.width = screen.width
-  canvas.height = screen.height
-
-  // Kick player
-  if(player.kick) socket.disconnect()
-  // if player died
-  if(player.died) {
-    // Show menu
-    $("#loginScreen").css('opacity', 0)
-    $("#loginScreen").show()
-    $('#loginScreen').animate({'opacity': '1'}, 500)
-    $('#body').append('<div id="backgroundOpacity" style="opacity: 0; position: absolute; width: 100%; height: 100%;></div>')
-    $('#backgroundOpacity').animate({'opacity': '1'}, 500)
-    // remove player
-    socket.emit('players', { id: player.id, type: 'removeplayer'})
-    // remove death
-    player.health = 100
-    player.died = false
-    // spawn
-    player.spawned = false
-    return
-  }
-  if(!player.spawned) return
-  // If mouse is down
-  if(Game.mousedown) {
-    // Position mouse is on
-    mouseX = Math.floor(player.pos.x + player.selectedGrid.x)
-    mouseY = Math.floor(player.pos.y + player.selectedGrid.y)
-    //console.log(mouseX+' -- '+mouseY)
-    // If mouse is on building
-    if(buildings[mouseX+','+mouseY] != undefined) {
-      // if mouse is on core
-      if(buildings[mouseX+','+mouseY].type == 'core') {
-        // if building is in range and not himself
-        if(10 > Math.abs(Math.abs(Math.abs(player.pos.x)-Math.abs(mouseX))-Math.abs(Math.abs(player.pos.x)-Math.abs(mouseX)))
-        && buildings[mouseX+','+mouseY].owner != socket.id) {
-          let building = buildings[mouseX+','+mouseY]
-          socket.emit('alert', {id: player.id, color: 'green', text: `You destroyed ${players[building.owner].username}'s core!`})
-          socket.emit('alert', {id: building.owner, color: 'red', text: `${player.username} destroyed your core!`})
-          socket.emit('players', { id: building.owner, type: 'died', player: true})
-          delete building
-        }
-      }
-    }
-  }
-  // Clear Screen
-  ctx.clearRect(0, 0, canvas.width, canvas.height)
-  ctx.fill()
-  updateDebug()
-  // Check for movement
-  if(!player.typing) {
-
-    if(Game.keys[87] || Game.keys[38]) player.movement.north = true
-    else player.movement.north = false
-    if(Game.keys[68] || Game.keys[39]) player.movement.east = true
-    else player.movement.east = false
-    if(Game.keys[83] || Game.keys[40]) player.movement.south = true
-    else player.movement.south = false
-    if(Game.keys[65] || Game.keys[37]) player.movement.west = true
-    else player.movement.west = false
-  }
-  // update player stuff
-  socket.emit('players', {id: player.id, type: 'movement', player: player.movement})
-  ctx.beginPath()
-  // Clear Screenb
-  ctx.clearRect(0, 0, canvas.width, canvas.height)
-  ctx.fill()
-  draw.grid()
-  draw.otherPlayers()
-  draw.inhand()
-  draw.objects()
-  // If player is in buildmode
-  if(player.buildmode) draw.selectedGrid()
-}
