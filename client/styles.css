@@ -1,0 +1,293 @@
+body {
+  margin: 0px;
+  background-color: #a3a3a3;
+  font-family: Arial;
+  overflow: hidden;
+}
+#canvas {
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+#debugpanel {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 200px;
+  height: 500px;
+  background-color: yellow;
+  opacity: 0.3;
+}
+#chatOutput {
+  position: absolute;
+  overflow: auto;
+  padding: 5px;
+  left: 0px;
+  bottom: 60px;
+  width: 350px;
+  height: 200px;
+  background-color: rgba(0, 0, 0, 0);
+  border-radius: 0px 10px 0px 0px;
+  color: white;
+  font-family: Arial;
+}
+#chatInput {
+  position: absolute;
+  padding: 5px;
+  left: 0px;
+  bottom: 0px;
+  width: 350px;
+  height: 50px;
+  background-color: black;
+  border-radius: 0px 0px 10px 0px;
+  opacity: 0;
+  border: none;
+  color: white;
+  font-size: 150%;
+}
+#backgroundOpacity {
+  position: absolute;
+  background-color: black;
+  opacity: 0.6;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+#loginScreen {
+  position: absolute;
+  background-color: #bababa;
+  left: 50%;
+  top: 30%;
+  transform: translateX(-50%);
+  border-radius: 10px;
+  width: 500px;
+  height: 400px;
+  z-index: 1;
+}
+#playButton {
+  padding: 20px 0;
+  position: relative;
+  cursor: pointer;
+  background-color: #64b820;
+  width: 300px;
+  border-radius: 20px;
+  font-size: 200%;
+  color: #165b1e;
+  top: 35%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  vertical-align: middle;
+}
+#loginOrRegisterButton {
+  padding: 20px 0;
+  position: relative;
+  cursor: pointer;
+  background-color: #64b820;
+  width: 300px;
+  border-radius: 20px;
+  font-size: 200%;
+  color: #165b1e;
+  top: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  vertical-align: middle;
+}
+#loginButton {
+  padding: 20px 0;
+  position: relative;
+  cursor: pointer;
+  background-color: #64b820;
+  width: 160px;
+  border-radius: 20px;
+  font-size: 200%;
+  color: #165b1e;
+  top: 40%;
+  left: 30%;
+  transform: translateX(-50%);
+  text-align: center;
+  vertical-align: middle;
+}
+#registerButton {
+  padding: 20px 0;
+  position: relative;
+  cursor: pointer;
+  background-color: #64b820;
+  width: 160px;
+  border-radius: 20px;
+  font-size: 200%;
+  color: #165b1e;
+  top: 20%;
+  left: 70%;
+  transform: translateX(-50%);
+  text-align: center;
+  vertical-align: middle;
+}
+#errorMessage {
+  position: relative;
+  width: 300px;
+  color: #ff0000;
+  top: 23%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  vertical-align: middle;
+}
+#HUD {
+  z-index: 2;
+}
+#playButton:hover {
+  background-color: #5caa1d;
+}
+#loginOrRegisterButton:hover {
+  background-color: #5caa1d;
+}
+#loginButton:hover {
+  background-color: #5caa1d;
+}
+#registerButton:hover {
+  background-color: #5caa1d;
+}
+#nameInput {
+  position: relative;
+  padding: 5px;
+  color: black;
+  top: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 350px;
+  height: 50px;
+  background-color: white;
+  border-radius: 5px;
+  border: none;
+  font-size: 150%;
+}
+#passwordInput {
+  position: relative;
+  padding: 5px;
+  color: black;
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 350px;
+  height: 50px;
+  background-color: white;
+  border-radius: 5px;
+  border: none;
+  font-size: 150%;
+}
+#HUD-buildTaskbar {
+  position: absolute;
+  height: 70px;
+  width: 0px;
+  padding: 0px;
+  background-color: rgba(0, 0, 0, 0.3);
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 5px;
+  z-index: 3;
+}
+.HUD-buildSlot {
+  position: relative;
+  height: 60px;
+  width: 60px;
+  opacity: 0.6;
+  background-color: black;
+  border-radius: 5px;
+  display: none;
+  margin: 5px;
+  cursor: pointer;
+}
+.HUD-buildSlot img {
+  position: absolute;
+  height: 50px;
+  width: 50px;
+  margin: 5px;
+  cursor: pointer;
+}
+#HUD-hotbarTaskbar {
+  position: absolute;
+  height: 70px;
+  width: 741px;
+  padding: 0px;
+  background-color: rgba(0, 0, 0, 0.3);
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 5px;
+  z-index: 3;
+}
+.HUD-hotbarSlot {
+  position: relative;
+  height: 60px;
+  width: 60px;
+  opacity: 0.6;
+  background-color: black;
+  border-radius: 5px;
+  display: inline-block;
+  margin: 5px;
+  cursor: pointer;
+}
+.HUD-hotbarSlot img {
+  position: absolute;
+  height: 50px;
+  width: 50px;
+  margin: 5px;
+  cursor: pointer;
+}
+#adminpassInput {
+  position: absolute;
+  top: 500px;
+}
+#alerts {
+  position: absolute;
+  width: 100%;
+  top: 5%;
+  z-index: 10;
+}
+#alerts div {
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  font-size: 150%;
+}
+/*=======SHOP=======*/
+#HUD-shopCont {
+  position: absolute;
+  height: 50%;
+  width: 50%;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 20px;
+}
+#HUD-shopNavBuildings {
+  position: relative;
+  top: 0px;
+  height: 50px;
+  width: 50%;
+  background-color: rgba(0, 0, 0, 0.7);
+  float: right;
+  color: white;
+  font-size: 200%;
+  cursor: pointer;
+  text-align: center;
+  border-radius: 0px 20px 0px 0px;
+}
+#HUD-shopNavBuildings:hover { background-color: rgba(0, 0, 0, 0.5); }
+#HUD-shopNavTools {
+  position: relative;
+  top: 0px;
+  height: 50px;
+  width: 50%;
+  background-color: rgba(0, 0, 0, 0.7);
+  float: left;
+  color: white;
+  font-size: 200%;
+  cursor: pointer;
+  text-align: center;
+  border-radius: 20px 0px 0px 0px;
+}
+#HUD-shopNavTools:hover { background-color: rgba(0, 0, 0, 0.5); }
