@@ -23,12 +23,6 @@ function updateDebug() {
 &nbsp;height: ${screen.height} <br>
 <b>Stats: </b> 
 &nbsp;bullets: ${Calculate.totalbullets} <br>
-<b>Collision: </b> <br>
-&nbsp;North: ${player.directions.N} <br>
-&nbsp;East: ${player.directions.E} <br>
-&nbsp;South: ${player.directions.S} <br>
-&nbsp;West: ${player.directions.W} <br>
-&nbsp;NE: ${player.directions.NE} <br>
 
 `
   if(player.admin) {
