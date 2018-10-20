@@ -14,7 +14,8 @@ class World {
     addPlayer(socket) {
         //joins the room
         socket.join(this.id)
-
+        
+        socket.emit('buildings', this.buildings)
         this.socketHandler.addSocket(socket)
         this.players[socket.id] = {
             id: socket.id,
