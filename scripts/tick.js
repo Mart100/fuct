@@ -87,14 +87,25 @@ function tick(world) {
     }
     // loop trough all players
     for(id in world.players) {
-      let player = players[id]
-      if(player == undefined || player.username == undefined) delete players[id]
-      if(player.pos == undefined || player.movement == undefined) continue
-      // move players
-      if(player.movement.north) player.pos.y -= 0.03
-      if(player.movement.east) player.pos.x += 0.03
-      if(player.movement.south) player.pos.y += 0.03
-      if(player.movement.west) player.pos.x -= 0.03
+        let player = players[id]
+        if(player == undefined || player.username == undefined) delete players[id]
+        if(player.pos == undefined || player.movement == undefined) continue
+
+        // move players
+        switch(player.movement) {
+            case('north'):
+                player.pos.y -= 0.03
+                break
+            case('east'):
+                player.pos.x += 0.03
+                break
+            case('north'):
+                player.pos.y += 0.03
+                break
+            case('east'):
+                player.pos.x -= 0.03
+                break
+        }
       // building collision
       let directions = collisionPlayer(player)
       player.directions = directions
