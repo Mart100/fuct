@@ -44,35 +44,22 @@ io.on('connection', function(socket) {
   
   socket.on('players', data => {
     if(data.id == undefined) return
-    if(players[data.id] == undefined) {
-       players[data.id] = {
-        movement: {
-          north: false,
-          east: false,
-          south: false,
-          west: false
-        },
-        health: 100,
-        pos: {
-         x: 0.001,
-         y: 0.001
-        }
-      }
-    }
+    if(players[data.id] == undefined) return
     switch(data.type) {
       case('movement'):
         players[data.id].movement = data.player
         break
       case('newplayer'):
-        players[data.id].color = data.player.color
-        players[data.id].username = data.player.username
-        players[data.id].health = 100
-        players[data.id].died = false
-        players[data.id].hotbar = {items: {}, selected: 1}
+        // players[data.id].color = data.player.color
+        // players[data.id].username = data.player.username
+        // players[data.id].health = 100
+        // players[data.id].died = false
+        // players[data.id].hotbar = {items: {}, selected: 1}
         // db.ref('users/'+data.player.username).once('value').then((snapshot) => {
         //   if(snapshot.val() == undefined) return
         //   if(snapshot.val().admin) players[data.id].admin = true
         // })
+        world1.addPlayer(io.sockets[data.id])
         break
       case('hotbar'):
         players[data.id].hotbar = data.player
