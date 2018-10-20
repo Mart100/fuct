@@ -14,7 +14,7 @@ class World {
     addPlayer(socket) {
         //joins the room
         socket.join(this.id)
-        
+
         socket.emit('buildings', this.buildings)
         this.socketHandler.addSocket(socket)
         this.players[socket.id] = {
@@ -22,7 +22,20 @@ class World {
             pos: {
                 x: 0,
                 y: 0
-            }
+            },
+            admin: true,
+            movement: 'none',
+            building: {
+              selected: 1
+            },
+            hotbar: {
+                sword: 1,
+                pickaxe: 1
+            },
+            buildmode: false,
+            color: `rgb(${Math.round(Math.random() * 255)},${Math.round(Math.random() * 255)},${Math.round(Math.random() * 255)})`,
+            health: 100,
+            isDead: false
         }
 
     }
