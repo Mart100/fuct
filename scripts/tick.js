@@ -1,8 +1,8 @@
 function tick(world) {
     //console.log(new Date() - latestframe)
-    latestframe = new Date()
+    //world.latestframe = new Date()
     // loop trough all buildings
-    for(let key in buildings) {
+    for(let key in world.buildings) {
       let building = buildings[key]
       // If building is turret...
       if(building.type == 'turreticon') {
@@ -86,7 +86,7 @@ function tick(world) {
       if(building.showhealth > 0) building.showhealth -= 0.05
     }
     // loop trough all players
-    for(id in players) {
+    for(id in world.players) {
       let player = players[id]
       if(player == undefined || player.username == undefined) delete players[id]
       if(player.pos == undefined || player.movement == undefined) continue
