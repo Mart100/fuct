@@ -40,12 +40,7 @@ let player = {
     },
     selected: 1
   },
-  movement: {
-    north: false,
-    east: false,
-    south: false,
-    west: false
-  },
+  movement: 'none',
   building: {
     selected: 1
   },
