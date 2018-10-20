@@ -1,4 +1,4 @@
-  $(function() {
+$(function() {
   // Toggle BuildMode with B
   $(window).keydown(function(event) {
     if(event.keyCode == 70) {
