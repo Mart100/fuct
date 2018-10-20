@@ -89,11 +89,26 @@ socket.on('alert', function(data) {
 function KeyEventListener() {
   $(document).keyup(function(event) {
     Game.keys[event.keyCode] = false
+    updateMovement()
   })
   $(document).keydown(function(event) {
     Game.keys[event.keyCode] = true
+    updateMovement()
   })
 
+}
+function updateMovement() {
+    // Check for movement
+    if(!player.typing) {
+        if(Game.keys[87] || Game.keys[38]) player.movement.north = true
+        else player.movement.north = false
+        if(Game.keys[68] || Game.keys[39]) player.movement.east = true
+        else player.movement.east = false
+        if(Game.keys[83] || Game.keys[40]) player.movement.south = true
+        else player.movement.south = false
+        if(Game.keys[65] || Game.keys[37]) player.movement.west = true
+        else player.movement.west = false
+        }
 }
 
 $(function() {
@@ -116,6 +131,7 @@ $(function() {
   })
   // Update SelectedGrid
   $(window).on('mousemove', function(event) {
+      if(player.pos == undefined) return
 
     let offsetX, offsetY
     if(player.pos.x > 0) offsetX = Number('0.'+player.pos.x.toString().split('.')[1])
@@ -123,8 +139,8 @@ $(function() {
     if(player.pos.y > 0) offsetY = Number('0.'+player.pos.y.toString().split('.')[1])
     else offsetY = -Number('0.'+player.pos.y.toString().split('.')[1])
 
-    player.selectedGrid.x = Math.floor((event.clientX - screen.width/2 + offsetX * player.zoom) / player.zoom)
-    player.selectedGrid.y = Math.floor((event.clientY - screen.height/2 + offsetY * player.zoom) / player.zoom)
+    clientPlayer.selectedGrid.x = Math.floor((event.clientX - screen.width/2 + offsetX * player.zoom) / player.zoom)
+    clientPlayer.selectedGrid.y = Math.floor((event.clientY - screen.height/2 + offsetY * player.zoom) / player.zoom)
   })
   // Zooming
   //window.addEventListener('scroll', function(e){
@@ -138,14 +154,16 @@ $(function() {
     for(let i = 0; i < 11; i++) {
       $('#HUD-hotbarSlot'+i+' > img').attr('src', 'https://upload.wikimedia.org/wikipedia/commons/5/54/Blank_Canvas_on_Transparent_Background.png')
       // loop trough items in player.hotbar
-      for(item in player.hotbar.items) if(player.hotbar.items[item].slot == i) $('#HUD-hotbarSlot'+i+' > img').attr('src', images[item].src)
+      //for(item in player.hotbar) if(player.hotbar[].slot == i) $('#HUD-hotbarSlot'+i+' > img').attr('src', images[item].src)
     }
 
     if($('#nameInput').val() != '') player.username = $('#nameInput').val()
     // Decide player's color
-    player.color = `rgb(${Math.round(Math.random() * 255)},${Math.round(Math.random() * 255)},${Math.round(Math.random() * 255)})`
+    //player.color = `rgb(${Math.round(Math.random() * 255)},${Math.round(Math.random() * 255)},${Math.round(Math.random() * 255)})`
     // send name and color
-    socket.emit('players', { id: socket.id, type: 'newplayer', player: {color: player.color, username: player.username }})
+    socket.emit('players', { type: 'newplayer', username: player.username }, function(data) {
+      console.log(data)
+    })
     $("#loginScreen").hide()
     $('#backgroundOpacity').animate({'opacity': '0'}, 500, () => $('#backgroundOpacity').remove())
    // if($("#

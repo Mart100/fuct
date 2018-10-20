@@ -1,5 +1,6 @@
 async function frame() {
     requestAnimationFrame(frame)
+    if(player == undefined) return
     framecount++
     // Reset screen. becouse there might be chances
     screen.width = window.innerWidth
@@ -52,18 +53,6 @@ async function frame() {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     ctx.fill()
     updateDebug()
-    // Check for movement
-    if(!player.typing) {
-  
-      if(Game.keys[87] || Game.keys[38]) player.movement.north = true
-      else player.movement.north = false
-      if(Game.keys[68] || Game.keys[39]) player.movement.east = true
-      else player.movement.east = false
-      if(Game.keys[83] || Game.keys[40]) player.movement.south = true
-      else player.movement.south = false
-      if(Game.keys[65] || Game.keys[37]) player.movement.west = true
-      else player.movement.west = false
-    }
     // update player stuff
     socket.emit('players', {id: player.id, type: 'movement', player: player.movement})
     ctx.beginPath()
