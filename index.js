@@ -120,10 +120,10 @@ io.on('connection', function(socket) {
         players[data.id].health = 100
         players[data.id].died = false
         players[data.id].hotbar = {items: {}, selected: 1}
-        db.ref('users/'+data.player.username).once('value').then((snapshot) => {
-          if(snapshot.val() == undefined) return
-          if(snapshot.val().admin) players[data.id].admin = true
-        })
+        // db.ref('users/'+data.player.username).once('value').then((snapshot) => {
+        //   if(snapshot.val() == undefined) return
+        //   if(snapshot.val().admin) players[data.id].admin = true
+        // })
         break
       case('hotbar'):
         players[data.id].hotbar = data.player
