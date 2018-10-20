@@ -86,9 +86,9 @@ function tick(world) {
       if(building.showhealth > 0) building.showhealth -= 0.05
     }
     // loop trough all players
-    for(id in world.players) {
-        let player = players[id]
-        if(player == undefined || player.username == undefined) delete players[id]
+    for(let id in world.players) {
+        let player = world.players[id]
+        if(player == undefined || player.username == undefined) delete world.players[id]
         if(player.pos == undefined || player.movement == undefined) continue
 
         // move players

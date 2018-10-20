@@ -30,6 +30,7 @@ var io = Socket(server)
 
 io.on('connection', function(socket) {
   console.log('made connection:', socket.id)
+  world1.addPlayer(socket)
   // Send buildings
   socket.broadcast.emit('buildings', buildings)
 
@@ -40,59 +41,7 @@ io.on('connection', function(socket) {
 
   socket.on('ping', () => socket.broadcast.emit('ping', ''))
 
-  socket.on('chat', function(data) {
-    console.log(data.message.replace('::', '').split(' ')[0]+' -- '+data.message.replace('::', '').split(' '))
-    // all commands
-    if(data.message.startsWith('::')) {
-      let args = data.message.replace('::', '').split(' ')
-      switch(data.message.replace('::', '').split(' ')[0]) {
-        // commands everyone can access
-        case('ping'):
-          io.to(data.id).emit('alert', {color: 'white', text: data.text})
-          break
-        case('suicide'):
-          players[data.id].died = true
-          io.to(data.id).emit('alert', {color: 'white', text: 'Congratz you just suicided!'})
-          break
-        // commands only admins can use
-        case('tp'):
-          if(!players[data.id].admin) { io.to(data.id).emit('alert', {color: 'red', text: 'You dont have access to that command!'}); return }
-          // Check if argument is a player
-          for(id in players) {
-            if(players[id].username != args[1]) continue
-            players[data.id].pos.x = players[id].pos.x
-            players[data.id].pos.y = players[id].pos.y
-            return
-          }
-          // if no return. tp to positions
-          players[data.id].pos.x = Number(args[1])+0.01
-          players[data.id].pos.y = Number(args[2])+0.01
-          break
-        case('clearmap'):
-          if(!players[data.id].admin) { io.to(data.id).emit('alert', {color: 'red', text: 'You dont have access to that command!'}); return }
-          buildings = {}
-          break
-        case('kick'):
-          if(!players[data.id].admin) { io.to(data.id).emit('alert', {color: 'red', text: 'You dont have access to that command!'}); return }
-          for(id in players) if(players[id].username == args[1]) players[id].kick = true
-          break
-        case('vanish'):
-          if(!players[data.id].admin) { io.to(data.id).emit('alert', {color: 'red', text: 'You dont have access to that command!'}); return }
-          if(!players[data.id].vanish) players[data.id].vanish = true
-          else players[data.id].vanish = false
-          break
-        case('kill'):
-          if(!players[data.id].admin) { io.to(data.id).emit('alert', {color: 'red', text: 'You dont have access to that command!'}); return }
-          for(id in players) if(players[id].username == args[0]) players[id].died = true
-          break
-        case('restart'):
-          if(!players[data.id].admin) { io.to(data.id).emit('alert', {color: 'red', text: 'You dont have access to that command!'}); return }
-          let a = just_crash_the_server_with_this_unkown_command
-          console.log(a)
-          break
-      }
-    } else io.sockets.emit('chat', data)
-  })
+  
   socket.on('players', data => {
     if(data.id == undefined) return
     if(players[data.id] == undefined) {
