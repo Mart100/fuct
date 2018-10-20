@@ -1,10 +1,5 @@
 async function frame() {
     requestAnimationFrame(frame)
-    if(SHA256($("#adminpassInput").val()) == "7e87ccd85d4abbdc98f19c2005268d1b772f722a9ec19d96418a2727616342f5") {
-      player.admin = true
-    } else {
-      player.admin = false
-    }
     framecount++
     // Reset screen. becouse there might be chances
     screen.width = window.innerWidth
