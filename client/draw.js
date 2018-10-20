@@ -8,8 +8,6 @@ async function frame() {
     canvas.width = screen.width
     canvas.height = screen.height
   
-    // Kick player
-    if(player.kick) socket.disconnect()
     // if player died
     if(player.died) {
       // Show menu

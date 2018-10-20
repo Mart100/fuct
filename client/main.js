@@ -9,68 +9,35 @@ const building = { 1: 'core', 2: 'miner', 3: 'turreticon', 4: 'landmine', 5: 'wa
 let buildings = {}
 const Game = { 'keys': { }, 'mousedown': false }
 let screen = { 'width': window.innerWidth, 'height': window.innerHeight }
+let player = {}
 // the player object
-let player = {
-  pos: {
-    x: 0.001,
-    y: 0.001
-  },
-  hotbar: {
-    items: {
-      sword: {
-        level: 1,
-        slot: 1,
-      },
-      pickaxe: {
-        level: 1,
-        slot: 2,
-      },
-      /*axe: {
-        level: 1,
-        slot: 3,
-      },
-      sniper: {
-        level: 1,
-        slot: 4,
-      },
-      shotgun: {
-        level: 1,
-        slot: 5,
-      },*/
+let clientPlayer = {
+    building: {
+        selected: 1
     },
-    selected: 1
-  },
-  movement: 'none',
-  building: {
-    selected: 1
-  },
-  buildmode: false,
-  color: 'rgb(255, 0, 0)',
-  offset: {
+    buildmode: false,
+    color: 'rgb(255, 0, 0)',
+    offset: {
     x() {
-      if(player.pos.x > 0) {
+        if(player.pos.x > 0) {
         return Number('0.'+player.pos.x.toString().split('.')[1])
-      } else {
+        } else {
         return -Number('0.'+player.pos.x.toString().split('.')[1])
-      }
+        }
     },
     y() {
-      if(player.pos.y > 0) {
+        if(player.pos.y > 0) {
         return Number('0.'+player.pos.y.toString().split('.')[1])
-      } else {
+        } else {
         return -Number('0.'+player.pos.y.toString().split('.')[1])
-      }
+        }
     }
-  },
-  selectedGrid: {
+    },
+    selectedGrid: {
     x: 0.01,
     y: 0.01
-  },
-  zoom: 100,
-  username: 'guest' + Math.floor(Math.random() * 100000),
-  health: 100,
-  died: false,
-  spawned: false
+    },
+    zoom: 100,
 }
 // on alert
 socket.on('alert', function(data) {
@@ -117,28 +84,6 @@ socket.on('alert', function(data) {
     }, 100)
   }, 4000)
 })
-// some socket.on
-socket.on('buildings', function(data) {
-  buildings = data
-})
-socket.on('ping', () => ping.pong = new Date() - ping.ping)
-socket.on('players', function(data) {
-  players = data
-  if(data[player.id] != undefined) {
-    // set position
-    player.pos = data[player.id].pos
-    // set directions
-    player.directions = data[player.id].directions
-    // died and kick
-    player.died = data[player.id].died
-    player.kick = data[player.id].kick
-  }
-})
-// ping
-setInterval(() => {
-  ping.ping = new Date()
-  socket.emit('ping', '')
-}, 1000)
 
 
 function KeyEventListener() {
