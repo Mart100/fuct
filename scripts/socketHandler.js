@@ -2,16 +2,25 @@ class SocketHandler {
     constructor(world) {
         this.world = world
         this.sockets = []
+        // send all data
+
     }
     addSocket(socket) {
         this.sockets.push(socket)
         //init all the socket event
         socket.on('chat', (data) => this.chatMessage(data, socket))
+        let world = this.world
+        setInterval(function() {
+            //console.log(world.players)
+            socket.broadcast.emit('players', world.players)
+            socket.broadcast.emit('buildings', world.buildings)
+        }, 10)
     }
     /**
      * handles a chatMessage
      * @param {Object} data The data containing the content, author etc
      */
+
     chatMessage(data, socket) {
         console.log(data.message.replace('::', '').split(' ')[0]+' -- '+data.message.replace('::', '').split(' '))
         // all commands
@@ -71,7 +80,6 @@ class SocketHandler {
      * Broadcasts to all the clients
      * @param {String} channel the channel of the socket (eg: chatMessage, move etc)
      * @param {Object} data The data that needs to be send over
-     * @param {Object} socket The socket which will broadcast the message
      */
     broadcast(channel, data) {
         for(let socket of this.sockets) {

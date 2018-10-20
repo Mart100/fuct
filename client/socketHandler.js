@@ -4,8 +4,18 @@ socket.on('buildings', function(data) {
   })
   socket.on('ping', () => ping.pong = new Date() - ping.ping)
   socket.on('players', function(data) {
+    //console.log(data)
     players = data
-    player = data[socket.id]
+    if(data[socket.id] != undefined) player = data[socket.id]
+    else player = {
+        pos: {
+            x: 0,
+            y: 0
+        },
+        hotbar: {}
+
+// players is ook nog empty
+    }
     /*if(data[player.id] != undefined) {
       // set position
       player.pos = data[player.id].pos
