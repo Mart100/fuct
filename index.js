@@ -1,6 +1,7 @@
 // Variables
 let buildings = {}
 let players = {}
+let worlds = []
 let latestframe
 // run frame
 
@@ -12,14 +13,18 @@ var app = express();
 
 // require scripts
 const World = require('./scripts/world.js')
-let world1 = new World('oof')
+worlds['oof'] = new World('oof')
 app.use(express.static('client'));
 
 app.get("/", function (request, response) {
   response.sendFile(__dirname + '/client/index.html');
 })
 
-setInterval(() => world1.tick(), 10)
+setInterval(() => {
+    for(let num in worlds) {
+        worlds[num].tick
+    }
+}, 10)
 
 // listen for requests :)
 var server = app.listen(3000, function () {
@@ -29,8 +34,15 @@ var server = app.listen(3000, function () {
 var io = Socket(server)
 
 io.on('connection', function(socket) {
+
+  socket.on('requestWorld', function(data, callback) {
+    console.log(`Player ${data.username} tries to join world `+data.world)
+    if(data.world == undefined) return callback('World undefined')
+    worlds[data.world].addPlayer(socket, data.username)
+  })
+
   console.log('made connection:', socket.id)
-  world1.addPlayer(socket)
+  //world1.addPlayer(socket)
   // Send buildings
   socket.broadcast.emit('buildings', buildings)
 
@@ -47,20 +59,7 @@ io.on('connection', function(socket) {
     if(players[data.id] == undefined) return
     switch(data.type) {
       case('movement'):
-        players[data.id].movement = data.player
-        break
-      case('newplayer'):
-        // players[data.id].color = data.player.color
-        // players[data.id].username = data.player.username
-        // players[data.id].health = 100
-        // players[data.id].died = false
-        // players[data.id].hotbar = {items: {}, selected: 1}
-        // db.ref('users/'+data.player.username).once('value').then((snapshot) => {
-        //   if(snapshot.val() == undefined) return
-        //   if(snapshot.val().admin) players[data.id].admin = true
-        // })
-        world1.addPlayer(io.sockets[data.id], data.username)
-
+        players[data.id].movement = data.data
         break
       case('hotbar'):
         players[data.id].hotbar = data.player

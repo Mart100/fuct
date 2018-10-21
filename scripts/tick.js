@@ -88,7 +88,6 @@ function tick(world) {
     // loop trough all world.players
     for(let id in world.players) {
         let player = world.players[id]
-        if(player == undefined || player.username == undefined) delete world.players[id]
         if(player.pos == undefined || player.movement == undefined) continue
 
         // move world.players
@@ -152,6 +151,7 @@ function tick(world) {
       // regenerate player
       if(player.health < 100) player.health += 0.01
     }
+    world.socketHandler.sendData(world)
   }
 
 

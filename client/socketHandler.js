@@ -12,9 +12,9 @@ socket.on('buildings', function(data) {
             x: 0,
             y: 0
         },
-        hotbar: {}
-
-// players is ook nog empty
+        hotbar: {},
+        movement: 'none'
+        
     }
     /*if(data[player.id] != undefined) {
       // set position

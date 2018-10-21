@@ -100,14 +100,10 @@ function KeyEventListener() {
 function updateMovement() {
     // Check for movement
     if(!player.typing) {
-        if(Game.keys[87] || Game.keys[38]) player.movement.north = true
-        else player.movement.north = false
-        if(Game.keys[68] || Game.keys[39]) player.movement.east = true
-        else player.movement.east = false
-        if(Game.keys[83] || Game.keys[40]) player.movement.south = true
-        else player.movement.south = false
-        if(Game.keys[65] || Game.keys[37]) player.movement.west = true
-        else player.movement.west = false
+        if(Game.keys[87] || Game.keys[38]) socket.emit('players', {id: player.id, type: 'movement', data: 'north'})
+        if(Game.keys[68] || Game.keys[39]) socket.emit('players', {id: player.id, type: 'movement', data: 'east'})
+        if(Game.keys[83] || Game.keys[40]) socket.emit('players', {id: player.id, type: 'movement', data: 'south'})
+        if(Game.keys[65] || Game.keys[37]) socket.emit('players', {id: player.id, type: 'movement', data: 'west'})
         }
 }
 
@@ -122,6 +118,7 @@ $(function() {
   loadImages()
   // load frame
   frame()
+  setInterval(tick, 10)
   // All click events
   $('#canvas').on('mousedown', function(event) {
     Game.mousedown = true
@@ -158,12 +155,13 @@ $(function() {
     }
 
     if($('#nameInput').val() != '') player.username = $('#nameInput').val()
-    // Decide player's color
-    //player.color = `rgb(${Math.round(Math.random() * 255)},${Math.round(Math.random() * 255)},${Math.round(Math.random() * 255)})`
-    // send name and color
-    socket.emit('players', { type: 'newplayer', username: player.username }, function(data) {
-      console.log(data)
+
+    // request world
+    socket.emit('requestWorld', { username: player.username, world: 'oof' }, function(data) {
+      console.log('Error trying to request server: '+data)
     })
+
+
     $("#loginScreen").hide()
     $('#backgroundOpacity').animate({'opacity': '0'}, 500, () => $('#backgroundOpacity').remove())
    // if($("#
