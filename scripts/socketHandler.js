@@ -2,19 +2,20 @@ class SocketHandler {
     constructor(world) {
         this.world = world
         this.sockets = []
-        // send all data
-
+        
     }
     addSocket(socket) {
         this.sockets.push(socket)
         //init all the socket event
         socket.on('chat', (data) => this.chatMessage(data, socket))
         let world = this.world
-        setInterval(function() {
-            //console.log(world.players)
-            socket.broadcast.emit('players', world.players)
-            socket.broadcast.emit('buildings', world.buildings)
-        }, 10)
+
+        
+    }
+    sendData() {
+        //console.log(this.world)
+        this.broadcast('players', this.world.players)
+        this.broadcast('buildings', this.world.buildings)
     }
     /**
      * handles a chatMessage

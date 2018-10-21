@@ -12,32 +12,34 @@ class World {
         tick(this)
     }
     addPlayer(socket, username) {
-        //joins the room
-        socket.join(this.id)
+      //joins the room
+      socket.join(this.id)
 
-        socket.emit('buildings', this.buildings)
-        this.socketHandler.addSocket(socket)
-        this.players[socket.id] = {
-            id: socket.id,
-            pos: {
-                x: 0,
-                y: 0
-            },
-            admin: true,
-            movement: 'none',
-            building: {
-              selected: 1
-            },
-            hotbar: {
-                sword: 1,
-                pickaxe: 1
-            },
-            buildmode: false,
-            username: username,
-            color: `rgb(${Math.round(Math.random() * 255)},${Math.round(Math.random() * 255)},${Math.round(Math.random() * 255)})`,
-            health: 100,
-            isDead: false
-        }
+      socket.emit('buildings', this.buildings)
+
+      this.players[socket.id] = {
+        id: socket.id,
+        pos: {
+            x: 0,
+            y: 0
+        },
+        admin: true,
+        movement: 'none',
+        building: {
+          selected: 1
+        },
+        hotbar: {
+            sword: 1,
+            pickaxe: 1
+        },
+        username: username,
+        color: `rgb(${Math.round(Math.random() * 255)},${Math.round(Math.random() * 255)},${Math.round(Math.random() * 255)})`,
+        health: 100,
+        isDead: false
+      }
+      //console.log(this.players)
+      this.socketHandler.addSocket(socket)
+        
 
     }
     collisionPlayer(player) {
