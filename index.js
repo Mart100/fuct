@@ -37,6 +37,7 @@ io.on('connection', function(socket) {
 
   socket.on('requestWorld', function(data, callback) {
     console.log(`Player ${data.username} tries to join world `+data.world)
+    if(data.username.length > 15) return callback('USERNAME_TOO_LONG')
     if(data.world == undefined) return callback('WORLD_UNDEFINED')
     worlds[data.world].addPlayer(socket, data.username)
     callback('SUCCESS')

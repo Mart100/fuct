@@ -80,14 +80,15 @@ body {
   transform: translateX(-50%);
   text-align: center;
   vertical-align: middle;
-  transition: 1s;
+  transition: .7s;
 }
 #playButton:hover {
-  background-color: #5caa1d;
+  background-color: #165b1e;
+  color: black;
 }
 #HUD {
     z-index: 2;
-  }
+}
 #nameInput {
   position: relative;
   padding: 5px;
@@ -221,3 +222,23 @@ body {
   border-radius: 20px 0px 0px 0px;
 }
 #HUD-shopNavTools:hover { background-color: rgba(0, 0, 0, 0.5); }
+
+#HUD-spawning {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-size: 30px;
+    left: 50%;
+    top: 30%;
+    transform: translateX(-50%);
+    width: 170px;
+    height: 200px;
+    border-radius: 4px;
+    padding: 10px;
+    text-align: center;
+    user-select: none;
+
+}
+#HUD-spawning span {
+    font-size: 110px;
+}

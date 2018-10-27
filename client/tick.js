@@ -1,13 +1,13 @@
 function tick() {
-    // if player died
-    if(player.isDead) {
-        // spawn back in 5 seconds
-        setTimeout(() => {
-            // remove death
-            player.health = 100
-            player.isDead = false
-        }, 5000)
-    }
-
     updateDebug()
+    // countdown spawning
+    if(player.spawning > 0) {
+        $('#HUD-spawning').css('display', 'block')
+        $('#HUD-spawning span').html(Math.round(player.spawning*10)/10)
+        if(player.spawning < 0.1) {
+            setTimeout(() => {
+                $('#HUD-spawning').css('display', 'none')
+            }, 100)
+        }
+    }
 }

@@ -23,6 +23,9 @@ function loadImages() {
     //pickaxe
     images.pickaxe = new Image()
     images.pickaxe.src = 'https://gyazo.com/bd156fc91b79873c25dc92dfa8da14ca.png'
+    // bulldozer
+    images.bulldozer = new Image()
+    images.bulldozer.src = 'https://i.imgur.com/TuERcOY.png'
     //walls
     images.walls = {}
     // with 0 open sides

@@ -73,7 +73,7 @@ function build(type, pos) {
                 // else player already has core. so return
                 return alert({id: player.id, color: 'red', text: `You already placed your core!`})
             }
-            alert({id: player.id, color: 'white', text: `You placed your core!`})
+            alert({color: 'white', text: `You placed your core!`})
             break
         case('wall'):
             break

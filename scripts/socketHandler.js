@@ -77,7 +77,7 @@ class SocketHandler {
                     socket.emit('alert', {color: 'white', text: data.text})
                     break
                 case('suicide'):
-                    player.died = true
+                    player.health = -1
                     socket.emit('alert', {color: 'white', text: 'Congratz you just suicided!'})
                     break
                 // commands only admins can use
@@ -122,7 +122,9 @@ class SocketHandler {
     }
     buildData(data, socket) {
         switch(data.type) {
-            case('add'):
+            case('add'): {
+                //if building already exists return
+                if(this.buildings[data.id] != undefined) return
                 this.buildings[data.id] = data.building
                 switch(data.building.type) {
                     case('wall'):
@@ -148,9 +150,10 @@ class SocketHandler {
                             bSides.W = true
                             this.buildings[(bPosX-1)+','+(bPosY)].sides.E = true
                         }
-                        break
+                        break;
                 }
-                break
+                break;
+            }
             case('remove'):
                 let building = buildings[data.id]
                 // other stuff depends on building
@@ -177,7 +180,7 @@ class SocketHandler {
         }
     }
     broadcast(channel, data) {
-        for(let socket of this.sockets) {
+          for(let socket of this.sockets) {
             socket.emit(channel, data)
         }
     }

@@ -10,7 +10,7 @@ let buildings = {}
 let player = {
     building: {
         selected: 1,
-        list: ['core', 'miner', 'turreticon', 'landmine', 'wall', 'spongebob', 'spongebob', 'spongebob', 'spongebob', 'spongebob'],
+        list: [],
     },
     keys: {},
     pos: {
@@ -65,7 +65,6 @@ $(function() {
   // When PLAY is pressed
   $("#playButton").on("click", function(e) {
     player.id = socket.id
-    player.spawned = true
 
     // Hotbar stuff
     for(let i = 0; i < 11; i++) {
@@ -82,14 +81,18 @@ $(function() {
     socket.emit('requestWorld', { username: player.username, world: requestWorld }, function(data) {
         if(data == 'SUCCESS') {
             player.world = requestWorld
-        } else console.log('Error trying to request server: '+data)
+            $("#playScreen").hide()
+            $('#backgroundOpacity').animate({'opacity': '0'}, 500, () => $('#backgroundOpacity').remove())
+        } else {
+            console.log('Error trying to request server: '+data)
+            if(data == 'USERNAME_TOO_LONG') {
+                alert({color: 'red', text: `Username Too Long!`})
+            }
+        }
     })
 
-
-    $("#playScreen").hide()
-    $('#backgroundOpacity').animate({'opacity': '0'}, 500, () => $('#backgroundOpacity').remove())
   })
-  $(window).on('DOMMouseScroll mousewheel', function(e){
+  $('canvas').on('DOMMouseScroll mousewheel', function(e){
     if(e.originalEvent.detail > 0 || e.originalEvent.wheelDelta < 0) {
       if(player.zoom <= 50 && !players[socket.id].admin) return
       if(player.zoom <= 5) return
