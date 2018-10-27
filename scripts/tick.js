@@ -88,13 +88,63 @@ function tick(world) {
     // loop trough all world.players
     for(let id in world.players) {
         let player = world.players[id]
+        let playerSpeed = Number(player.speed)
+        
+        // if player is standin on barbed wire
+        if(world.buildings[Math.floor(player.pos.x)+','+Math.floor(player.pos.y)] != undefined && world.buildings[Math.floor(player.pos.x)+','+Math.floor(player.pos.y)].type == 'barbedwire') {
+            player.health -= 0.1
+            playerSpeed = player.speed/4
+        }
+        
 
-      let allowedDirections = world.buildingCollision(player)
         // move world.players
-        if(player.moving.north && allowedDirections.N && player.spawning <= 0) player.pos.y -= 0.03
-        if(player.moving.east && allowedDirections.E && player.spawning <= 0) player.pos.x += 0.03
-        if(player.moving.south && allowedDirections.S && player.spawning <= 0) player.pos.y += 0.03
-        if(player.moving.west && allowedDirections.W && player.spawning <= 0) player.pos.x -= 0.03
+        let collidingBuildings = world.getCollidingBuildings(player.pos.x, player.pos.y)
+
+        //console.log(collidingBuildings)
+        if(collidingBuildings.length != 0) {
+          let buildX = collidingBuildings[0].x
+          let buildY = collidingBuildings[0].y
+          let halfRect = 0.5
+          let distX = player.pos.x - buildX-halfRect
+          let distY = player.pos.y - buildY-halfRect
+
+          
+
+        
+          
+          if(Math.abs(distX) > Math.abs(distY)) {
+            
+
+
+            if(distX < 0) {
+              player.pos.x -= 0.1
+            } else {
+              player.pos.x += 0.1
+            }
+          } else {
+            
+
+
+            if(distY < 0) {
+              player.pos.y -= 0.1
+            } else {
+              player.pos.y += 0.1
+            }
+          }
+         
+        }
+
+
+        if(player.moving.north) {
+          
+        }
+        
+        if(player.moving.north && world.moveAllowed(player, 'north') && player.spawning <= 0) player.pos.y -= Number(playerSpeed)
+        if(player.moving.east && world.moveAllowed(player, 'east') && player.spawning <= 0) player.pos.x += Number(playerSpeed)
+        if(player.moving.south && world.moveAllowed(player, 'south') && player.spawning <= 0) player.pos.y += Number(playerSpeed)
+        if(player.moving.west && world.moveAllowed(player, 'west') && player.spawning <= 0) player.pos.x -= Number(playerSpeed)
+
+        
 
       // building collision
       
@@ -138,27 +188,26 @@ function tick(world) {
           }
         }
   
-      }
-      // if player has 0 health
-      if(player.health <= 0) {
+        }
+        // if player has 0 health
+        if(player.health <= 0) {
             player.spawning = 5
             player.health = 100000000
             player.pos = {x: Math.random()*1e9, y: Math.random()*1e9} 
-            setTimeout(() => {
-                player.health = 100
-                player.pos = {x: Math.random()*10, y: Math.random()*10} 
-            }, 5000)
-      }
-      // countdown spawning
-      if(player.spawning > 0) player.spawning -= 0.01
-      // if player is in vanish
-      if(player.vanish) player.health = 100
-      // regenerate player
-      if(player.health < 100) player.health += 0.01
+        }
+        if(player.spawning <= 0.5 && player.spawning > 0) {
+            player.health = 100
+            player.pos = {x: Math.random()*10, y: Math.random()*10} 
+        }
+        // countdown spawning
+        if(player.spawning > 0) player.spawning -= 0.01
+        // if player is in vanish
+        if(player.vanish) player.health = 100
+        // regenerate player
+        if(player.health < 100) player.health += 0.01
     }
     world.socketHandler.sendData(world)
-  }
-
+}
 
 
   

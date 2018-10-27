@@ -31,13 +31,23 @@ class World {
             west: false
         },
         spawning: 0,
+        speed: 0.05,
         building: {
-          selected: 1,
-          list: ['core', 'miner', 'turreticon', 'landmine', 'wall', 'spongebob', 'spongebob', 'spongebob', 'spongebob', 'bulldozer'],
+            selected: 1,
+            list: ['core', 'miner', 'turreticon', 'landmine', 'wall', 'barbedwire', 'spongebob', 'spongebob', 'spongebob', 'bulldozer'],
         },
         hotbar: {
-            sword: 1,
-            pickaxe: 1
+            selected: 1,
+            list: {
+                sword: {
+                    level: 1,
+                    slot: 1
+                },
+                pickaxe: {
+                    leve: 1,
+                    slot: 2
+                }
+            }
         },
         username: username,
         color: `rgb(${Math.round(Math.random() * 255)},${Math.round(Math.random() * 255)},${Math.round(Math.random() * 255)})`,
@@ -118,26 +128,88 @@ class World {
     //     }
     //     return direction
     // }
-    buildingCollision(player) {
+    moveAllowed(player, direction) {
 
       let radius = 0.9/2
+      let halfRect = 0.5
+      let playerX = player.pos.x
+      let playerY = player.pos.y
       let allowedDirections = {
         N: true,
         S: true,
         W: true,
         E: true
       }
-      for(let i in this.buildings) {
-        let building = this.buildings[i]
-        //Find the vertical & horizontal (distX/distY) distances between the circle’s center and the rectangle’s center
-        let distX = Math.abs(player.pos.x - building.x+0.5)
-        let distY = Math.abs(player.pos.y - building.y+0.5)
 
+      switch(direction) {
+        case('north'): {
+          playerY -= player.speed
+          break
+        }
+        case('south'): {
+          playerY += player.speed
+          break
+        }
+        case('east'): {
+          playerX += player.speed
+          break
+        }
+        case('west'): {
+          playerX -= player.speed
+          break
+        }
+        default: {
+
+          break
+        }
       }
-      return allowedDirections
+      let collidingBuildings = this.getCollidingBuildings(playerX, playerY)
+      return collidingBuildings == 0
+      
 
     }
-    
+    getCollidingBuildings(playerX, playerY) {
+      let radius = 0.9/2
+      let halfRect = 0.5
+      let collidingBuildings = []
+      for(let i in this.buildings) {
+        
+        let building = this.buildings[i]
+        if(!building.collision) continue
+        //Find the vertical & horizontal (distX/distY) distances between the circle’s center and the rectangle’s center
+        let distX = Math.abs(playerX - building.pos.x-halfRect)
+        let distY = Math.abs(playerY - building.pos.y-halfRect)
+        
+        //If the distance is greater than halfCircle + halfRect, then they are too far apart to be colliding
+        if (distX > (halfRect + radius)) continue
+        if (distY > (halfRect + radius)) continue
+
+        if (distX <= halfRect) {
+          collidingBuildings.push(building)
+          continue
+        }
+        if (distY <= halfRect) {
+          collidingBuildings.push(building)
+          continue
+        }
+        /** Test for collision at rect corner. 
+         * Think of a line from the rect center to any rect corner
+         * Now extend that line by the radius of the circle
+         * If the circle’s center is on that line they are colliding at exactly that rect corner
+         * Using Pythagoras formula to compare the distance between circle and rect centers.
+         */ 
+         let dx = distX-halfRect
+         let dy = distY-halfRect
+
+        
+        if (dx*dx+dy*dy<=(radius*radius)) {
+          collidingBuildings.push(building)
+          continue
+        }
+        
+      }
+      return collidingBuildings
+    }
 
 }
 module.exports = World

@@ -179,8 +179,18 @@ const draw = {
               ctx.fill()
               break
             }
-
             break
+        case('barbedwire'): {
+            ctx.beginPath()
+            if(building.owner == socket.id) {
+                ctx.strokeStyle = players[building.owner].color
+                ctx.rect(canvas.width/2 + (building.pos.x-player.pos.x)*player.zoom, canvas.height/2 + (building.pos.y-player.pos.y)*player.zoom, player.zoom, player.zoom)
+                ctx.stroke()
+            }
+            ctx.drawImage(images[building.type], canvas.width/2 + (building.pos.x-player.pos.x)*player.zoom, canvas.height/2 + (building.pos.y-player.pos.y)*player.zoom, player.zoom, player.zoom)
+            break
+        }
+
           default:
             ctx.beginPath()
             ctx.fillStyle = players[building.owner].color

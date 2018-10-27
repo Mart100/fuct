@@ -66,13 +66,6 @@ $(function() {
   $("#playButton").on("click", function(e) {
     player.id = socket.id
 
-    // Hotbar stuff
-    for(let i = 0; i < 11; i++) {
-      $('#HUD-hotbarSlot'+i+' > img').attr('src', 'https://upload.wikimedia.org/wikipedia/commons/5/54/Blank_Canvas_on_Transparent_Background.png')
-      // loop trough items in player.hotbar
-      //for(item in player.hotbar) if(player.hotbar[].slot == i) $('#HUD-hotbarSlot'+i+' > img').attr('src', images[item].src)
-    }
-
     if($('#nameInput').val() != '') player.username = $('#nameInput').val()
     else player.username = 'Guest-'+Math.round(Math.random()*1000)
 
@@ -81,8 +74,7 @@ $(function() {
     socket.emit('requestWorld', { username: player.username, world: requestWorld }, function(data) {
         if(data == 'SUCCESS') {
             player.world = requestWorld
-            $("#playScreen").hide()
-            $('#backgroundOpacity').animate({'opacity': '0'}, 500, () => $('#backgroundOpacity').remove())
+            setTimeout(() => { joinedWorld() }, 100)
         } else {
             console.log('Error trying to request server: '+data)
             if(data == 'USERNAME_TOO_LONG') {
@@ -105,3 +97,13 @@ $(function() {
 
 
 })
+function joinedWorld() {
+    $("#playScreen").hide()
+    $('#backgroundOpacity').animate({'opacity': '0'}, 500, () => $('#backgroundOpacity').remove())
+    // Hotbar stuff
+    for(let i = 0; i < 11; i++) {
+        $('#HUD-hotbarSlot'+i+' > img').attr('src', 'https://upload.wikimedia.org/wikipedia/commons/5/54/Blank_Canvas_on_Transparent_Background.png')
+        // loop trough items in player.hotbar
+        for(item in player.hotbar.list) if(player.hotbar.selected == i) $('#HUD-hotbarSlot'+i+' > img').attr('src', images[item].src)
+    }
+}

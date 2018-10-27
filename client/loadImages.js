@@ -26,6 +26,9 @@ function loadImages() {
     // bulldozer
     images.bulldozer = new Image()
     images.bulldozer.src = 'https://i.imgur.com/TuERcOY.png'
+    //barbed wire    
+    images.barbedwire = new Image()
+    images.barbedwire.src = 'https://i.imgur.com/02GiBFH.png'
     //walls
     images.walls = {}
     // with 0 open sides
