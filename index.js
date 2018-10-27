@@ -22,7 +22,7 @@ app.get("/", function (request, response) {
 
 setInterval(() => {
     for(let num in worlds) {
-        worlds[num].tick
+        worlds[num].tick()
     }
 }, 10)
 
@@ -37,8 +37,9 @@ io.on('connection', function(socket) {
 
   socket.on('requestWorld', function(data, callback) {
     console.log(`Player ${data.username} tries to join world `+data.world)
-    if(data.world == undefined) return callback('World undefined')
+    if(data.world == undefined) return callback('WORLD_UNDEFINED')
     worlds[data.world].addPlayer(socket, data.username)
+    callback('SUCCESS')
   })
 
   console.log('made connection:', socket.id)
@@ -53,81 +54,6 @@ io.on('connection', function(socket) {
 
   socket.on('ping', () => socket.broadcast.emit('ping', ''))
 
-  
-  socket.on('players', data => {
-    if(data.id == undefined) return
-    if(players[data.id] == undefined) return
-    switch(data.type) {
-      case('movement'):
-        players[data.id].movement = data.data
-        break
-      case('hotbar'):
-        players[data.id].hotbar = data.player
-        break
-      case('damagePlayer'):
-        players[data.id].health -= data.player
-        break
-      case('removeplayer'):
-        delete players[data.id]
-        // Remove buildings
-        for(name in buildings) if(buildings[name].owner == data.id) delete buildings[name]
-        break
-      default:
-        if(data.type == 'admin') return
-        players[data.id][data.type] = data.player
-    }
-  })
-  socket.on('buildings', data => {
-    switch(data.type) {
-      case('add'):
-        buildings[data.id] = data.data
-        switch(data.data.type) {
-          case('wall'):
-            buildings[`${data.data.pos.x},${data.data.pos.y}`].sides = {N: false, E: false, S: false, W: false}
-            if(buildings[`${data.data.pos.x},${data.data.pos.y+1}`].sides != undefined) {
-              buildings[`${data.data.pos.x},${data.data.pos.y}`].sides.S = true
-              buildings[`${data.data.pos.x},${data.data.pos.y+1}`].sides.N = true
-            }
-            if(buildings[`${data.data.pos.x+1},${data.data.pos.y}`].sides != undefined) {
-              buildings[`${data.data.pos.x},${data.data.pos.y}`].sides.E = true
-              buildings[`${data.data.pos.x+1},${data.data.pos.y}`].sides.W = true
-            }
-            if(buildings[`${data.data.pos.x},${data.data.pos.y-1}`].sides != undefined) {
-              buildings[`${data.data.pos.x},${data.data.pos.y}`].sides.N = true
-              buildings[`${data.data.pos.x},${data.data.pos.y-1}`].sides.S = true
-            }
-            if(buildings[`${data.data.pos.x-1},${data.data.pos.y}`].sides != undefined) {
-              buildings[`${data.data.pos.x},${data.data.pos.y}`].sides.W = true
-              buildings[`${data.data.pos.x-1},${data.data.pos.y}`].sides.E = true
-            }
-          break
-        }
-        break
-      case('remove'):
-        let building = buildings[data.id]
-        // other stuff depends on building
-        switch(building.type) {
-          case('wall'):
-            if(buildings[`${building.pos.x-1},${building.pos.y}`] != undefined) buildings[`${building.pos.x-1},${building.pos.y}`].sides.E = false
-            if(buildings[`${building.pos.x+1},${building.pos.y}`] != undefined) buildings[`${building.pos.x+1},${building.pos.y}`].sides.W = false
-            if(buildings[`${building.pos.x},${building.pos.y-1}`] != undefined) buildings[`${building.pos.x},${building.pos.y-1}`].sides.S = false
-            if(buildings[`${building.pos.x},${building.pos.y+1}`] != undefined) buildings[`${building.pos.x},${building.pos.y+1}`].sides.N = false
-            break
-        }
-        // then delete building
-        delete buildings[data.id]
-        break
-      case('damage'):
-        // if undefined building. return
-        if(buildings[data.id] == undefined) return
-        buildings[data.id].health -= data.data
-        // show health of building
-        buildings[data.id].showhealth = 10
-        break
-      default:
-        console.log('received unkown type request via socket "buildings": '+data.type+' data: '+data.data+' for building: '+data.id)
-    }
-  })
 
   // players[socket.id] = 'notJoined'
   // // io.sockets.emit('newPlayer', players)
@@ -135,15 +61,5 @@ io.on('connection', function(socket) {
   // //   players[socket.id] = data
   // //   io.sockets.emit('newPlayer', players)
   // // })
-  socket.on('disconnect', function() {
-    // Remove buildings
-    for(name in buildings) {
-      if(buildings[name].owner == socket.id) delete buildings[name]
-    }
-    //remove player
-    delete players[socket.id]
-    socket.broadcast.emit('players', players)
-  })
   
 })
-

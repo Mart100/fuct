@@ -20,13 +20,19 @@ class World {
       this.players[socket.id] = {
         id: socket.id,
         pos: {
-            x: 0,
-            y: 0
+            x: Math.random()*5,
+            y: Math.random()*5
         },
         admin: true,
-        movement: 'none',
+        moving: {
+            north: false,
+            east: false,
+            south: false,
+            west: false
+        },
         building: {
-          selected: 1
+          selected: 1,
+          list: ['core', 'miner', 'turreticon', 'landmine', 'wall', 'spongebob', 'spongebob', 'spongebob', 'spongebob', 'spongebob'],
         },
         hotbar: {
             sword: 1,

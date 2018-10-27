@@ -1,7 +1,7 @@
 // when page loads
 $(function() {
   // Clicking on hotbar
-  $('#HUD-hotbarTaskbar').on('click', '*', (event) => {
+  $('#HUD-hotbar').on('click', '*', (event) => {
     $('.HUD-hotbarSlot').css('opacity', '0.6')
     // Color selected hotbaring darker
     // clicked image
@@ -16,7 +16,7 @@ $(function() {
     }
     // Draw hotbar tools
     for(let i = 0; i < 11; i++) {
-      $('#HUD-hotbarSlot'+i+' > img').attr('src', 'https://upload.wikimedia.org/wikipedia/commons/5/54/Blank_Canvas_on_Transparent_Background.png')
+      $('#HUD-hotbar'+i+' > img').attr('src', 'https://upload.wikimedia.org/wikipedia/commons/5/54/Blank_Canvas_on_Transparent_Background.png')
       // loop trough items in player.hotbar
       for(item in player.hotbar.items) if(player.hotbar.items[item].slot == i) $('#HUD-hotbarSlot'+i+' > img').attr('src', images[item].src)
     }
