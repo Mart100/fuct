@@ -89,19 +89,24 @@ function tick(world) {
     for(let id in world.players) {
         let player = world.players[id]
 
+      let allowedDirections = world.buildingCollision(player)
         // move world.players
-        if(player.moving.north) player.pos.y -= 0.03
-        if(player.moving.east) player.pos.x += 0.03
-        if(player.moving.south) player.pos.y += 0.03
-        if(player.moving.west) player.pos.x -= 0.03
+        if(player.moving.north && allowedDirections.N && player.spawning <= 0) player.pos.y -= 0.03
+        if(player.moving.east && allowedDirections.E && player.spawning <= 0) player.pos.x += 0.03
+        if(player.moving.south && allowedDirections.S && player.spawning <= 0) player.pos.y += 0.03
+        if(player.moving.west && allowedDirections.W && player.spawning <= 0) player.pos.x -= 0.03
 
       // building collision
-      let directions = world.collisionPlayer(player)
-      player.directions = directions
-      if(directions.W || directions.SW || directions.WN) player.pos.x += (Math.abs(Number('0.' + player.pos.x.toString().split('.')[1])-0.5))/10
-      if(directions.E || directions.NE || directions.ES) player.pos.x -= (Math.abs(Number('0.' + player.pos.x.toString().split('.')[1])-0.5))/10
-      if(directions.N || directions.NE || directions.WN) player.pos.y += (Math.abs(Number('0.' + player.pos.y.toString().split('.')[1])-0.5))/10
-      if(directions.S || directions.SW || directions.ES) player.pos.y -= (Math.abs(Number('0.' + player.pos.y.toString().split('.')[1])-0.5))/10
+      
+      // player.directions = directions
+
+      // let A = 50
+      // let B = 0.5
+
+      // if(directions.W || directions.SW || directions.WN) player.pos.x += (Math.abs(Number('0.' + player.pos.x.toString().split('.')[1])-B))/A
+      // if(directions.E || directions.NE || directions.ES) player.pos.x -= (Math.abs(Number('0.' + player.pos.x.toString().split('.')[1])-B))/A
+      // if(directions.N || directions.NE || directions.WN) player.pos.y += (Math.abs(Number('0.' + player.pos.y.toString().split('.')[1])-B))/A
+      // if(directions.S || directions.SW || directions.ES) player.pos.y -= (Math.abs(Number('0.' + player.pos.y.toString().split('.')[1])-B))/A
       // player collision
       for(let idColl in world.players) {
         let playerColl = world.players[idColl]
@@ -135,7 +140,17 @@ function tick(world) {
   
       }
       // if player has 0 health
-      if(player.health < 0) player.died = true
+      if(player.health <= 0) {
+            player.spawning = 5
+            player.health = 100000000
+            player.pos = {x: Math.random()*1e9, y: Math.random()*1e9} 
+            setTimeout(() => {
+                player.health = 100
+                player.pos = {x: Math.random()*10, y: Math.random()*10} 
+            }, 5000)
+      }
+      // countdown spawning
+      if(player.spawning > 0) player.spawning -= 0.01
       // if player is in vanish
       if(player.vanish) player.health = 100
       // regenerate player
