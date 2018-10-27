@@ -3,7 +3,7 @@ function tick(world) {
     //world.latestframe = new Date()
     // loop trough all buildings
     for(let key in world.buildings) {
-      let building = buildings[key]
+      let building = world.buildings[key]
       // If building is turret...
       if(building.type == 'turreticon') {
         // shoottimer
@@ -80,7 +80,7 @@ function tick(world) {
       // landmine
       if(building.type == 'landmine') {
         if(building.exploding >= 1) building.exploding += 0.2
-        if(building.exploding >= 19) delete buildings[key]
+        if(building.exploding >= 19) delete world.buildings[key]
       }
       // show health of building
       if(building.showhealth > 0) building.showhealth -= 0.05
@@ -88,23 +88,13 @@ function tick(world) {
     // loop trough all world.players
     for(let id in world.players) {
         let player = world.players[id]
-        if(player.pos == undefined || player.movement == undefined) continue
 
         // move world.players
-        switch(player.movement) {
-            case('north'):
-                player.pos.y -= 0.03
-                break
-            case('east'):
-                player.pos.x += 0.03
-                break
-            case('north'):
-                player.pos.y += 0.03
-                break
-            case('east'):
-                player.pos.x -= 0.03
-                break
-        }
+        if(player.moving.north) player.pos.y -= 0.03
+        if(player.moving.east) player.pos.x += 0.03
+        if(player.moving.south) player.pos.y += 0.03
+        if(player.moving.west) player.pos.x -= 0.03
+
       // building collision
       let directions = world.collisionPlayer(player)
       player.directions = directions
@@ -133,7 +123,7 @@ function tick(world) {
          && world.buildings[Math.floor(player.pos.x)+','+Math.floor(player.pos.y)].type == 'landmine'
          && world.buildings[Math.floor(player.pos.x)+','+Math.floor(player.pos.y)].owner != id
          && world.buildings[Math.floor(player.pos.x)+','+Math.floor(player.pos.y)].exploding == 0) {
-        let landmine = buildings[Math.floor(player.pos.x)+','+Math.floor(player.pos.y)]
+        let landmine = world.buildings[Math.floor(player.pos.x)+','+Math.floor(player.pos.y)]
         // start with explosion animation
         landmine.exploding = 1
         // damage world.players

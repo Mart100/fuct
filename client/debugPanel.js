@@ -14,8 +14,8 @@ function updateDebug() {
 &nbsp;x: ${player.pos.x}<br>
 &nbsp;y: ${player.pos.y}<br>
 &nbsp;zoomLVL: ${player.zoom} <br>
-&nbsp;selectedGridX: ${clientPlayer.selectedGrid.x} <br>
-&nbsp;selectedGridy: ${clientPlayer.selectedGrid.y} <br>
+&nbsp;selectedGridX: ${player.selectedGrid.x} <br>
+&nbsp;selectedGridy: ${player.selectedGrid.y} <br>
 <b>FPS: ${fps}</b> <br>
 <b>PING: ${ping.pong}</b> <br>
 <b>Screen: </b> <br>

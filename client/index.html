@@ -9,53 +9,41 @@
     <script src="/socket.io/socket.io.js"></script>
     <script> var socket = io(); </script>
     <script src="debugPanel.js"></script>
-    <script src="login.js"></script>
     <script src="main.js"></script>
     <script src="chat.js"></script>
     <script src="building.js"></script>
     <script src="draw.js"></script>
     <script src="hotbar.js"></script>
     <script src="shop.js"></script>
-    <script src="shop.js"></script>
     <script src="loadimages.js"></script>
     <script src="socketHandler.js"></script>
     <script src="tick.js"></script>
+    <script src="alert.js"></script>
+    <script src="input.js"></script>
 
 
   </head>
   <body id="body">
-    <div id="alerts">
-      <div id="alert1"></div>
-      <div id="alert2"></div>
-      <div id="alert3"></div>
-      <div id="alert4"></div>
-      <div id="alert5"></div>
-    </div>
-    <div id="loginScreen">
+    <div id="alerts"></div>
+    <div id="playScreen">
       <input id="nameInput" placeholder="username"></input>
-      <input id="passwordInput" hidden placeholder="password" type="password" ></input>
-
       <div id="playButton">Play</div>
-      <div id="loginOrRegisterButton">login/register</div>
-      <div id="loginButton" hidden>login</div>
-      <div id="registerButton" hidden>register</div>
-      <div id="errorMessage" hidden>You shouldn't be seeing this</div>
     </div>
     <div id="backgroundOpacity"></div>
     <div id="HUD">
-      <div id="HUD-buildTaskbar">
-        <div class="HUD-buildSlot" id="HUD-buildSlot1"><img src="https://gyazo.com/1a00b3743418fed8114658f0ba4a1680.png"/></div>
-        <div class="HUD-buildSlot" id="HUD-buildSlot2"><img src="https://cdn.discordapp.com/attachments/235452993741389824/424195191700848640/miner.png"/></div>
-        <div class="HUD-buildSlot" id="HUD-buildSlot3"><img src="https://gyazo.com/59b952c61fa11c9ecc4fddb85a205d0d.png"/></div>
-        <div class="HUD-buildSlot" id="HUD-buildSlot4"><img src="https://gyazo.com/61d228d16c3329ceaa94a62d1b444731.png"/></div>
+      <div id="HUD-building">
+        <div class="HUD-buildSlot" id="HUD-buildSlot0"><img src="https://gyazo.com/1a00b3743418fed8114658f0ba4a1680.png"/></div>
+        <div class="HUD-buildSlot" id="HUD-buildSlot1"><img src="https://cdn.discordapp.com/attachments/235452993741389824/424195191700848640/miner.png"/></div>
+        <div class="HUD-buildSlot" id="HUD-buildSlot2"><img src="https://gyazo.com/59b952c61fa11c9ecc4fddb85a205d0d.png"/></div>
+        <div class="HUD-buildSlot" id="HUD-buildSlot3"><img src="https://gyazo.com/61d228d16c3329ceaa94a62d1b444731.png"/></div>
+        <div class="HUD-buildSlot" id="HUD-buildSlot4"><img src="https://gyazo.com/fa0d5557050c833a441e3d3e6aedecb1.png"/></div>
         <div class="HUD-buildSlot" id="HUD-buildSlot5"><img src="https://gyazo.com/fa0d5557050c833a441e3d3e6aedecb1.png"/></div>
-        <div class="HUD-buildSlot" id="HUD-buildSlot6"><img src="https://gyazo.com/fa0d5557050c833a441e3d3e6aedecb1.png"/></div>
+        <div class="HUD-buildSlot" id="HUD-buildSlot6"><img src="https://gyazo.com/3b9acfb270e46946247dfcd1e766f659.png"/></div>
         <div class="HUD-buildSlot" id="HUD-buildSlot7"><img src="https://gyazo.com/3b9acfb270e46946247dfcd1e766f659.png"/></div>
         <div class="HUD-buildSlot" id="HUD-buildSlot8"><img src="https://gyazo.com/3b9acfb270e46946247dfcd1e766f659.png"/></div>
         <div class="HUD-buildSlot" id="HUD-buildSlot9"><img src="https://gyazo.com/3b9acfb270e46946247dfcd1e766f659.png"/></div>
-        <div class="HUD-buildSlot" id="HUD-buildSlot0"><img src="https://gyazo.com/3b9acfb270e46946247dfcd1e766f659.png"/></div>
       </div>
-      <div id="HUD-hotbarTaskbar">
+      <div id="HUD-hotbar">
         <div class="HUD-hotbarSlot" id="HUD-hotbarSlot1"><img src="https://gyazo.com/1a00b3743418fed8114658f0ba4a1680.png"/></div>
         <div class="HUD-hotbarSlot" id="HUD-hotbarSlot2"><img src="https://gyazo.com/3b9acfb270e46946247dfcd1e766f659.png"/></div>
         <div class="HUD-hotbarSlot" id="HUD-hotbarSlot3"><img src="https://gyazo.com/59b952c61fa11c9ecc4fddb85a205d0d.png"/></div>
@@ -67,7 +55,7 @@
         <div class="HUD-hotbarSlot" id="HUD-hotbarSlot9"><img src="https://gyazo.com/3b9acfb270e46946247dfcd1e766f659.png"/></div>
         <div class="HUD-hotbarSlot" id="HUD-hotbarSlot0"><img src="https://gyazo.com/3b9acfb270e46946247dfcd1e766f659.png"/></div>
       </div>
-      <div id="HUD-shopCont">
+      <div id="HUD-shopCont" style="display: none;">
         <div id="HUD-shopNav">
           <div id="HUD-shopNavTools">Tools</div>
           <div id="HUD-shopNavBuildings">Buildings</div>

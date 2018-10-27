@@ -2,21 +2,15 @@ async function frame() {
     requestAnimationFrame(frame)
     if(player == undefined) return
     framecount++
-    // Reset screen. becouse there might be chances
-    screen.width = window.innerWidth
-    screen.height = window.innerHeight
+
     // set canvas to screen
-    canvas.width = screen.width
-    canvas.height = screen.height
+    if(canvas.width != window.innerWidth) canvas.width = window.innerWidth
+    if(canvas.height != window.innerHeight) canvas.height = window.innerHeight
 
     // Clear Screen
     ctx.clearRect(0, 0, canvas.width, canvas.height)
-    ctx.fill()
-    // update player stuff
-    ctx.beginPath()
-    // Clear Screenb
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-    ctx.fill()
+
+    // draw
     draw.grid()
     draw.otherPlayers()
     draw.inhand()
@@ -32,24 +26,17 @@ const draw = {
     ctx.beginPath()
     ctx.strokeStyle = "#6d6d6d"
     ctx.lineWidth = 1
-    for (var i = -100; i <= 100; i++) {
-      if(player.pos.x > 0) {
-        var offset = Number('0.'+player.pos.x.toString().split('.')[1])
-      } else {
-        var offset = -Number('0.'+player.pos.x.toString().split('.')[1])
-      }
-      //var offset = Number('0.'+player.pos.x.toString().split('.')[1])
-      ctx.moveTo(screen.width/2 + i*player.zoom - offset*player.zoom + 0.5, 0)
-      ctx.lineTo(screen.width/2 + i*player.zoom - offset*player.zoom + 0.5, screen.height)
+    let offX = player.offset.x()
+    let offY = player.offset.y()
+    let zoom = player.zoom
+
+    for (let i = -Math.round(canvas.width/zoom/2); i <= Math.round(canvas.width/zoom/2); i++) { // lines on Y
+        ctx.moveTo(canvas.width/2 + i*zoom - offX*zoom, 0)
+        ctx.lineTo(canvas.width/2 + i*zoom - offX*zoom, canvas.height)
     }
-    for (var i = -100; i <= 100; i++) {
-      if(player.pos.y > 0) {
-        var offset = Number('0.'+player.pos.y.toString().split('.')[1])
-      } else {
-        var offset = -Number('0.'+player.pos.y.toString().split('.')[1])
-      }
-      ctx.moveTo(0           , screen.height/2 + i*player.zoom - offset*player.zoom + 0.5)
-      ctx.lineTo(screen.width, screen.height/2 + i*player.zoom - offset*player.zoom + 0.5)
+    for (let i = -Math.round(canvas.height/zoom/2); i <= Math.round(canvas.height/zoom/2); i++) { // lines on X  
+        ctx.moveTo(0           , canvas.height/2 + i*zoom - offY*zoom)
+        ctx.lineTo(canvas.width, canvas.height/2 + i*zoom - offY*zoom)
     }
     ctx.stroke()
   },
@@ -57,13 +44,13 @@ const draw = {
     for(buildingname in buildings) {
       let building = buildings[buildingname]
       if(players[building.owner] == undefined) continue
-      switch(building.type) {
+      switch(building.type) {  
           case('turreticon'):
             ctx.beginPath()
             ctx.fillStyle = players[building.owner].color
-            ctx.rect(screen.width/2 + (building.pos.x-player.pos.x)*player.zoom, screen.height/2 + (building.pos.y-player.pos.y)*player.zoom, player.zoom, player.zoom)
+            ctx.rect(canvas.width/2 + (building.pos.x-player.pos.x)*player.zoom, canvas.height/2 + (building.pos.y-player.pos.y)*player.zoom, player.zoom, player.zoom)
             ctx.fill()
-            ctx.drawImage(images['turretbase'], screen.width/2 + (building.pos.x-player.pos.x)*player.zoom, screen.height/2 + (building.pos.y-player.pos.y)*player.zoom, player.zoom, player.zoom)
+            ctx.drawImage(images['turretbase'], canvas.width/2 + (building.pos.x-player.pos.x)*player.zoom, canvas.height/2 + (building.pos.y-player.pos.y)*player.zoom, player.zoom, player.zoom)
             // get closest player
             let closestplayer = { x: 9999, y: 9999 }
             for(id in players) {
@@ -79,7 +66,7 @@ const draw = {
             // if  no target look up
             if(closestplayer.x == 9999) angle = -90
             ctx.save()
-            ctx.translate(screen.width/2 + (building.pos.x-player.pos.x)*player.zoom+player.zoom/2, screen.height/2 + (building.pos.y-player.pos.y)*player.zoom+player.zoom/2);
+            ctx.translate(canvas.width/2 + (building.pos.x-player.pos.x)*player.zoom+player.zoom/2, canvas.height/2 + (building.pos.y-player.pos.y)*player.zoom+player.zoom/2);
             ctx.rotate(angle*Math.PI/180);
             ctx.drawImage(images['turret'], -player.zoom/2, -player.zoom/2, player.zoom, player.zoom)
             ctx.restore()
@@ -88,7 +75,7 @@ const draw = {
               let bullet = building.bullets[num]
               ctx.beginPath()
               ctx.fillStyle = players[building.owner].color
-              ctx.arc(screen.width/2 + (bullet.pos.x-player.pos.x)*player.zoom, screen.height/2 + (bullet.pos.y-player.pos.y)*player.zoom, player.zoom/5, 0, 2*Math.PI)
+              ctx.arc(canvas.width/2 + (bullet.pos.x-player.pos.x)*player.zoom, canvas.height/2 + (bullet.pos.y-player.pos.y)*player.zoom, player.zoom/5, 0, 2*Math.PI)
               ctx.fill()
             }
             break
@@ -96,12 +83,12 @@ const draw = {
             // draw explosion
             if(building.exploding >= 1) {
               console.log(building.exploding)
-              ctx.drawImage(images.explosion[Math.floor(building.exploding)], screen.width/2 + (building.pos.x-player.pos.x)*player.zoom-player.zoom, screen.height/2 + (building.pos.y-player.pos.y)*player.zoom-player.zoom, player.zoom*3, player.zoom*3)
+              ctx.drawImage(images.explosion[Math.floor(building.exploding)], canvas.width/2 + (building.pos.x-player.pos.x)*player.zoom-player.zoom, canvas.height/2 + (building.pos.y-player.pos.y)*player.zoom-player.zoom, player.zoom*3, player.zoom*3)
               break
             }
             if(building.owner != player.id) break
             ctx.beginPath()
-            ctx.drawImage(images[building.type], screen.width/2 + (building.pos.x-player.pos.x)*player.zoom, screen.height/2 + (building.pos.y-player.pos.y)*player.zoom, player.zoom, player.zoom)
+            ctx.drawImage(images[building.type], canvas.width/2 + (building.pos.x-player.pos.x)*player.zoom, canvas.height/2 + (building.pos.y-player.pos.y)*player.zoom, player.zoom, player.zoom)
             break
           case('wall'):
             let sidescount = 0
@@ -112,13 +99,12 @@ const draw = {
             ctx.fillStyle = players[building.owner].color
             switch(sidescount.toString()) {
               case('0'):
-                console.log('test')
                 // draw color
-                ctx.rect(screen.width/2 + (building.pos.x-player.pos.x)*player.zoom, screen.height/2 + (building.pos.y-player.pos.y)*player.zoom, player.zoom, player.zoom)
+                ctx.rect(canvas.width/2 + (building.pos.x-player.pos.x)*player.zoom, canvas.height/2 + (building.pos.y-player.pos.y)*player.zoom, player.zoom, player.zoom)
                 ctx.fill()
                 // draw shape
                 ctx.save()
-                ctx.translate(screen.width/2 + (building.pos.x-player.pos.x)*player.zoom+player.zoom/2, screen.height/2 + (building.pos.y-player.pos.y)*player.zoom+player.zoom/2)
+                ctx.translate(canvas.width/2 + (building.pos.x-player.pos.x)*player.zoom+player.zoom/2, canvas.height/2 + (building.pos.y-player.pos.y)*player.zoom+player.zoom/2)
                 ctx.rotate(0*Math.PI/180)
                 ctx.drawImage(images.walls['sides0'], -player.zoom/2, -player.zoom/2, player.zoom, player.zoom)
                 ctx.restore()
@@ -129,11 +115,11 @@ const draw = {
                 if(building.sides.S) turn = 180
                 if(building.sides.W) turn = 270
                 // draw color
-                ctx.rect(screen.width/2 + (building.pos.x-player.pos.x)*player.zoom, screen.height/2 + (building.pos.y-player.pos.y)*player.zoom, player.zoom, player.zoom)
+                ctx.rect(canvas.width/2 + (building.pos.x-player.pos.x)*player.zoom, canvas.height/2 + (building.pos.y-player.pos.y)*player.zoom, player.zoom, player.zoom)
                 ctx.fill()
                 // draw shape
                 ctx.save()
-                ctx.translate(screen.width/2 + (building.pos.x-player.pos.x)*player.zoom+player.zoom/2, screen.height/2 + (building.pos.y-player.pos.y)*player.zoom+player.zoom/2)
+                ctx.translate(canvas.width/2 + (building.pos.x-player.pos.x)*player.zoom+player.zoom/2, canvas.height/2 + (building.pos.y-player.pos.y)*player.zoom+player.zoom/2)
                 ctx.rotate(turn*Math.PI/180)
                 ctx.drawImage(images.walls['sides1'], -player.zoom/2, -player.zoom/2, player.zoom, player.zoom)
                 ctx.restore()
@@ -145,11 +131,11 @@ const draw = {
                   if(building.sides.N && building.sides.S) turn = 0
                   if(building.sides.E && building.sides.W) turn = 90
                   // draw color
-                  ctx.rect(screen.width/2 + (building.pos.x-player.pos.x)*player.zoom, screen.height/2 + (building.pos.y-player.pos.y)*player.zoom, player.zoom, player.zoom)
+                  ctx.rect(canvas.width/2 + (building.pos.x-player.pos.x)*player.zoom, canvas.height/2 + (building.pos.y-player.pos.y)*player.zoom, player.zoom, player.zoom)
                   ctx.fill()
                   // draw shape
                   ctx.save()
-                  ctx.translate(screen.width/2 + (building.pos.x-player.pos.x)*player.zoom+player.zoom/2, screen.height/2 + (building.pos.y-player.pos.y)*player.zoom+player.zoom/2)
+                  ctx.translate(canvas.width/2 + (building.pos.x-player.pos.x)*player.zoom+player.zoom/2, canvas.height/2 + (building.pos.y-player.pos.y)*player.zoom+player.zoom/2)
                   ctx.rotate(turn*Math.PI/180)
                   ctx.drawImage(images.walls['sides2hor'], -player.zoom/2, -player.zoom/2, player.zoom, player.zoom)
                   ctx.restore()
@@ -162,11 +148,11 @@ const draw = {
                   if(building.sides.S && building.sides.W) turn = 270
                   if(building.sides.W && building.sides.N) turn = 0
                   // draw color
-                  ctx.rect(screen.width/2 + (building.pos.x-player.pos.x)*player.zoom, screen.height/2 + (building.pos.y-player.pos.y)*player.zoom, player.zoom, player.zoom)
+                  ctx.rect(canvas.width/2 + (building.pos.x-player.pos.x)*player.zoom, canvas.height/2 + (building.pos.y-player.pos.y)*player.zoom, player.zoom, player.zoom)
                   ctx.fill()
                   // draw shape
                   ctx.save()
-                  ctx.translate(screen.width/2 + (building.pos.x-player.pos.x)*player.zoom+player.zoom/2, screen.height/2 + (building.pos.y-player.pos.y)*player.zoom+player.zoom/2)
+                  ctx.translate(canvas.width/2 + (building.pos.x-player.pos.x)*player.zoom+player.zoom/2, canvas.height/2 + (building.pos.y-player.pos.y)*player.zoom+player.zoom/2)
                   ctx.rotate(turn*Math.PI/180)
                   ctx.drawImage(images.walls['sides2cor'], -player.zoom/2, -player.zoom/2, player.zoom, player.zoom)
                   ctx.restore()
@@ -179,18 +165,18 @@ const draw = {
                 if(!building.sides.S) turn = 0
                 if(!building.sides.W) turn = 90
                 // draw color
-                ctx.rect(screen.width/2 + (building.pos.x-player.pos.x)*player.zoom, screen.height/2 + (building.pos.y-player.pos.y)*player.zoom, player.zoom, player.zoom)
+                ctx.rect(canvas.width/2 + (building.pos.x-player.pos.x)*player.zoom, canvas.height/2 + (building.pos.y-player.pos.y)*player.zoom, player.zoom, player.zoom)
                 ctx.fill()
                 // draw shape
                 ctx.save()
-                ctx.translate(screen.width/2 + (building.pos.x-player.pos.x)*player.zoom+player.zoom/2, screen.height/2 + (building.pos.y-player.pos.y)*player.zoom+player.zoom/2)
+                ctx.translate(canvas.width/2 + (building.pos.x-player.pos.x)*player.zoom+player.zoom/2, canvas.height/2 + (building.pos.y-player.pos.y)*player.zoom+player.zoom/2)
                 ctx.rotate(turn*Math.PI/180)
                 ctx.drawImage(images.walls['sides3'], -player.zoom/2, -player.zoom/2, player.zoom, player.zoom)
                 ctx.restore()
                 break
               case('4'):
               // draw color
-              ctx.rect(screen.width/2 + (building.pos.x-player.pos.x)*player.zoom, screen.height/2 + (building.pos.y-player.pos.y)*player.zoom, player.zoom, player.zoom)
+              ctx.rect(canvas.width/2 + (building.pos.x-player.pos.x)*player.zoom, canvas.height/2 + (building.pos.y-player.pos.y)*player.zoom, player.zoom, player.zoom)
               ctx.fill()
               break
             }
@@ -199,9 +185,9 @@ const draw = {
           default:
             ctx.beginPath()
             ctx.fillStyle = players[building.owner].color
-            ctx.rect(screen.width/2 + (building.pos.x-player.pos.x)*player.zoom, screen.height/2 + (building.pos.y-player.pos.y)*player.zoom, player.zoom, player.zoom)
+            ctx.rect(canvas.width/2 + (building.pos.x-player.pos.x)*player.zoom, canvas.height/2 + (building.pos.y-player.pos.y)*player.zoom, player.zoom, player.zoom)
             ctx.fill()
-            ctx.drawImage(images[building.type], screen.width/2 + (building.pos.x-player.pos.x)*player.zoom, screen.height/2 + (building.pos.y-player.pos.y)*player.zoom, player.zoom, player.zoom)
+            ctx.drawImage(images[building.type], canvas.width/2 + (building.pos.x-player.pos.x)*player.zoom, canvas.height/2 + (building.pos.y-player.pos.y)*player.zoom, player.zoom, player.zoom)
       }
     }
     // after buildings are drawn. draw healthbar
@@ -213,10 +199,10 @@ const draw = {
         // draw progress
         ctx.beginPath()
         ctx.fillStyle = "#49ad40"
-        ctx.rect(screen.width/2 +(building.pos.x+0.5-player.pos.x)*player.zoom - player.zoom/1.5, screen.height/2 + (building.pos.y+0.5-player.pos.y)*player.zoom - player.zoom/1.5, building.health * player.zoom / 75, player.zoom / 6)
+        ctx.rect(canvas.width/2 +(building.pos.x+0.5-player.pos.x)*player.zoom - player.zoom/1.5, canvas.height/2 + (building.pos.y+0.5-player.pos.y)*player.zoom - player.zoom/1.5, building.health * player.zoom / 75, player.zoom / 6)
         ctx.fill()
         // draw bar around
-        let playerpos = { x: screen.width/2+(building.pos.x+0.5-player.pos.x)*player.zoom, y: screen.height/2+(building.pos.y+0.5-player.pos.y)*player.zoom }
+        let playerpos = { x: canvas.width/2+(building.pos.x+0.5-player.pos.x)*player.zoom, y: canvas.height/2+(building.pos.y+0.5-player.pos.y)*player.zoom }
         ctx.beginPath()
         ctx.strokeStyle = "#383838"
         ctx.lineWidth = player.zoom/20;
@@ -237,25 +223,25 @@ const draw = {
       ctx.fillStyle = players[id].color
       ctx.lineWidth = player.zoom / 10
       ctx.strokeStyle = "#383838"
-      ctx.arc(screen.width/2 + (players[id].pos.x-player.pos.x)*player.zoom, screen.height/2 + (players[id].pos.y-player.pos.y)*player.zoom, player.zoom/2.5, 0, 2*Math.PI)
+      ctx.arc(canvas.width/2 + (players[id].pos.x-player.pos.x)*player.zoom, canvas.height/2 + (players[id].pos.y-player.pos.y)*player.zoom, player.zoom/2.5, 0, 2*Math.PI)
       ctx.fill()
       ctx.stroke()
       // draw name
       ctx.beginPath()
-      ctx.font = 20 + "px Arial";
+      ctx.font = ( 10 + player.zoom/2) + "px Arial";
       ctx.textAlign = "center"
       ctx.fillStyle = "#e2e2e2" //#5cd1a6
       ctx.strokeStyle = "#e2e2e2"
-      ctx.fillText(username, screen.width/2 + (players[id].pos.x-player.pos.x)*player.zoom, screen.height/2 + (players[id].pos.y-player.pos.y)*player.zoom + player.zoom);
+      ctx.fillText(username, canvas.width/2 + (players[id].pos.x-player.pos.x)*player.zoom, canvas.height/2 + (players[id].pos.y-player.pos.y)*player.zoom + player.zoom);
       ctx.stroke()
       // draw healthBar
       // draw progress
       ctx.beginPath()
       ctx.fillStyle = "#49ad40"
-      ctx.rect(screen.width/2 +(players[id].pos.x-player.pos.x)*player.zoom - player.zoom/1.5, screen.height/2 + (players[id].pos.y-player.pos.y)*player.zoom - player.zoom/1.5, players[id].health * player.zoom / 75, player.zoom / 6)
+      ctx.rect(canvas.width/2 +(players[id].pos.x-player.pos.x)*player.zoom - player.zoom/1.5, canvas.height/2 + (players[id].pos.y-player.pos.y)*player.zoom - player.zoom/1.5, players[id].health * player.zoom / 75, player.zoom / 6)
       ctx.fill()
       // draw bar around
-      let playerpos = { x: screen.width/2+(players[id].pos.x-player.pos.x)*player.zoom, y: screen.height/2+(players[id].pos.y-player.pos.y)*player.zoom }
+      let playerpos = { x: canvas.width/2+(players[id].pos.x-player.pos.x)*player.zoom, y: canvas.height/2+(players[id].pos.y-player.pos.y)*player.zoom }
       ctx.beginPath()
       ctx.strokeStyle = "#383838"
       ctx.lineWidth = player.zoom/20;
@@ -273,11 +259,11 @@ const draw = {
     ctx.lineWidth = 10
     if(buildings[`${player.selectedGrid.x+Number(player.pos.x.toString().split('.')[0])},${player.selectedGrid.y+Number(player.pos.y.toString().split('.')[0])}`] == undefined) ctx.strokeStyle = "#4dd130"
     else ctx.strokeStyle = "#bc0909"
-    ctx.rect(screen.width/2 + (player.selectedGrid.x-player.offset.x())*player.zoom, screen.height/2 + (player.selectedGrid.y-player.offset.y())*player.zoom, player.zoom, player.zoom)
+    ctx.rect(canvas.width/2 + (player.selectedGrid.x-player.offset.x())*player.zoom, canvas.height/2 + (player.selectedGrid.y-player.offset.y())*player.zoom, player.zoom, player.zoom)
     ctx.globalAlpha = 0.5
-    let image = images[building[player.building.selected]]
-    if(building[player.building.selected] == 'wall') image = images.walls.sides0
-    ctx.drawImage(image, screen.width/2 + (player.selectedGrid.x-player.offset.x())*player.zoom, screen.height/2 + (player.selectedGrid.y-player.offset.y())*player.zoom, player.zoom, player.zoom)
+    let image = images[player.building.list[player.building.selected]]
+    if(player.building.list[player.building.selected] == 'wall') image = images.walls.sides0
+    ctx.drawImage(image, canvas.width/2 + (player.selectedGrid.x-player.offset.x())*player.zoom, canvas.height/2 + (player.selectedGrid.y-player.offset.y())*player.zoom, player.zoom, player.zoom)
     ctx.stroke()
     ctx.globalAlpha = 1
   },
@@ -288,7 +274,7 @@ const draw = {
       for(let item in players[id].hotbar.items) {
         if(playerL.hotbar.items[item].slot == playerL.hotbar.selected) {
           let image = images[item]
-          ctx.drawImage(image, screen.width/2 + (playerL.pos.x - player.pos.x)*player.zoom, screen.height/2 + (playerL.pos.y - player.pos.y)*player.zoom, player.zoom, player.zoom)
+          ctx.drawImage(image, canvas.width/2 + (playerL.pos.x - player.pos.x)*player.zoom, canvas.height/2 + (playerL.pos.y - player.pos.y)*player.zoom, player.zoom, player.zoom)
         }
       }
     }
