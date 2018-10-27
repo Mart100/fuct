@@ -84,10 +84,16 @@ class SocketHandler {
                 case('tp'):
                     if(!player.admin) return socket.emit('alert', {color: 'red', text: 'You dont have access to that command!'});
                     // Check if argument is a player
-                    for(let id in players) {
-                        if(player.username != args[1]) continue
-                        player.pos.x = players[id].pos.x
-                        player.pos.y = players[id].pos.y
+                    if(args[1] == 'random') {
+                        let target = this.players[0]
+                        player.pos.x = target.pos.x
+                        player.pos.y = target.pos.y
+                        return
+                    }
+                    for(let id in this.players) {
+                        if(this.players[id].username != args[1]) continue
+                        player.pos.x = Number(this.players[id].pos.x)
+                        player.pos.y = Number(this.players[id].pos.y)
                         return
                     }
                     // if no return. tp to positions
@@ -96,11 +102,10 @@ class SocketHandler {
                     break
                 case('clearmap'):
                     if(!player.admin) return socket.emit('alert', {color: 'red', text: 'You dont have access to that command!'}); 
-                    buildings = {}
+                    this.buildings = {}
                     break
                 case('kick'):
                     if(!player.admin) return socket.emit('alert', {color: 'red', text: 'You dont have access to that command!'}); 
-                    for(id in players) if(players[id].username == args[1]) players[id].kick = true
                     break
                 case('vanish'):
                     if(!player.admin) return socket.emit('alert', {color: 'red', text: 'You dont have access to that command!'}); 
@@ -109,13 +114,18 @@ class SocketHandler {
                     break
                 case('kill'):
                     if(!player.admin) return socket.emit('alert', {color: 'red', text: 'You dont have access to that command!'}); 
-                    for(id in players) if(players[id].username == args[0]) players[id].died = true
+                    for(id in players) if(players[id].username == args[0]) players[id].health = -1
                     break
-                case('restart'):
+                case('crash'):
                     if(!player.admin) return socket.emit('alert', {color: 'red', text: 'You dont have access to that command!'}); 
                     let a = just_crash_the_server_with_this_unkown_command
                     console.log(a)
                     break
+                case('speed'):
+                    if(!player.admin) return socket.emit('alert', {color: 'red', text: 'You dont have access to that command!'})
+                    player.speed = Number(args[1])
+                    break
+
             }
         } else this.broadcast('chat', data)
         
@@ -124,7 +134,7 @@ class SocketHandler {
         switch(data.type) {
             case('add'): {
                 //if building already exists return
-                if(this.buildings[data.id] != undefined) return
+                if(this.buildings[data.id] != undefined || data.building.type == 'buildozer') return
                 this.buildings[data.id] = data.building
                 switch(data.building.type) {
                     case('wall'):
@@ -151,22 +161,26 @@ class SocketHandler {
                             this.buildings[(bPosX-1)+','+(bPosY)].sides.E = true
                         }
                         break;
+                    case('bulldozer'): 
+                        this.buildData({id: data.id, type: 'remove'}, socket)
+                        break
                 }
                 break;
             }
             case('remove'):
-                let building = buildings[data.id]
+                let building = this.buildings[data.id]
+                if(building == undefined) return
                 // other stuff depends on building
                 switch(building.type) {
                     case('wall'):
-                    if(buildings[`${building.pos.x-1},${building.pos.y}`] != undefined) buildings[`${building.pos.x-1},${building.pos.y}`].sides.E = false
-                    if(buildings[`${building.pos.x+1},${building.pos.y}`] != undefined) buildings[`${building.pos.x+1},${building.pos.y}`].sides.W = false
-                    if(buildings[`${building.pos.x},${building.pos.y-1}`] != undefined) buildings[`${building.pos.x},${building.pos.y-1}`].sides.S = false
-                    if(buildings[`${building.pos.x},${building.pos.y+1}`] != undefined) buildings[`${building.pos.x},${building.pos.y+1}`].sides.N = false
+                        if(this.buildings[`${building.pos.x-1},${building.pos.y}`] != undefined) this.buildings[`${building.pos.x-1},${building.pos.y}`].sides.E = false
+                        if(this.buildings[`${building.pos.x+1},${building.pos.y}`] != undefined) this.buildings[`${building.pos.x+1},${building.pos.y}`].sides.W = false
+                        if(this.buildings[`${building.pos.x},${building.pos.y-1}`] != undefined) this.buildings[`${building.pos.x},${building.pos.y-1}`].sides.S = false
+                        if(this.buildings[`${building.pos.x},${building.pos.y+1}`] != undefined) this.buildings[`${building.pos.x},${building.pos.y+1}`].sides.N = false
                     break
                 }
                 // then delete building
-                delete buildings[data.id]
+                delete this.buildings[data.id]
                 break
             case('damage'):
                 // if undefined building. return
