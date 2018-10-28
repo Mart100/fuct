@@ -34,7 +34,7 @@ class World {
         speed: 0.05,
         building: {
             selected: 1,
-            list: ['core', 'miner', 'turreticon', 'landmine', 'wall', 'barbedwire', 'spongebob', 'spongebob', 'spongebob', 'bulldozer'],
+            list: ['core', 'miner', 'turreticon', 'landmine', 'wall', 'barbedwire', 'spongebob', 'spongebob', 'spongebob', 'bulldozer']
         },
         hotbar: {
             selected: 1,

@@ -10,7 +10,7 @@ let buildings = {}
 let player = {
     building: {
         selected: 1,
-        list: [],
+        list: []
     },
     keys: {},
     pos: {
@@ -18,6 +18,7 @@ let player = {
         y: 0
     },
     buildmode: false,
+    buildmodeFired: false,
     color: 'rgb(255, 0, 0)',
     offset: {
         x() {
