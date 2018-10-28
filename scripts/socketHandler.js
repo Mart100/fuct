@@ -35,7 +35,7 @@ class SocketHandler {
         let player = this.players[socket.id]
         let building = data
         // if building is in range and not himself
-        if(4 > Math.abs(Math.abs(player.pos.x)+Math.abs(player.pos.y)-Math.abs(building.pos.x)+Math.abs(building.pos.y)) && building.owner != socket.id) {
+        if(4 > getDistanceBetween(building.pos, player.pos) && building.owner != socket.id) {
             socket.emit('alert', {id: player.id, color: 'green', text: `You destroyed ${this.players[building.owner].username}'s core!`})
             socket.emit('alert', {id: building.owner, color: 'red', text: `${player.username} destroyed your core!`})
             delete this.buildings[building.pos.x+','+building.pos.y]
@@ -131,10 +131,11 @@ class SocketHandler {
         
     }
     buildData(data, socket) {
+        if(4 < getDistanceBetween(data.building.pos, players[socket.id].pos)) return
         switch(data.type) {
             case('add'): {
                 //if building already exists return
-                if(this.buildings[data.id] != undefined || data.building.type == 'buildozer') return
+                if(this.buildings[data.id] != undefined) return
                 this.buildings[data.id] = data.building
                 switch(data.building.type) {
                     case('wall'):
@@ -161,9 +162,6 @@ class SocketHandler {
                             this.buildings[(bPosX-1)+','+(bPosY)].sides.E = true
                         }
                         break;
-                    case('bulldozer'): 
-                        this.buildData({id: data.id, type: 'remove'}, socket)
-                        break
                 }
                 break;
             }
@@ -192,6 +190,12 @@ class SocketHandler {
             default:
             console.log('received unkown type request via socket "buildings": '+data.type+' data: '+data.data+' for building: '+data.id)
         }
+    }
+    getDistanceBetween(a, b) {
+        var c = a.x - b.x
+        var d = a.y - b.y
+        var result = Math.sqrt( c*c + d*d )
+        return result
     }
     broadcast(channel, data) {
           for(let socket of this.sockets) {

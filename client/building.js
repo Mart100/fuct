@@ -1,7 +1,8 @@
 $(function() {
     // Toggle BuildMode with b
     $('body').on('keydown', (event) => {
-        if(event.keyCode == 66) {
+        if(event.keyCode == 66 && !player.buildmodeFired) {
+            player.buildmodeFired = true
             // No longer in buildmode
             if(player.buildmode) {
                 player.buildmode = false
@@ -17,7 +18,9 @@ $(function() {
             }
         }
     })
-
+    $('body').on('keyup', (event) => {
+        player.buildmodeFired = false
+    })
     // Build when click and in buildmode
     $('#canvas').on('mousedown', function(event) {
         if(player.buildmode) build(player.building.list[player.building.selected], {x: player.selectedGrid.x + Number(player.pos.x.toString().split('.')[0]), y: player.selectedGrid.y + Number(player.pos.y.toString().split('.')[0])})
@@ -81,6 +84,11 @@ function build(type, pos) {
             break
         case('barbedwire'):
             building.collision = false                      
-            break    
-    }    socket.emit('BUILD_DATA', { id: `${pos.x},${pos.y}`, type: 'add', building: building })
+            break
+        case('bulldozer'):
+            socket.emit('BUILD_DATA',{id: `${pos.x},${pos.y}`, type: 'remove'})
+            return
+            break
+    }    
+    socket.emit('BUILD_DATA', { id: `${pos.x},${pos.y}`, type: 'add', building: building })
 }
