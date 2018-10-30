@@ -99,22 +99,20 @@ function tick(world) {
 
         // move world.players
         let collidingBuildings = world.getCollidingBuildings(player.pos.x, player.pos.y)
-
-        //console.log(collidingBuildings)
+        
         if(collidingBuildings.length != 0) {
-          let buildX = collidingBuildings[0].x
-          let buildY = collidingBuildings[0].y
+          
+          let buildX = collidingBuildings[0].pos.x
+          let buildY = collidingBuildings[0].pos.y
           let halfRect = 0.5
           let distX = player.pos.x - buildX-halfRect
           let distY = player.pos.y - buildY-halfRect
 
           
 
-        
           
           if(Math.abs(distX) > Math.abs(distY)) {
             
-
 
             if(distX < 0) {
               player.pos.x -= 0.1
@@ -135,10 +133,111 @@ function tick(world) {
         }
 
 
-        if(player.moving.north) {
+        //Sliding off edges
+        collidingBuildings = world.getCollidingBuildings(player.pos.x, player.pos.y-0.05)
+        
+        if(player.moving.north && collidingBuildings.length==1) {
+
+          let buildX = collidingBuildings[0].pos.x
+          let buildY = collidingBuildings[0].pos.y
+          let halfRect = 0.5
+          let radius = 0.9/2
+          let distX = Math.abs(player.pos.x - buildX-halfRect)
+          let distY = Math.abs(player.pos.y-0.05 - buildY-halfRect)
+
+          let dx = distX-halfRect
+          let dy = distY-halfRect
+
+          let xOffset = buildX-player.pos.x
+          if (dx*dx+dy*dy<=(radius*radius)) {
+            if(xOffset > 0) player.pos.x -= playerSpeed
+            if(xOffset < -1) player.pos.x += playerSpeed
+          }
           
         }
+
+        collidingBuildings = world.getCollidingBuildings(player.pos.x, player.pos.y+0.05)
         
+        if(player.moving.south && collidingBuildings.length==1) {
+          let buildX = collidingBuildings[0].pos.x
+          let buildY = collidingBuildings[0].pos.y
+          let halfRect = 0.5
+          let radius = 0.9/2
+          let distX = Math.abs(player.pos.x - buildX-halfRect)
+          let distY = Math.abs(player.pos.y+0.05 - buildY-halfRect)
+
+          let dx = distX-halfRect
+          let dy = distY-halfRect
+
+          let xOffset = buildX-player.pos.x
+          if (dx*dx+dy*dy<=(radius*radius)) {
+            if(xOffset > 0) player.pos.x -= playerSpeed
+            if(xOffset < -1) player.pos.x += playerSpeed
+          }
+        }
+
+        collidingBuildings = world.getCollidingBuildings(player.pos.x, player.pos.y+0.05)
+        
+        if(player.moving.south && collidingBuildings.length==1) {
+          let buildX = collidingBuildings[0].pos.x
+          let buildY = collidingBuildings[0].pos.y
+          let halfRect = 0.5
+          let radius = 0.9/2
+          let distX = Math.abs(player.pos.x - buildX-halfRect)
+          let distY = Math.abs(player.pos.y+0.05 - buildY-halfRect)
+
+          let dx = distX-halfRect
+          let dy = distY-halfRect
+
+          let xOffset = buildX-player.pos.x
+          if (dx*dx+dy*dy<=(radius*radius)) {
+            if(xOffset > 0) player.pos.x -= playerSpeed
+            if(xOffset < -1) player.pos.x += playerSpeed
+          }
+        }
+
+        collidingBuildings = world.getCollidingBuildings(player.pos.x+0.05, player.pos.y)
+        
+        if(player.moving.east && collidingBuildings.length==1) {
+          let buildX = collidingBuildings[0].pos.x
+          let buildY = collidingBuildings[0].pos.y
+          let halfRect = 0.5
+          let radius = 0.9/2
+          let distX = Math.abs(player.pos.x+0.05 - buildX-halfRect)
+          let distY = Math.abs(player.pos.y - buildY-halfRect)
+
+          let dx = distX-halfRect
+          let dy = distY-halfRect
+
+          let yOffset = buildY-player.pos.y
+          if (dx*dx+dy*dy<=(radius*radius)) {
+            if(yOffset > 0) player.pos.y -= playerSpeed
+            if(yOffset < -1) player.pos.y += playerSpeed
+          }
+        }
+
+        collidingBuildings = world.getCollidingBuildings(player.pos.x-0.05, player.pos.y)
+        
+        if(player.moving.west && collidingBuildings.length==1) {
+          let buildX = collidingBuildings[0].pos.x
+          let buildY = collidingBuildings[0].pos.y
+          let halfRect = 0.5
+          let radius = 0.9/2
+          let distX = Math.abs(player.pos.x-0.05 - buildX-halfRect)
+          let distY = Math.abs(player.pos.y - buildY-halfRect)
+
+          let dx = distX-halfRect
+          let dy = distY-halfRect
+
+          let yOffset = buildY-player.pos.y
+          if (dx*dx+dy*dy<=(radius*radius)) {
+            if(yOffset > 0) player.pos.y -= playerSpeed
+            if(yOffset < -1) player.pos.y += playerSpeed
+          }
+        }
+        
+
+        //Collision checking and moving
         if(player.moving.north && world.moveAllowed(player, 'north') && player.spawning <= 0) player.pos.y -= Number(playerSpeed)
         if(player.moving.east && world.moveAllowed(player, 'east') && player.spawning <= 0) player.pos.x += Number(playerSpeed)
         if(player.moving.south && world.moveAllowed(player, 'south') && player.spawning <= 0) player.pos.y += Number(playerSpeed)
@@ -212,3 +311,5 @@ function tick(world) {
 
   
 module.exports = tick
+
+

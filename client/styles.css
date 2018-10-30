@@ -88,6 +88,7 @@ body {
 }
 #HUD {
     z-index: 2;
+    user-select: none;
 }
 #nameInput {
   position: relative;
@@ -284,6 +285,12 @@ body {
 
 
 /*==========TOOLTIP===========*/
+.tooltip {
+    position: absolute;
+    display: inline-block;
+	border-bottom: 1px dotted black;
+}
+
 .tooltip .tooltiptext {
     visibility: hidden;
     width: 120px;
@@ -294,7 +301,7 @@ body {
     padding: 5px 0;
     position: absolute;
     z-index: 1;
-    bottom: 125%;
+    bottom: 100%;
     left: 50%;
     margin-left: -60px;
     opacity: 0;
@@ -311,6 +318,7 @@ body {
     border-style: solid;
     border-color: #555 transparent transparent transparent;
 }
+
 .tooltip:hover .tooltiptext {
     visibility: visible;
     opacity: 1;

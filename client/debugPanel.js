@@ -53,7 +53,7 @@ $(function() {
         player.admin = false
       }
     }
-    if(event.keyCode == 119) {
+    if(event.keyCode == 113) {
       toggleDebugPanel()
     }
   })

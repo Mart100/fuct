@@ -267,8 +267,12 @@ const draw = {
   selectedGrid() {
     ctx.beginPath()
     ctx.lineWidth = 10
-    if(buildings[`${player.selectedGrid.x+Number(player.pos.x.toString().split('.')[0])},${player.selectedGrid.y+Number(player.pos.y.toString().split('.')[0])}`] == undefined) ctx.strokeStyle = "#4dd130"
-    else ctx.strokeStyle = "#bc0909"
+    if(buildings[`${player.selectedGrid.x+Number(player.pos.x.toString().split('.')[0])},${player.selectedGrid.y+Number(player.pos.y.toString().split('.')[0])}`] != undefined 
+    || 4 < getDistanceBetween({x: player.selectedGrid.x+0.5-player.offset.x(), y: player.selectedGrid.y+0.5-player.offset.y()}, {x: 0, y: 0}))
+    {
+        ctx.strokeStyle = "#bc0909"
+    }
+    else ctx.strokeStyle = "#4dd130"
     ctx.rect(canvas.width/2 + (player.selectedGrid.x-player.offset.x())*player.zoom, canvas.height/2 + (player.selectedGrid.y-player.offset.y())*player.zoom, player.zoom, player.zoom)
     ctx.globalAlpha = 0.5
     let image = images[player.building.list[player.building.selected]]
@@ -281,8 +285,8 @@ const draw = {
     // loop trough players
     for(let id in players) {
       let playerL = players[id]
-      for(let item in players[id].hotbar.items) {
-        if(playerL.hotbar.items[item].slot == playerL.hotbar.selected) {
+      for(let item in players[id].hotbar.list) {
+        if(playerL.hotbar.list[item].slot == playerL.hotbar.selected) {
           let image = images[item]
           ctx.drawImage(image, canvas.width/2 + (playerL.pos.x - player.pos.x)*player.zoom, canvas.height/2 + (playerL.pos.y - player.pos.y)*player.zoom, player.zoom, player.zoom)
         }
