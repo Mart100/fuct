@@ -1,5 +1,5 @@
 const tick = require('./tick.js')
-const SocketHandler = require('./SocketHandler.js')
+const SocketHandler = require('./socketHandler.js')
 
 class World {
     constructor(id) {
@@ -41,11 +41,12 @@ class World {
             list: {
                 sword: {
                     level: 1,
-                    slot: 1
+                    slot: 0,
+                    range: 3
                 },
                 pickaxe: {
-                    leve: 1,
-                    slot: 2
+                    level: 1,
+                    slot: 1
                 }
             }
         },

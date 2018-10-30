@@ -18,6 +18,7 @@
     <script src="tick.js"></script>
     <script src="alert.js"></script>
     <script src="input.js"></script>
+    <script src="toolUse.js"></script>
 
 
   </head>
@@ -30,37 +31,37 @@
     <div id="backgroundOpacity"></div>
     <div id="HUD">
       <div id="HUD-building">
-        <div class="HUD-buildSlot" id="HUD-buildSlot0"><img src="https://gyazo.com/1a00b3743418fed8114658f0ba4a1680.png"/></div>
-        <div class="HUD-buildSlot" id="HUD-buildSlot1"><img src="https://cdn.discordapp.com/attachments/235452993741389824/424195191700848640/miner.png"/></div>
-        <div class="HUD-buildSlot" id="HUD-buildSlot2"><img src="https://gyazo.com/59b952c61fa11c9ecc4fddb85a205d0d.png"/></div>
-        <div class="HUD-buildSlot" id="HUD-buildSlot3"><img src="https://gyazo.com/61d228d16c3329ceaa94a62d1b444731.png"/></div>
-        <div class="HUD-buildSlot" id="HUD-buildSlot4"><img src="https://gyazo.com/fa0d5557050c833a441e3d3e6aedecb1.png"/></div>
-        <div class="HUD-buildSlot" id="HUD-buildSlot5"><img src="https://i.imgur.com/02GiBFH.png"/></div>
-        <div class="HUD-buildSlot" id="HUD-buildSlot6"><img src="https://gyazo.com/3b9acfb270e46946247dfcd1e766f659.png"/></div>
-        <div class="HUD-buildSlot" id="HUD-buildSlot7"><img src="https://gyazo.com/3b9acfb270e46946247dfcd1e766f659.png"/></div>
-        <div class="HUD-buildSlot" id="HUD-buildSlot8"><img src="https://gyazo.com/3b9acfb270e46946247dfcd1e766f659.png"/></div>
-        <div class="HUD-buildSlot" id="HUD-buildSlot9"><img src="https://i.imgur.com/TuERcOY.png"/></div>
+        <div class="HUD-buildSlot" id="HUD-buildSlot0"><img src=""/></div>
+        <div class="HUD-buildSlot" id="HUD-buildSlot1"><img src=""/></div>
+        <div class="HUD-buildSlot" id="HUD-buildSlot2"><img src=""/></div>
+        <div class="HUD-buildSlot" id="HUD-buildSlot3"><img src=""/></div>
+        <div class="HUD-buildSlot" id="HUD-buildSlot4"><img src=""/></div>
+        <div class="HUD-buildSlot" id="HUD-buildSlot5"><img src=""/></div>
+        <div class="HUD-buildSlot" id="HUD-buildSlot6"><img src=""/></div>
+        <div class="HUD-buildSlot" id="HUD-buildSlot7"><img src=""/></div>
+        <div class="HUD-buildSlot" id="HUD-buildSlot8"><img src=""/></div>
+        <div class="HUD-buildSlot" id="HUD-buildSlot9"><img src=""/></div>
       </div>
       <div id="HUD-hotbar">
-        <div class="HUD-hotbarSlot" id="HUD-hotbarSlot1"><img src="https://gyazo.com/1a00b3743418fed8114658f0ba4a1680.png"/></div>
-        <div class="HUD-hotbarSlot" id="HUD-hotbarSlot2"><img src="https://gyazo.com/3b9acfb270e46946247dfcd1e766f659.png"/></div>
-        <div class="HUD-hotbarSlot" id="HUD-hotbarSlot3"><img src="https://gyazo.com/59b952c61fa11c9ecc4fddb85a205d0d.png"/></div>
-        <div class="HUD-hotbarSlot" id="HUD-hotbarSlot4"><img src="https://gyazo.com/61d228d16c3329ceaa94a62d1b444731.png"/></div>
-        <div class="HUD-hotbarSlot" id="HUD-hotbarSlot5"><img src="https://gyazo.com/fa0d5557050c833a441e3d3e6aedecb1.png"/></div>
-        <div class="HUD-hotbarSlot" id="HUD-hotbarSlot6"><img src="https://gyazo.com/3b9acfb270e46946247dfcd1e766f659.png"/></div>
-        <div class="HUD-hotbarSlot" id="HUD-hotbarSlot7"><img src="https://gyazo.com/3b9acfb270e46946247dfcd1e766f659.png"/></div>
-        <div class="HUD-hotbarSlot" id="HUD-hotbarSlot8"><img src="https://gyazo.com/3b9acfb270e46946247dfcd1e766f659.png"/></div>
-        <div class="HUD-hotbarSlot" id="HUD-hotbarSlot9"><img src="https://gyazo.com/3b9acfb270e46946247dfcd1e766f659.png"/></div>
-        <div class="HUD-hotbarSlot" id="HUD-hotbarSlot0"><img src="https://gyazo.com/3b9acfb270e46946247dfcd1e766f659.png"/></div>
+        <div class="HUD-hotbarSlot" id="HUD-hotbarSlot0"><img src=""/></div>
+        <div class="HUD-hotbarSlot" id="HUD-hotbarSlot1"><img src=""/></div>
+        <div class="HUD-hotbarSlot" id="HUD-hotbarSlot2"><img src=""/></div>
+        <div class="HUD-hotbarSlot" id="HUD-hotbarSlot3"><img src=""/></div>
+        <div class="HUD-hotbarSlot" id="HUD-hotbarSlot4"><img src=""/></div>
+        <div class="HUD-hotbarSlot" id="HUD-hotbarSlot5"><img src=""/></div>
+        <div class="HUD-hotbarSlot" id="HUD-hotbarSlot6"><img src=""/></div>
+        <div class="HUD-hotbarSlot" id="HUD-hotbarSlot7"><img src=""/></div>
+        <div class="HUD-hotbarSlot" id="HUD-hotbarSlot8"><img src=""/></div>
+        <div class="HUD-hotbarSlot" id="HUD-hotbarSlot9"><img src=""/></div>
       </div>
       <div id="HUD-shopCont" style="display: none;">
         <div id="HUD-shopNav">
           <div id="HUD-shopNavTools">Tools</div>
           <div id="HUD-shopNavBuildings">Buildings</div>
-        <div id="HUD-shopList1" class="tooltip, HUD-shopList"><img src="https://gyazo.com/3b9acfb270e46946247dfcd1e766f659.png"/><span class="tooltiptext">Yeeting</span></div>
-        <div id="HUD-shopList2" class="tooltip, HUD-shopList"></div>
-        <div id="HUD-shopList3" class="tooltip, HUD-shopList"></div>
-        <div id="HUD-shopList4" class="tooltip, HUD-shopList"></div>
+          <div id="HUD-shopList1" class="HUD-shopList tooltip"><img src="https://gyazo.com/3b9acfb270e46946247dfcd1e766f659.png"/><span class="tooltiptext">Yeet</span></div>
+          <div id="HUD-shopList2" class="tooltip HUD-shopList"></div>
+          <div id="HUD-shopList3" class="tooltip HUD-shopList"></div>
+          <div id="HUD-shopList4" class="tooltip HUD-shopList"></div>
         </div>
       </div>
       <div id="HUD-spawning" style="display: none;">spawning in:<br><span>5</span></div>

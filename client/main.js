@@ -71,16 +71,20 @@ $(function() {
     else player.username = 'Guest-'+Math.round(Math.random()*1000)
 
     // request world
-    let requestWorld = 'oof'
-    socket.emit('requestWorld', { username: player.username, world: requestWorld }, function(data) {
-        if(data == 'SUCCESS') {
-            player.world = requestWorld
+    //let requestWorld = 'oof'
+    socket.emit('requestWorld', player.username , function(err, id) {
+        if(err == null) {
+            player.world = id
             setTimeout(() => { joinedWorld() }, 100)
         } else {
-            console.log('Error trying to request server: '+data)
-            if(data == 'USERNAME_TOO_LONG') {
-                alert({color: 'red', text: `Username Too Long!`})
-            }
+            console.log('Error trying to request server: '+id)
+            alert({color: 'red', text: err})
+            // if(err == 'USERNAME_TOO_LONG') {
+            //     alert({color: 'red', text: `Username Too Long!`})
+            // }
+            // if(err == 'WORLD_UNDEFINED') {
+            //     alert({color: 'red', text: `Username Too Long!`})
+            // }
         }
     })
 
@@ -99,12 +103,33 @@ $(function() {
 
 })
 function joinedWorld() {
+
+    history.replaceState(player.world, '', `/${player.world}/`)    
+
+
+
     $("#playScreen").hide()
     $('#backgroundOpacity').animate({'opacity': '0'}, 500, () => $('#backgroundOpacity').remove())
-    // Hotbar stuff
-    for(let i = 0; i < 11; i++) {
-        $('#HUD-hotbarSlot'+i+' > img').attr('src', 'https://upload.wikimedia.org/wikipedia/commons/5/54/Blank_Canvas_on_Transparent_Background.png')
+    // buildBar stuff
+    for(let i = 0; i < 10; i++) {
+        $('#HUD-buildSlot'+i+' > img').attr('src', 'https://i.imgur.com/GyZRyx1.png')
         // loop trough items in player.hotbar
-        for(item in player.hotbar.list) if(player.hotbar.selected == i) $('#HUD-hotbarSlot'+i+' > img').attr('src', images[item].src)
+        if(images[player.building.list[i]] == undefined) $('#HUD-buildSlot'+i+' > img').attr('src', 'https://i.imgur.com/GyZRyx1.png')
+        else $('#HUD-buildSlot'+i+' > img').attr('src', images[player.building.list[i]].src)
+    }
+    updateHotbarImages()
+}
+function getDistanceBetween(a, b) {
+    var c = a.x - b.x
+    var d = a.y - b.y
+    var result = Math.sqrt( c*c + d*d )
+    return result
+}
+
+function updateHotbarImages() {
+    // hotbar stuff
+    for(let i in player.hotbar.list) {
+        // loop trough items in player.hotbar
+        $('#HUD-hotbarSlot'+player.hotbar.list[i].slot+' > img').attr('src', images[i].src)
     }
 }

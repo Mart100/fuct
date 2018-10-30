@@ -14,11 +14,14 @@ var app = express();
 // require scripts
 const World = require('./scripts/world.js')
 worlds['oof'] = new World('oof')
-app.use(express.static('client'));
+worlds['aids'] = new World('aids')
+app.use('/', express.static('client'));
 
-app.get("/", function (request, response) {
-  response.sendFile(__dirname + '/client/index.html');
-})
+app.use('/:id', express.static('client'))
+
+// app.get("/:id:", function (request, response) {
+//   response.sendFile(__dirname + '/client/index.html');
+// })
 
 setInterval(() => {
     for(let num in worlds) {
@@ -34,13 +37,14 @@ var server = app.listen(3000, function () {
 var io = Socket(server)
 
 io.on('connection', function(socket) {
-
-  socket.on('requestWorld', function(data, callback) {
-    console.log(`Player ${data.username} tries to join world `+data.world)
-    if(data.username.length > 15) return callback('USERNAME_TOO_LONG')
-    if(data.world == undefined) return callback('WORLD_UNDEFINED')
-    worlds[data.world].addPlayer(socket, data.username)
-    callback('SUCCESS')
+  let gameID = socket.handshake.headers.referer.split('/')[3]
+  if(gameID == '') gameID = worlds[Object.keys(worlds)[Math.floor(Math.random()*Object.keys(worlds).length)]].id
+  socket.on('requestWorld', function(username, callback) {
+    console.log(`Player ${username} tries to join world `+gameID)
+    if(username.length > 20) return callback('USERNAME_TOO_LONG', gameID)
+    if(worlds[gameID] == undefined) return callback('WORLD_UNDEFINED', gameID)
+    worlds[gameID].addPlayer(socket, username)
+    callback(null, gameID)
   })
 
   console.log('made connection:', socket.id)

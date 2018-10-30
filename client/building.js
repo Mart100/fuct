@@ -44,6 +44,8 @@ $(function() {
 
 // Function when building
 function build(type, pos) {
+    // go away if out of range
+    if(4 < getDistanceBetween({x: pos.x+0.5, y: pos.y+0.5}, player.pos)) return
     let building = {
         'type': type,
         'owner': socket.id,
@@ -86,7 +88,7 @@ function build(type, pos) {
             building.collision = false                      
             break
         case('bulldozer'):
-            socket.emit('BUILD_DATA',{id: `${pos.x},${pos.y}`, type: 'remove'})
+            socket.emit('BUILD_DATA',{id: `${pos.x},${pos.y}`, type: 'remove', building: building})
             return
             break
     }    

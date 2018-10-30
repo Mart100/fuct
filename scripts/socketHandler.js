@@ -12,7 +12,6 @@ class SocketHandler {
         socket.on('chat', (data) => this.chatMessage(data, socket))
         socket.on('PLAYER_DATA', data => this.playerData(data, socket))
         socket.on('BUILD_DATA', data => this.buildData(data, socket))
-        socket.on('REQUEST_DESTROY_CORE', data => this.requestDestroyCore(data, socket))
         socket.on('disconnect', data => this.onDisconnect(data, socket))
         let world = this.world
 
@@ -31,38 +30,29 @@ class SocketHandler {
         // remove player
         delete this.players[socket.id]
     }
-    requestDestroyCore(data, socket) {
-        let player = this.players[socket.id]
-        let building = data
-        // if building is in range and not himself
-        if(4 > getDistanceBetween(building.pos, player.pos) && building.owner != socket.id) {
-            socket.emit('alert', {id: player.id, color: 'green', text: `You destroyed ${this.players[building.owner].username}'s core!`})
-            socket.emit('alert', {id: building.owner, color: 'red', text: `${player.username} destroyed your core!`})
-            delete this.buildings[building.pos.x+','+building.pos.y]
-        }
-    }
     playerData(data, socket) {
+        let player = this.players[socket.id]
         switch(data.type) {
-            case('movement'):
-                this.players[socket.id].moving[data.direction] = data.isDown
+            case('movement'): {
+                player.moving[data.direction] = data.isDown
                 break
-            case('hotbar'):
-                this.players[socket.id].hotbar = data.player
+            }
+            case('damage'): {
+                console.log('yeet')
+                // if out of range Return
+                if(player.hotbar.list['sword'].range < this.getDistanceBetween(player.pos, this.players[data.target].pos)) return
+
+                this.players[data.target].health -= 5+(player.hotbar.list['sword'].level*2)
                 break
-            case('damagePlayer'):
-                this.players[socket.id].health -= data.player
+            }
+            case('buildSelected'): {
+                player.building.selected = data.selected
                 break
-            case('buildSelected'):
-                this.players[socket.id].building.selected = data.selected
+            }
+            case('hotbarSelected'): {
+                player.hotbar.selected = data.selected
                 break
-            case('removeplayer'):
-                delete players[socket.id]
-                // Remove buildings
-                for(name in buildings) if(buildings[name].owner == data.id) delete buildings[name]
-                break
-            default:
-                if(data.type == 'admin') return
-                players[data.id][data.type] = data.player
+            }
         }
     }
     chatMessage(data, socket) {
@@ -131,7 +121,9 @@ class SocketHandler {
         
     }
     buildData(data, socket) {
-        if(4 < getDistanceBetween(data.building.pos, players[socket.id].pos)) return
+        if(4 < this.getDistanceBetween({x: data.building.pos.x+0.5, y: data.building.pos.y+0.5}, this.players[socket.id].pos)) return
+        let building = this.buildings[`${data.building.pos.x},${data.building.pos.y}`]
+        let player = this.players[socket.id]
         switch(data.type) {
             case('add'): {
                 //if building already exists return
@@ -166,26 +158,36 @@ class SocketHandler {
                 break;
             }
             case('remove'):
-                let building = this.buildings[data.id]
                 if(building == undefined) return
+
+                let bPosX = data.building.pos.x
+                let bPosY = data.building.pos.y
                 // other stuff depends on building
                 switch(building.type) {
-                    case('wall'):
-                        if(this.buildings[`${building.pos.x-1},${building.pos.y}`] != undefined) this.buildings[`${building.pos.x-1},${building.pos.y}`].sides.E = false
-                        if(this.buildings[`${building.pos.x+1},${building.pos.y}`] != undefined) this.buildings[`${building.pos.x+1},${building.pos.y}`].sides.W = false
-                        if(this.buildings[`${building.pos.x},${building.pos.y-1}`] != undefined) this.buildings[`${building.pos.x},${building.pos.y-1}`].sides.S = false
-                        if(this.buildings[`${building.pos.x},${building.pos.y+1}`] != undefined) this.buildings[`${building.pos.x},${building.pos.y+1}`].sides.N = false
-                    break
+                    case('wall'): {
+                        if(this.buildings[`${bPosX-1},${bPosY}`] != undefined && this.buildings[`${bPosX-1},${bPosY}`].sides != undefined) this.buildings[`${bPosX-1},${bPosY}`].sides.E = false
+                        if(this.buildings[`${bPosX+1},${bPosY}`] != undefined && this.buildings[`${bPosX+1},${bPosY}`].sides != undefined) this.buildings[`${bPosX+1},${bPosY}`].sides.W = false
+                        if(this.buildings[`${bPosX},${bPosY-1}`] != undefined && this.buildings[`${bPosX},${bPosY-1}`].sides != undefined) this.buildings[`${bPosX},${bPosY-1}`].sides.S = false
+                        if(this.buildings[`${bPosX},${bPosY+1}`] != undefined && this.buildings[`${bPosX},${bPosY+1}`].sides != undefined) this.buildings[`${bPosX},${bPosY+1}`].sides.N = false
+                        break
+                    }
+                    case('core'): {
+                        socket.emit('alert', {id: player.id, color: 'green', text: `You destroyed ${this.players[building.owner].username}'s core!`})
+                        socket.emit('alert', {id: building.owner, color: 'red', text: `${player.username} destroyed your core!`})
+                        break
+                    }
                 }
                 // then delete building
-                delete this.buildings[data.id]
+                delete this.buildings[`${bPosX},${bPosY}`]
                 break
             case('damage'):
                 // if undefined building. return
-                if(buildings[data.id] == undefined) return
-                buildings[data.id].health -= data.data
+                if(building == undefined) return
+                building.health -= 5+(player.hotbar.list['pickaxe'].level*2)
                 // show health of building
-                buildings[data.id].showhealth = 10
+                building.showhealth = 10
+                // if buiding health is 0 remove building
+                if(building.health <= 0) this.buildData({building: building, type: 'remove'}, socket)
                 break
             default:
             console.log('received unkown type request via socket "buildings": '+data.type+' data: '+data.data+' for building: '+data.id)
