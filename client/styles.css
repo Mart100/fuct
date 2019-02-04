@@ -108,6 +108,9 @@ body {
 #nameInput:focus {
     outline: none;
 }
+
+
+/*=======BUILDBAR=======*/
 #HUD-building {
   position: absolute;
   height: 70px;
@@ -124,8 +127,7 @@ body {
   position: relative;
   height: 60px;
   width: 60px;
-  opacity: 0.6;
-  background-color: black;
+  background-color: rgba(0, 0, 0, 0.6);
   border-radius: 5px;
   display: none;
   margin: 5px;
@@ -137,6 +139,14 @@ body {
   width: 50px;
   margin: 5px;
   cursor: pointer;
+}
+.HUD-buildSlot span {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    color: white;
+    background-color: rgba(100, 0, 0, 1);
+    border-radius: 2px;
 }
 #HUD-hotbar {
   position: absolute;
@@ -187,80 +197,6 @@ body {
   font-weight: bold;
   font-size: 150%;
 }
-/*=======SHOP=======*/
-#HUD-shopCont {
-  position: absolute;
-  height: 50%;
-  width: 50%;
-  background-color: rgba(0, 0, 0, 0.7);
-  border-radius: 5px;
-  user-select: none;
-}
-.HUD-shopList {
-    float: left;
-    width: 120px;
-    height: 120px; 
-    margin: 20px;
-    background-color: rgba(0, 0, 0, 0.192);
-    border-radius: 5px;
-}
-.HUD-shopList img {
-    margin: 10px;
-    border-radius: 2px;
-    width: 100px;
-    height: 100px;
-}
-
-/*#HUD-shopList1 {
-  position: absolute;
-  top: 75px;
-  width: 120px;
-  height: 120px; 
-  left: 25px;
-  background-color: rgba(0, 0, 0, 0.192);
-  border-radius: 5px;
-}
-#HUD-shopList2 {
-  position: absolute;
-  top: 75px;
-  width: 120px;
-  height: 120px; 
-  left: 170px; 
-  background-color: rgba(0, 0, 0, 0.192);
-  border-radius: 5px;
-  color: white;
-}*/
-
-#HUD-shopNavBuildings {
-  position: relative;
-  top: 0px;
-  height: 30px;
-  padding: 10px 0px;
-  width: 50%;
-  background-color: rgba(0, 0, 0, 0.4);
-  float: right;
-  color: white;
-  font-size: 30px;
-  cursor: pointer;
-  text-align: center;
-  border-radius: 0px 5px 0px 0px;
-}
-#HUD-shopNavBuildings:hover { background-color: rgba(0, 0, 0, 1); }
-#HUD-shopNavTools {
-  position: relative;
-  top: 0px;
-  height: 30px;
-  padding: 10px 0px;
-  width: 50%;
-  background-color: rgba(0, 0, 0, 0.4);
-  float: left;
-  color: white;
-  font-size: 30px;
-  cursor: pointer;
-  text-align: center;
-  border-radius: 5px 0px 0px 0px;
-}
-#HUD-shopNavTools:hover { background-color: rgba(0, 0, 0, 1); }
 
 #HUD-spawning {
     position: absolute;
@@ -322,4 +258,19 @@ body {
 .tooltip:hover .tooltiptext {
     visibility: visible;
     opacity: 1;
+}
+/*=========HUD-INFO==========*/
+#HUD-info {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-size: 20px;
+    top: 0px;
+    right: 0px;
+    width: 100px;
+    height: 50px;
+    border-radius: 0px 0px 0px 4px;
+    padding: 10px;
+    text-align: center;
+    user-select: none;
 }

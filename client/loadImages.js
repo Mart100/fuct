@@ -8,12 +8,12 @@ function loadImages() {
     //TurretBase
     images.turretbase = new Image()
     images.turretbase.src = 'https://gyazo.com/7f99973f668f6093144d934082470ec9.png'
+    //TurretBarrel
+    images.turretbarrel = new Image()
+    images.turretbarrel.src = 'https://gyazo.com/2ae959689e510e4b7f536e851f1520c4.png'
     //Turret
     images.turret = new Image()
-    images.turret.src = 'https://gyazo.com/2ae959689e510e4b7f536e851f1520c4.png'
-    //TurretIcon
-    images.turreticon = new Image()
-    images.turreticon.src = 'https://gyazo.com/59b952c61fa11c9ecc4fddb85a205d0d.png'
+    images.turret.src = 'https://gyazo.com/59b952c61fa11c9ecc4fddb85a205d0d.png'
     //landmine
     images.landmine = new Image()
     images.landmine.src = 'https://gyazo.com/61d228d16c3329ceaa94a62d1b444731.png'
@@ -70,7 +70,10 @@ function loadImages() {
       if(i == 18) images.explosion[i].src = 'https://firebasestorage.googleapis.com/v0/b/fuct-db468.appspot.com/o/buildings%2Flandmine%2Fexplosion%2F18.png?alt=media&token=d38cfc50-8605-49ea-9cc2-58b905f1507b'
       if(i == 19) images.explosion[i].src = 'https://firebasestorage.googleapis.com/v0/b/fuct-db468.appspot.com/o/buildings%2Flandmine%2Fexplosion%2F19.png?alt=media&token=af71be65-46de-43bb-8e67-3d75a23a8bb4'
     }
-    //mine
+    //miner
     images.miner = new Image()
     images.miner.src = 'https://cdn.discordapp.com/attachments/235452993741389824/424195191700848640/miner.png'
+    // empty
+    images.empty = new Image()
+    images.empty.src = 'https://i.imgur.com/GyZRyx1.png'
   }

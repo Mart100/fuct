@@ -1,0 +1,48 @@
+#HUD-shop {
+    position: absolute;
+    height: 50%;
+    width: 50%;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 5px;
+    user-select: none;
+    display: none;
+}
+.HUD-shopList {
+    float: left;
+    width: 120px;
+    height: 120px; 
+    margin: 20px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
+.HUD-shopList:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+    cursor: pointer;
+}
+.HUD-shopList img {
+    margin: 10px;
+    border-radius: 2px;
+    width: 100px;
+    height: 100px;
+}
+#HUD-shopNavBuildings {
+    float: right;
+    border-radius: 0px 5px 0px 0px;
+}
+#HUD-shopNav div {
+    position: relative;
+    top: 0px;
+    height: 30px;
+    padding: 10px 0px;
+    width: 50%;
+    background-color: rgba(0, 0, 0, 0.4);
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+    text-align: center;
+}
+#HUD-shopNav div:hover { background-color: rgba(0, 0, 0, 1); }
+#HUD-shopNavTools {
+    float: left;
+    border-radius: 5px 0px 0px 0px;
+}

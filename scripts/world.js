@@ -19,6 +19,7 @@ class World {
 
       this.players[socket.id] = {
         id: socket.id,
+        coins: 50,
         pos: {
             x: Math.random()*5,
             y: Math.random()*5
@@ -33,8 +34,17 @@ class World {
         spawning: 0,
         speed: 0.05,
         building: {
-            selected: 1,
-            list: ['core', 'miner', 'turreticon', 'landmine', 'wall', 'barbedwire', 'spongebob', 'spongebob', 'spongebob', 'bulldozer']
+            selected: 'core',
+            list: {
+              core: { amount: 1 },
+              miner: { amount: 1 },
+              turret: { amount: 1 },
+              landmine: { amount: 0 },
+              wall: { amount: 10 },
+              barbedwire: { amount: 0 },
+              spongebob: { amount: 0 },
+              bulldozer: { amount: Infinity }
+            }
         },
         hotbar: {
             selected: 1,
@@ -60,75 +70,6 @@ class World {
         
 
     }
-    // collisionPlayer(player) {
-    //     var direction = {
-    //         N: false,
-    //         NE: false,
-    //         E: false,
-    //         ES: false,
-    //         S: false,
-    //         SW: false,
-    //         W: false,
-    //         WN: false
-    //     }
-    //     var offset = {}
-    //     offset.x = Number('0.' + player.pos.x.toString().split('.')[1])
-    //     offset.y = Number('0.' + player.pos.y.toString().split('.')[1])
-    //     var boundry1 = 0.69
-    //     var boundry2 = 0.31
-    //     if(player.pos.y < 0) {
-    //       if(offset.y > boundry1) direction.N = true
-    //       if(offset.y < boundry2) direction.S = true
-    //     } else {
-    //       if(offset.y < boundry1) direction.N = true
-    //       if(offset.y > boundry2) direction.S = true
-    //     }
-    //     if(player.pos.x < 0) {
-    //       if(offset.x < boundry2) direction.E = true
-    //       if(offset.x > boundry1) direction.W = true
-    //     } else {
-    //       if(offset.x > boundry1) direction.E = true
-    //       if(offset.x < boundry2) direction.W = true
-    //     }
-    //     if(direction.N && direction.E) direction.NE = true
-    //     if(direction.E && direction.S) direction.ES = true
-    //     if(direction.S && direction.W) direction.SW = true
-    //     if(direction.W && direction.N) direction.WN = true
-    //     for(let name in direction) {
-    //       switch(name) {
-    //         case('W'):
-    //           if(this.buildings[`${Math.round(player.pos.x)-1},${Math.floor(player.pos.y)}`] == undefined) direction.W = false
-    //           else if(!this.buildings[`${Math.round(player.pos.x)-1},${Math.floor(player.pos.y)}`].collision) direction.W = false
-    //         case('E'):
-    //           if(this.buildings[`${Math.round(player.pos.x)},${Math.floor(player.pos.y)}`] == undefined) direction.E = false
-    //           else if(!this.buildings[`${Math.round(player.pos.x)},${Math.floor(player.pos.y)}`].collision) direction.E = false
-    //         case('N'):
-    //           if(this.buildings[`${Math.floor(player.pos.x)},${Math.round(player.pos.y)-1}`] == undefined) direction.N = false
-    //           else if(!this.buildings[`${Math.floor(player.pos.x)},${Math.round(player.pos.y)-1}`].collision) direction.N = false
-    //         case('S'):
-    //           if(this.buildings[`${Math.floor(player.pos.x)},${Math.round(player.pos.y)}`] == undefined) direction.S = false
-    //           else if(!this.buildings[`${Math.floor(player.pos.x)},${Math.round(player.pos.y)}`].collision) direction.S = false
-    //         case('NE'):
-    //           if(this.buildings[`${Math.floor(player.pos.x)+1},${Math.floor(player.pos.y)-1}`] == undefined) direction.NE = false
-    //           else if(!this.buildings[`${Math.floor(player.pos.x)+1},${Math.floor(player.pos.y)-1}`].collision) direction.NE = false
-    //         case('ES'):
-    //           if(this.buildings[`${Math.floor(player.pos.x)+1},${Math.floor(player.pos.y)+1}`] == undefined) direction.ES = false
-    //           else if(!this.buildings[`${Math.floor(player.pos.x)+1},${Math.floor(player.pos.y)+1}`].collision) direction.ES = false
-    //         case('SW'):
-    //           if(this.buildings[`${Math.floor(player.pos.x)-1},${Math.floor(player.pos.y)+1}`] == undefined) direction.SW = false
-    //           else if(!this.buildings[`${Math.floor(player.pos.x)-1},${Math.floor(player.pos.y)+1}`].collision) direction.SW = false
-    //         case('WN'):
-    //           if(this.buildings[`${Math.floor(player.pos.x)-1},${Math.floor(player.pos.y)-1}`] == undefined) direction.WN = false
-    //           else if(!this.buildings[`${Math.floor(player.pos.x)-1},${Math.floor(player.pos.y)-1}`].collision) direction.WN = false
-    //       }
-    //     }
-    //     // if on building
-    //     if(this.buildings[Math.floor(player.pos.x)+','+Math.floor(player.pos.y)] != undefined) {
-    //       direction.N = true
-    //       if(this.buildings[Math.floor(player.pos.x)+','+Math.floor(player.pos.y)].type == 'landmine') direction.N = false
-    //     }
-    //     return direction
-    // }
     moveAllowed(player, direction) {
 
       let radius = 0.9/2

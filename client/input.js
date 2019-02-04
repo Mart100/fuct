@@ -1,8 +1,3 @@
-$(() => {
-    keyListener()
-    mouseListener()
-})
-
 
 function keyListener() {
     $(document).keyup(function(event) {
@@ -31,7 +26,6 @@ function keyListener() {
     })
     $(document).keypress(function(event) {
     
-
         if(!player.typing) {
             //get number pressed
             let slotID = event.originalEvent.key
@@ -42,25 +36,6 @@ function keyListener() {
     })
 }
 function mouseListener() {
-    $(document).on('click', () => {
-        // Position mouse is on
-        let mouseX = Math.floor(player.pos.x + player.selectedGrid.x)
-        let mouseY = Math.floor(player.pos.y + player.selectedGrid.y)
-
-        // building mouse is on
-        let building = buildings[mouseX+','+mouseY]
-
-        // If mouse is on building
-        if(building != undefined) {
-            // if mouse is on core
-            if(building.type == 'core') {
-                // if building is in range and not himself
-                if(4 > Math.abs(Math.abs(player.pos.x)+Math.abs(player.pos.y)-Math.abs(building.pos.x)+Math.abs(building.pos.y)) && building.owner != socket.id) {
-                    socket.emit('REQUEST_DESTROY_CORE', building)
-                }
-            }
-        }
-    })
     // Clicking on hotbar
   $('#HUD-hotbar').on('click', '*', (event) => {
     // Color selected hotbaring darker
