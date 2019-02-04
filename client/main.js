@@ -82,20 +82,13 @@ $(function() {
     else player.username = 'Guest-'+Math.round(Math.random()*1000)
 
     // request world
-    //let requestWorld = 'oof'
-    socket.emit('requestWorld', player.username , function(err, id) {
+    socket.emit('requestWorld', player.username , (err, id) => {
         if(err == null) {
             player.world = id
             setTimeout(() => { joinedWorld() }, 100)
         } else {
             console.log('Error trying to request server: '+id)
             alert({color: 'red', text: err})
-            // if(err == 'USERNAME_TOO_LONG') {
-            //     alert({color: 'red', text: `Username Too Long!`})
-            // }
-            // if(err == 'WORLD_UNDEFINED') {
-            //     alert({color: 'red', text: `Username Too Long!`})
-            // }
         }
     })
 
