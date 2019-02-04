@@ -14,7 +14,7 @@ var app = express();
 // require scripts
 const World = require('./scripts/world.js')
 worlds['oof'] = new World('oof')
-worlds['yeet'] = new World('aids')
+worlds['yeet'] = new World('yeet')
 app.use('/', express.static('client'));
 
 app.use('/:id', express.static('client'))
