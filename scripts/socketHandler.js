@@ -115,27 +115,87 @@ class SocketHandler {
                     if(!player.admin) return socket.emit('alert', {color: 'red', text: 'You dont have access to that command!'})
                     player.speed = Number(args[1])
                     break
-
+                case('oof'): {
+                    if(!player.admin) return socket.emit('alert', {color: 'red', text: 'You dont have access to that command!'})
+                    for(let x=-50;x<50;x++) {
+                        for(let y=-50;y<50;y++) {
+                            this.buildings[x+','+y] = {
+                                'type': 'barbedwire',
+                                'owner': socket.id,
+                                'pos': {
+                                    'x': x,
+                                    'y': y
+                                },
+                                'health': 1000,
+                                'maxHealth': 100,
+                                'collision': false,
+                                'showhealth': 0
+                            }
+                        }
+                    }
+                }
             }
         } else this.broadcast('chat', data)
         
     }
     buildData(data, socket) {
-        if(4 < this.getDistanceBetween({x: data.building.pos.x+0.5, y: data.building.pos.y+0.5}, this.players[socket.id].pos)) return
-        let building = this.buildings[`${data.building.pos.x},${data.building.pos.y}`]
+        if(4 < this.getDistanceBetween({x: data.pos.x+0.5, y: data.pos.y+0.5}, this.players[socket.id].pos)) return
+        let building = this.buildings[`${data.pos.x},${data.pos.y}`]
         let player = this.players[socket.id]
+        let bPosX = data.pos.x
+        let bPosY = data.pos.y
         switch(data.type) {
             case('add'): {
+                // if player does not have building return
+                if(player.building.list[data.typeBuilding].amount < 1) return socket.emit('alert', {id: socket.id, color: 'red', text: `You dont have enough of this building!`})
                 //if building already exists return
-                if(this.buildings[data.id] != undefined) return
-                this.buildings[data.id] = data.building
-                switch(data.building.type) {
-                    case('wall'):
-                        let bPosX = data.building.pos.x
-                        let bPosY = data.building.pos.y
-                        this.buildings[`${data.building.pos.x},${data.building.pos.y}`].sides = {N: false, E: false, S: false, W: false}
+                if(this.buildings[`${data.pos.x},${data.pos.y}`] != undefined && data.typeBuilding != 'bulldozer') return
+                // create building template
+                let building = {
+                    'type': data.typeBuilding,
+                    'owner': socket.id,
+                    'pos': {
+                    'x': data.pos.x,
+                    'y': data.pos.y
+                    },
+                    'health': 100,
+                    'maxHealth': 100,
+                    'collision': true,
+                    'showhealth': 0
+                }
+                // what type
+                switch(data.typeBuilding) {
+                    case('turret'): {
+                        building.bullets = {}
+                        building.bulletspeed = 2
+                        building.bulletdamage = 5
+                        building.reloadspeed = 50
+                        building.range = 10
+                        building.timer = 0
+                        break
+                    }
+                    case('landmine'): {
+                        building.collision = false
+                        building.exploding = 0
+                        break
+                    }
+                    case('core'): {
+                        // check if player already has core
+                        for(let id in this.buildings) {
+                            // continue if building is not a core
+                            if(this.buildings[id].type != 'core') continue
+                            // continue if building is not for the player
+                            if(this.buildings[id].owner != socket.id) continue
+                            // else player already has core. so return
+                            return socket.emit('alert', {id: socket.id, color: 'red', text: `You already placed your core!`})
+                        }
+                        socket.emit('alert', {color: 'white', text: `You placed your core!`})
+                        break
+                    }
+                    case('wall'): {
+                        building.sides = {N: false, E: false, S: false, W: false}
 
-                        let bSides = this.buildings[data.id].sides
+                        let bSides = building.sides
 
                         if(this.buildings[(bPosX)+','+(bPosY+1)] != undefined && this.buildings[(bPosX)+','+(bPosY+1)].sides != undefined) {
                             bSides.S = true
@@ -153,15 +213,29 @@ class SocketHandler {
                             bSides.W = true
                             this.buildings[(bPosX-1)+','+(bPosY)].sides.E = true
                         }
-                        break;
+                        break
+                    }
+                    case('barbedwire'): {
+                        building.collision = false                      
+                        break
+                    }
+                    case('bulldozer'): {
+                        this.buildData({pos: data.pos, type: 'remove'}, socket)
+                        return
+                        break
+                    }
+                    case('empty'): {
+                        return
+                        break
+                    }
                 }
+                this.buildings[`${data.pos.x},${data.pos.y}`] = building
+                player.building.list[building.type].amount--
                 break;
             }
             case('remove'):
                 if(building == undefined) return
 
-                let bPosX = data.building.pos.x
-                let bPosY = data.building.pos.y
                 // other stuff depends on building
                 switch(building.type) {
                     case('wall'): {
@@ -187,7 +261,7 @@ class SocketHandler {
                 // show health of building
                 building.showhealth = 10
                 // if buiding health is 0 remove building
-                if(building.health <= 0) this.buildData({building: building, type: 'remove'}, socket)
+                if(building.health <= 0) this.buildData({pos: building.pos, type: 'remove'}, socket)
                 break
             default:
             console.log('received unkown type request via socket "buildings": '+data.type+' data: '+data.data+' for building: '+data.id)

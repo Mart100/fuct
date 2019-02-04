@@ -1,10 +1,9 @@
 let ctx, canvas
 let ping = {pong: 0, ping: 0}
 let latestframe
-let players = {}
-let playersPos = {}
 let framecount = 0
 const images = {}
+let players = {}
 let buildings = {}
 // the player object
 let player = {
@@ -17,8 +16,12 @@ let player = {
         x: 0,
         y: 0
     },
+    placing: false,
+    placingInterval: false,
     buildmode: false,
     buildmodeFired: false,
+    inshop: false,
+    inshopFired: false,
     color: 'rgb(255, 0, 0)',
     offset: {
         x() {
@@ -33,33 +36,41 @@ let player = {
         }
     },
     selectedGrid: {
-    x: 0.01,
-    y: 0.01
+        x: 0.01,
+        y: 0.01
+    },
+    mouse: {
+        x: 0,
+        y: 0
     },
     zoom: 100,
 }
 
 $(function() {
-  canvas = document.getElementById('canvas')
-  ctx = canvas.getContext("2d")
-  // save ctx
-  // Set Canvas size
-  canvas.width = window.innerWidth
-  canvas.height = window.innerHeight
-  loadImages()
-  // load frame
-  frame()
-  setInterval(tick, 10)
-  // Update SelectedGrid
-  $(window).on('mousemove', function(event) {
-      if(player.pos == undefined) return
+    canvas = document.getElementById('canvas')
+    ctx = canvas.getContext("2d")
+    // save ctx
+    // Set Canvas size
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
+    loadImages()
+    // load frame
+    frame()
+    setInterval(tick, 10)
+    // Update SelectedGrid
+    setInterval(() => {
+        if(player.pos == undefined) return
 
-    let offsetX = player.offset.x()
-    let offsetY = player.offset.y()
+        let offsetX = player.offset.x()
+        let offsetY = player.offset.y()
 
-    player.selectedGrid.x = Math.floor((event.clientX - canvas.width/2 + offsetX * player.zoom) / player.zoom)
-    player.selectedGrid.y = Math.floor((event.clientY - canvas.height/2 + offsetY * player.zoom) / player.zoom)
-  })
+        player.selectedGrid.x = Math.floor((player.mouse.x - canvas.width/2 + offsetX * player.zoom) / player.zoom)
+        player.selectedGrid.y = Math.floor((player.mouse.y - canvas.height/2 + offsetY * player.zoom) / player.zoom)
+    }, 10)
+    $('body').on('mousemove', (event) => {
+        player.mouse.x = event.clientX
+        player.mouse.y = event.clientY
+    })
   // Zooming
   //window.addEventListener('scroll', function(e){
  //rame()
@@ -110,14 +121,10 @@ function joinedWorld() {
 
     $("#playScreen").hide()
     $('#backgroundOpacity').animate({'opacity': '0'}, 500, () => $('#backgroundOpacity').remove())
-    // buildBar stuff
-    for(let i = 0; i < 10; i++) {
-        $('#HUD-buildSlot'+i+' > img').attr('src', 'https://i.imgur.com/GyZRyx1.png')
-        // loop trough items in player.hotbar
-        if(images[player.building.list[i]] == undefined) $('#HUD-buildSlot'+i+' > img').attr('src', 'https://i.imgur.com/GyZRyx1.png')
-        else $('#HUD-buildSlot'+i+' > img').attr('src', images[player.building.list[i]].src)
-    }
     updateHotbarImages()
+    keyListener()
+    mouseListener()
+    updateBuildBar()
 }
 function getDistanceBetween(a, b) {
     var c = a.x - b.x
@@ -132,4 +139,7 @@ function updateHotbarImages() {
         // loop trough items in player.hotbar
         $('#HUD-hotbarSlot'+player.hotbar.list[i].slot+' > img').attr('src', images[i].src)
     }
+}
+function getKeyByIndex(object, index) {
+  return Object.keys(object)[index];
 }

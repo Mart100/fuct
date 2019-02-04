@@ -14,7 +14,7 @@ var app = express();
 // require scripts
 const World = require('./scripts/world.js')
 worlds['oof'] = new World('oof')
-worlds['aids'] = new World('aids')
+worlds['yeet'] = new World('aids')
 app.use('/', express.static('client'));
 
 app.use('/:id', express.static('client'))
@@ -68,3 +68,4 @@ io.on('connection', function(socket) {
   // // })
   
 })
+

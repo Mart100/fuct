@@ -19,78 +19,63 @@ $(function() {
         }
     })
     $('body').on('keyup', (event) => {
-        player.buildmodeFired = false
+        if(event.keyCode == 66) player.buildmodeFired = false
     })
     // Build when click and in buildmode
     $('#canvas').on('mousedown', function(event) {
-        if(player.buildmode) build(player.building.list[player.building.selected], {x: player.selectedGrid.x + Number(player.pos.x.toString().split('.')[0]), y: player.selectedGrid.y + Number(player.pos.y.toString().split('.')[0])})
+        if(!player.buildmode) return
+        build()
+        /*player.placingInterval = setInterval(() => {
+            build()
+        })*/
+    })
+    $('#canvas').on('mouseup', function(event) {
+        clearInterval(player.placingInterval)
     })
     // Clicking on builders taskbar
     $('#HUD-building').on('click', '*', (event) => {
-        $('.HUD-buildSlot').css('opacity', '0.6')
+        $('.HUD-buildSlot').css('background-color', 'rgba(0, 0, 0, 0.6)')
         // Color selected building darker
         // clicked image
-        if($(event.target).css('height') == '50px') {
-            $(event.target).parent().css('opacity', '0.8')
-            socket.emit('PLAYER_DATA', {type: 'buildSelected', selected: Number($(event.target).parent().attr('id').replace('HUD-buildSlot','')) })
-        }
-        // clicked background
-        else {
-            $(event.target).css('opacity', '0.8')
-            socket.emit('PLAYER_DATA', {type: 'buildSelected', selected: Number($(event.target).attr('id').replace('HUD-buildSlot','')) })
-        }
+        let slot
+
+        if($(event.target).css('height') == '60px') slot = $(event.target) // slot itself
+        else slot = $(event.target).parent() // amount text or image
+
+        socket.emit('PLAYER_DATA', {type: 'buildSelected', selected: getSelectedBuilding(slot.attr('id')) })
+        slot.css('background-color', 'rgba(0, 0, 0, 0.85)')
     })
 })
 
 // Function when building
-function build(type, pos) {
+function build() {
+    let pos = {
+        x: player.selectedGrid.x + Number(player.pos.x.toString().split('.')[0]), 
+        y: player.selectedGrid.y + Number(player.pos.y.toString().split('.')[0])
+    }
     // go away if out of range
     if(4 < getDistanceBetween({x: pos.x+0.5, y: pos.y+0.5}, player.pos)) return
-    let building = {
-        'type': type,
-        'owner': socket.id,
-        'pos': {
-        'x': pos.x,
-        'y': pos.y
-        },
-        'health': 100,
-        'maxHealth': 100,
-        'collision': true,
-        'showhealth': 0
+    socket.emit('BUILD_DATA', { pos: pos, type: 'add', typeBuilding: player.building.selected })
+    setTimeout(() => {updateBuildBar()}, 10)
+}
+
+function updateBuildBar() {
+    for(let i = 0; i < 10; i++) {
+        let name = getKeyByIndex(player.building.list, i)
+        let image = images[name]
+        if(name == 'wall') image = images.walls.sides0
+        if(image == undefined) $('#HUD-buildSlot'+i+' > img').attr('src', 'https://i.imgur.com/GyZRyx1.png')
+        else {
+            $('#HUD-buildSlot'+i).html(`
+                <img src="${image.src}"/>
+                <span>${player.building.list[name].amount}</span>
+            `)
+        }
     }
-    switch(type) {
-        case('turreticon'):
-            building.bullets = {}
-            building.bulletspeed = 1
-            building.reloadspeed = 10
-            building.range = 10
-            building.timer = 0
-            break
-        case('landmine'):
-            building.collision = false
-            building.exploding = 0
-            break
-        case('core'):
-            // check if player already has core
-            for(name in buildings) {
-                // continue if building is not a core
-                if(buildings[name].type != 'core') continue
-                // continue if building is not for the player
-                if(buildings[name].owner != socket.id) continue
-                // else player already has core. so return
-                return alert({id: player.id, color: 'red', text: `You already placed your core!`})
-            }
-            alert({color: 'white', text: `You placed your core!`})
-            break
-        case('wall'):
-            break
-        case('barbedwire'):
-            building.collision = false                      
-            break
-        case('bulldozer'):
-            socket.emit('BUILD_DATA',{id: `${pos.x},${pos.y}`, type: 'remove', building: building})
-            return
-            break
-    }    
-    socket.emit('BUILD_DATA', { id: `${pos.x},${pos.y}`, type: 'add', building: building })
+}
+function getSelectedBuilding(id) {
+    let index = Number(id.replace('HUD-buildSlot',''))
+    let name = getKeyByIndex(player.building.list, index)
+    if(name == undefined) return 'empty'
+    return name
 }

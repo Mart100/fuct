@@ -5,7 +5,7 @@ function tick(world) {
     for(let key in world.buildings) {
       let building = world.buildings[key]
       // If building is turret...
-      if(building.type == 'turreticon') {
+      if(building.type == 'turret') {
         // shoottimer
         building.timer++
         // check if bullet hit player
@@ -16,12 +16,12 @@ function tick(world) {
           var circle1 = {radius: 1/2.5, x: bullet.pos.x, y: bullet.pos.y}
           var circle2 = {radius: 1/5, x: world.players[bullet.target].pos.x, y: world.players[bullet.target].pos.y}
   
-          let dx = circle1.x - circle2.x;
-          let dy = circle1.y - circle2.y;
-          let distance = Math.sqrt(dx * dx + dy * dy);
+          let dx = circle1.x - circle2.x
+          let dy = circle1.y - circle2.y
+          let distance = Math.sqrt(dx * dx + dy * dy)
   
           if (distance < circle1.radius + circle2.radius) {
-            world.players[bullet.target].health -= 1
+            world.players[bullet.target].health -= building.bulletdamage
             //console.log('hit: '+world.players[bullet.target].username)
             delete building.bullets[num]
           }
@@ -84,6 +84,11 @@ function tick(world) {
       }
       // show health of building
       if(building.showhealth > 0) building.showhealth -= 0.05
+
+      //goldmine
+      if(building.type == 'miner') {
+        world.players[building.owner].coins = Number(world.players[building.owner].coins) + 0.01
+      }
     }
     // loop trough all world.players
     for(let id in world.players) {
@@ -294,7 +299,7 @@ function tick(world) {
             player.health = 100000000
             player.pos = {x: Math.random()*1e9, y: Math.random()*1e9} 
         }
-        if(player.spawning <= 0.5 && player.spawning > 0) {
+        if(player.spawning <= 0.01 && player.spawning > 0) {
             player.health = 100
             player.pos = {x: Math.random()*10, y: Math.random()*10} 
         }
@@ -307,8 +312,6 @@ function tick(world) {
     }
     world.socketHandler.sendData(world)
 }
-
-
   
 module.exports = tick
 

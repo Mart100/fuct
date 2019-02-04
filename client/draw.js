@@ -15,6 +15,7 @@ async function frame() {
     draw.otherPlayers()
     draw.inhand()
     draw.objects()
+    draw.hudData()
     // If player is in buildmode
     if(player.buildmode) draw.selectedGrid()
   }
@@ -45,7 +46,7 @@ const draw = {
       let building = buildings[buildingname]
       if(players[building.owner] == undefined) continue
       switch(building.type) {  
-          case('turreticon'):
+          case('turret'):
             ctx.beginPath()
             ctx.fillStyle = players[building.owner].color
             ctx.rect(canvas.width/2 + (building.pos.x-player.pos.x)*player.zoom, canvas.height/2 + (building.pos.y-player.pos.y)*player.zoom, player.zoom, player.zoom)
@@ -68,14 +69,14 @@ const draw = {
             ctx.save()
             ctx.translate(canvas.width/2 + (building.pos.x-player.pos.x)*player.zoom+player.zoom/2, canvas.height/2 + (building.pos.y-player.pos.y)*player.zoom+player.zoom/2);
             ctx.rotate(angle*Math.PI/180);
-            ctx.drawImage(images['turret'], -player.zoom/2, -player.zoom/2, player.zoom, player.zoom)
+            ctx.drawImage(images['turretbarrel'], -player.zoom/2, -player.zoom/2, player.zoom, player.zoom)
             ctx.restore()
             // draw bullets
             for(let num in building.bullets) {
               let bullet = building.bullets[num]
               ctx.beginPath()
               ctx.fillStyle = players[building.owner].color
-              ctx.arc(canvas.width/2 + (bullet.pos.x-player.pos.x)*player.zoom, canvas.height/2 + (bullet.pos.y-player.pos.y)*player.zoom, player.zoom/5, 0, 2*Math.PI)
+              ctx.arc(canvas.width/2 + (bullet.pos.x-player.pos.x)*player.zoom, canvas.height/2 + (bullet.pos.y-player.pos.y)*player.zoom, player.zoom/10, 0, 2*Math.PI)
               ctx.fill()
             }
             break
@@ -275,8 +276,9 @@ const draw = {
     else ctx.strokeStyle = "#4dd130"
     ctx.rect(canvas.width/2 + (player.selectedGrid.x-player.offset.x())*player.zoom, canvas.height/2 + (player.selectedGrid.y-player.offset.y())*player.zoom, player.zoom, player.zoom)
     ctx.globalAlpha = 0.5
-    let image = images[player.building.list[player.building.selected]]
-    if(player.building.list[player.building.selected] == 'wall') image = images.walls.sides0
+
+    let image = images[player.building.selected]
+    if(player.building.selected == 'wall') image = images.walls.sides0
     ctx.drawImage(image, canvas.width/2 + (player.selectedGrid.x-player.offset.x())*player.zoom, canvas.height/2 + (player.selectedGrid.y-player.offset.y())*player.zoom, player.zoom, player.zoom)
     ctx.stroke()
     ctx.globalAlpha = 1
@@ -292,5 +294,8 @@ const draw = {
         }
       }
     }
+  },
+  hudData() {
+    if(player.coins != undefined) $('#coins').html(`Coins: ${Math.round(player.coins)}$`)
   }
 }
