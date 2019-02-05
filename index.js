@@ -54,16 +54,6 @@ io.on('connection', function(socket) {
     if(data.color == undefined) data.color = white
     io.to(data.id).emit('alert', {color: data.color, text: data.text})
   })
-
-  socket.on('ping', () => socket.broadcast.emit('ping', ''))
-
-
-  // players[socket.id] = 'notJoined'
-  // // io.sockets.emit('newPlayer', players)
-  // // socket.on('newPlayer', function(data) {
-  // //   players[socket.id] = data
-  // //   io.sockets.emit('newPlayer', players)
-  // // })
   
 })
 

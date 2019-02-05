@@ -14,9 +14,14 @@ class SocketHandler {
         socket.on('BUILD_DATA', data => this.buildData(data, socket))
         socket.on('BUY', data => this.playerBuy(data, socket))
         socket.on('disconnect', data => this.onDisconnect(data, socket))
+        socket.on('ping', data => this.ping(data, socket))
         let world = this.world
 
         
+    }
+    ping(data, socket) {
+        console.log('Ping received')
+        socket.emit('pong', '') 
     }
     sendData() {
         //console.log(this.world)
@@ -43,7 +48,7 @@ class SocketHandler {
         if(player.coins < itemPrice) return socket.emit('alert', {id: socket.id, color: 'red', text: `You need ${itemPrice-player.coins}$ more for ${item}`})
 
         // remove price from players balance
-        player.coins -= itemPrice
+        player.coins -= itemPrice 
 
         // give building / tool to player
         if(data.type == 'tool') player.hotbar.list[item].level++
