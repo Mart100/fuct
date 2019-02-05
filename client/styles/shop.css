@@ -1,13 +1,18 @@
 #HUD-shop {
     position: absolute;
-    height: 50%;
-    width: 50%;
+    height: 500px;
+    width: 700px;
     background-color: rgba(0, 0, 0, 0.7);
     border-radius: 5px;
     user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    top: 50%;
     display: none;
 }
-.HUD-shopList {
+.HUD-shopItem {
     float: left;
     width: 120px;
     height: 120px; 
@@ -15,11 +20,11 @@
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 5px;
 }
-.HUD-shopList:hover {
+.HUD-shopItem:hover {
     background-color: rgba(0, 0, 0, 0.6);
     cursor: pointer;
 }
-.HUD-shopList img {
+.HUD-shopItem img {
     margin: 10px;
     border-radius: 2px;
     width: 100px;

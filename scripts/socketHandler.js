@@ -12,6 +12,7 @@ class SocketHandler {
         socket.on('chat', (data) => this.chatMessage(data, socket))
         socket.on('PLAYER_DATA', data => this.playerData(data, socket))
         socket.on('BUILD_DATA', data => this.buildData(data, socket))
+        socket.on('BUY', data => this.playerBuy(data, socket))
         socket.on('disconnect', data => this.onDisconnect(data, socket))
         let world = this.world
 
@@ -30,6 +31,24 @@ class SocketHandler {
         // remove player
         delete this.players[socket.id]
     }
+    playerBuy(data, socket) {
+        let player = this.players[socket.id]
+        let item = data.item
+        let itemPrice = 0
+
+        // get item price
+        if(typeof shopPrices[item] == 'number') itemPrice = shopPrices[item]
+        
+        // if player doesnt have enough money. return
+        if(player.coins < itemPrice) return socket.emit('alert', {id: socket.id, color: 'red', text: `You need ${itemPrice-player.coins}$ more for ${item}`})
+
+        // remove price from players balance
+        player.coins -= itemPrice
+
+        // give building / tool to player
+        if(data.type == 'tool') player.hotbar.list[item].level++
+        if(data.type == 'building') player.building.list[item].amount++
+    }
     playerData(data, socket) {
         let player = this.players[socket.id]
         switch(data.type) {
@@ -38,7 +57,6 @@ class SocketHandler {
                 break
             }
             case('damage'): {
-                console.log('yeet')
                 // if out of range Return
                 if(player.hotbar.list['sword'].range < this.getDistanceBetween(player.pos, this.players[data.target].pos)) return
 
@@ -280,3 +298,13 @@ class SocketHandler {
     }
 }
 module.exports = SocketHandler
+
+const shopPrices = {
+    sword: [50, 100, 500, 1000],
+    pickaxe: [50, 100, 500, 1000],
+    miner: 10,
+    turret: 100,
+    wall: 10,
+    landmine: 10,
+    barbedwire: 10
+}

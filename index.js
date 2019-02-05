@@ -24,9 +24,7 @@ app.use('/:id', express.static('client'))
 // })
 
 setInterval(() => {
-    for(let num in worlds) {
-        worlds[num].tick()
-    }
+  for(let num in worlds) worlds[num].tick()
 }, 10)
 
 // listen for requests :)
@@ -48,7 +46,7 @@ io.on('connection', function(socket) {
   })
 
   console.log('made connection:', socket.id)
-  //world1.addPlayer(socket)
+
   // Send buildings
   socket.broadcast.emit('buildings', buildings)
 

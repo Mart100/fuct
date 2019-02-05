@@ -21,8 +21,8 @@ function updateDebug() {
 <b>Screen: </b> <br>
 &nbsp;width: ${screen.width} <br>
 &nbsp;height: ${screen.height} <br>
-<b>Stats: </b> 
-&nbsp;bullets: ${Calculate.totalbullets} <br>
+<b>Stats: </b> <br>
+&nbsp;bullets: ${Calculate.totalbullets()} <br>
 
 `
   if(player.admin) {
