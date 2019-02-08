@@ -3,6 +3,7 @@ let buildings = {}
 let players = {}
 let worlds = []
 let latestframe
+let tps = 0
 // run frame
 
 
@@ -15,19 +16,15 @@ var app = express();
 const World = require('./scripts/world.js')
 worlds['oof'] = new World('oof')
 worlds['yeet'] = new World('yeet')
-app.use('/', express.static('client'));
+app.use('/', express.static('client'))
 
-app.use('/:id', express.static('client'))
-
-// app.get("/:id:", function (request, response) {
-//   response.sendFile(__dirname + '/client/index.html');
-// })
+app.use('/:id/', express.static('client'))
 
 setInterval(() => {
   for(let num in worlds) worlds[num].tick()
 }, 10)
 
-// listen for requests :)
+// listen on port :)
 var server = app.listen(process.env.PORT || 3000, () => {
   console.log('Your app is listening on port ' + server.address().port);
 })
@@ -37,6 +34,8 @@ var io = Socket(server)
 io.on('connection', function(socket) {
   let gameID = socket.handshake.headers.referer.split('/')[3]
   if(gameID == '') gameID = worlds[Object.keys(worlds)[Math.floor(Math.random()*Object.keys(worlds).length)]].id
+
+  // When player tries to join a world
   socket.on('requestWorld', function(username, callback) {
     console.log(`Player ${username} tries to join world `+gameID)
     if(username.length > 20) return callback('USERNAME_TOO_LONG', gameID)
@@ -56,4 +55,3 @@ io.on('connection', function(socket) {
   })
   
 })
-

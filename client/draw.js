@@ -74,9 +74,10 @@ const draw = {
             // draw bullets
             for(let num in building.bullets) {
               let bullet = building.bullets[num]
+              if(bullet == null) continue
               ctx.beginPath()
               ctx.fillStyle = players[building.owner].color
-              ctx.arc(canvas.width/2 + (bullet.pos.x-player.pos.x)*player.zoom, canvas.height/2 + (bullet.pos.y-player.pos.y)*player.zoom, player.zoom/10, 0, 2*Math.PI)
+              ctx.arc(draw.posX(bullet.pos.x-player.pos.x), draw.posY(bullet.pos.y-player.pos.y), player.zoom/10, 0, 2*Math.PI)
               ctx.fill()
             }
             break
@@ -228,41 +229,41 @@ const draw = {
   },
   otherPlayers() {
     for(let id in players) {
-        if(players[id].spawning > 0) continue
-        let username = players[id].username
-        ctx.beginPath()
-        ctx.fillStyle = players[id].color
-        ctx.lineWidth = player.zoom / 10
-        ctx.strokeStyle = "#383838"
-        ctx.arc(canvas.width/2 + (players[id].pos.x-player.pos.x)*player.zoom, canvas.height/2 + (players[id].pos.y-player.pos.y)*player.zoom, player.zoom/2.5, 0, 2*Math.PI)
-        ctx.fill()
-        ctx.stroke()
-        // draw name
-        ctx.beginPath()
-        ctx.font = ( 10 + player.zoom/2) + "px Arial";
-        ctx.textAlign = "center"
-        ctx.fillStyle = "#e2e2e2" //#5cd1a6
-        ctx.strokeStyle = "#e2e2e2"
-        ctx.fillText(username, canvas.width/2 + (players[id].pos.x-player.pos.x)*player.zoom, canvas.height/2 + (players[id].pos.y-player.pos.y)*player.zoom + player.zoom);
-        ctx.stroke()
-        // draw healthBar
-        // draw progress
-        ctx.beginPath()
-        ctx.fillStyle = "#49ad40"
-        ctx.rect(canvas.width/2 +(players[id].pos.x-player.pos.x)*player.zoom - player.zoom/1.5, canvas.height/2 + (players[id].pos.y-player.pos.y)*player.zoom - player.zoom/1.5, players[id].health * player.zoom / 75, player.zoom / 6)
-        ctx.fill()
-        // draw bar around
-        let playerpos = { x: canvas.width/2+(players[id].pos.x-player.pos.x)*player.zoom, y: canvas.height/2+(players[id].pos.y-player.pos.y)*player.zoom }
-        ctx.beginPath()
-        ctx.strokeStyle = "#383838"
-        ctx.lineWidth = player.zoom/20;
-        ctx.moveTo(playerpos.x, playerpos.y-player.zoom/1.5)
-        ctx.arcTo(playerpos.x+player.zoom/1.5, playerpos.y-player.zoom/1.5, playerpos.x+player.zoom/1.5, playerpos.y-player.zoom/2  , player.zoom/20)
-        ctx.arcTo(playerpos.x+player.zoom/1.5, playerpos.y-player.zoom/2  , playerpos.x                , playerpos.y-player.zoom/2  , player.zoom/20)
-        ctx.arcTo(playerpos.x-player.zoom/1.5, playerpos.y-player.zoom/2  , playerpos.x-player.zoom/1.5, playerpos.y-player.zoom/1.5, player.zoom/20)
-        ctx.arcTo(playerpos.x-player.zoom/1.5, playerpos.y-player.zoom/1.5, playerpos.x                , playerpos.y-player.zoom/1.5, player.zoom/20)
-        ctx.lineTo(playerpos.x, playerpos.y-player.zoom/1.5)
-        ctx.stroke()
+      if(players[id].spawning > 0) continue
+      let username = players[id].username
+      ctx.beginPath()
+      ctx.fillStyle = players[id].color
+      ctx.lineWidth = player.zoom / 10
+      ctx.strokeStyle = "#383838"
+      ctx.arc(canvas.width/2 + (players[id].pos.x-player.pos.x)*player.zoom, canvas.height/2 + (players[id].pos.y-player.pos.y)*player.zoom, player.zoom/2.5, 0, 2*Math.PI)
+      ctx.fill()
+      ctx.stroke()
+      // draw name
+      ctx.beginPath()
+      ctx.font = ( 10 + player.zoom/2) + "px Arial";
+      ctx.textAlign = "center"
+      ctx.fillStyle = "#e2e2e2" //#5cd1a6
+      ctx.strokeStyle = "#e2e2e2"
+      ctx.fillText(username, canvas.width/2 + (players[id].pos.x-player.pos.x)*player.zoom, canvas.height/2 + (players[id].pos.y-player.pos.y)*player.zoom + player.zoom);
+      ctx.stroke()
+      // draw healthBar
+      // draw progress
+      ctx.beginPath()
+      ctx.fillStyle = "#49ad40"
+      ctx.rect(canvas.width/2 +(players[id].pos.x-player.pos.x)*player.zoom - player.zoom/1.5, canvas.height/2 + (players[id].pos.y-player.pos.y)*player.zoom - player.zoom/1.5, players[id].health * player.zoom / 75, player.zoom / 6)
+      ctx.fill()
+      // draw bar around
+      let playerpos = { x: canvas.width/2+(players[id].pos.x-player.pos.x)*player.zoom, y: canvas.height/2+(players[id].pos.y-player.pos.y)*player.zoom }
+      ctx.beginPath()
+      ctx.strokeStyle = "#383838"
+      ctx.lineWidth = player.zoom/20;
+      ctx.moveTo(playerpos.x, playerpos.y-player.zoom/1.5)
+      ctx.arcTo(playerpos.x+player.zoom/1.5, playerpos.y-player.zoom/1.5, playerpos.x+player.zoom/1.5, playerpos.y-player.zoom/2  , player.zoom/20)
+      ctx.arcTo(playerpos.x+player.zoom/1.5, playerpos.y-player.zoom/2  , playerpos.x                , playerpos.y-player.zoom/2  , player.zoom/20)
+      ctx.arcTo(playerpos.x-player.zoom/1.5, playerpos.y-player.zoom/2  , playerpos.x-player.zoom/1.5, playerpos.y-player.zoom/1.5, player.zoom/20)
+      ctx.arcTo(playerpos.x-player.zoom/1.5, playerpos.y-player.zoom/1.5, playerpos.x                , playerpos.y-player.zoom/1.5, player.zoom/20)
+      ctx.lineTo(playerpos.x, playerpos.y-player.zoom/1.5)
+      ctx.stroke()
     }
   },
   selectedGrid() {
@@ -293,5 +294,11 @@ const draw = {
   },
   hudData() {
     if(player.coins != undefined) $('#coins').html(`Coins: ${Math.round(player.coins)}$`)
+  },
+  posX(x) {
+    return canvas.width/2 + x*player.zoom
+  },
+  posY(y) {
+    return canvas.height/2 + y*player.zoom
   }
 }

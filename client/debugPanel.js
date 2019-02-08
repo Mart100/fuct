@@ -20,6 +20,7 @@ function updateDebug() {
 &nbsp;selectedGridy: ${player.selectedGrid.y} <br>
 <b>FPS: ${fps}</b> <br>
 <b>PING: ${ping.pong}</b> <br>
+<b>TPS: ${tps}</b> <br>
 <b>Screen: </b> <br>
 &nbsp;width: ${screen.width} <br>
 &nbsp;height: ${screen.height} <br>

@@ -10,7 +10,9 @@ socket.on('Pong', () => {
 socket.on('players', data => {
   players = data
 })
-
+socket.on('TPS', data => {
+  tps = data
+})
 socket.on('privatePlayerData', data => {
   player = jQuery.extend(player, data)
 })

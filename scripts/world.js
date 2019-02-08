@@ -7,6 +7,8 @@ class World {
     this.players = {}
     this.buildings = {}
     this.socketHandler = new SocketHandler(this)
+    this.latestTPS = process.hrtime()[0]
+    this.tickCount = 0
   }
   tick() {
     tick(this)
@@ -19,7 +21,7 @@ class World {
 
     this.players[socket.id] = {
       id: socket.id,
-      coins: 50,
+      coins: 500000,
       pos: {
         x: Math.random()*5,
         y: Math.random()*5
@@ -65,9 +67,7 @@ class World {
       health: 100,
       isDead: false
     }
-    //console.log(this.players)
     this.socketHandler.addSocket(socket)
-      
 
   }
   moveAllowed(player, direction) {

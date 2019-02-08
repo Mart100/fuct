@@ -197,10 +197,11 @@ class SocketHandler {
                     'collision': true,
                     'showhealth': 0
                 }
+                
                 // what type
                 switch(data.typeBuilding) {
                     case('turret'): {
-                        building.bullets = {}
+                        building.bullets = []
                         building.bulletspeed = 2
                         building.bulletdamage = 5
                         building.reloadspeed = 50
@@ -315,6 +316,7 @@ class SocketHandler {
     sendPrivatePlayerData() {
         for(let socket of this.sockets) {
             let player = this.players[socket.id]
+            if(player == undefined) continue
             let data = {
                 pos: player.pos,
                 building: player.building,
