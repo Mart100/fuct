@@ -50,6 +50,8 @@ socket.on('chat', data => {
     username = 'Server'
     color = 'black'
   }
-  $("#chatOutput").append(`<strong><span style="color: ${color}"> ${username}</span></strong>: ${data.text}<br>`)
+  let message = data.text.replace(/</g, '&lt;')
+  message = message.replace(/>/g, '&gt;')
+  $("#chatOutput").append(`<strong><span style="color: ${color}"> ${username}</span></strong>: ${message}<br>`)
   updateScroll()
 })
