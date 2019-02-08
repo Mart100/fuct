@@ -41,7 +41,18 @@ class SocketHandler {
         let itemPrice = 0
 
         // get item price
-        if(typeof shopPrices[item] == 'number') itemPrice = shopPrices[item]
+        if(data.type == 'building') itemPrice = shopPrices[item]
+        if(data.type == 'tool') {
+            let currentLevel = player.hotbar.list[item].level
+            itemPrice = shopPrices[item][currentLevel]
+        }
+        if(data.item == 'miner') {
+            let buildingsArray = Object.values(this.buildings)
+            let amountOfMiners = buildingsArray.filter((a) => a.owner == socket.id && a.type == 'miner' ).length
+            let price = shopPrices[item]
+            for(i=0;i>amountOfMiners;i++) price += price * 0.8
+            console.log(amountOfMiners)
+        }
         
         // if player doesnt have enough money. return
         if(player.coins < itemPrice) return socket.emit('alert', {id: socket.id, color: 'red', text: `You need ${itemPrice-player.coins}$ more for ${item}`})
