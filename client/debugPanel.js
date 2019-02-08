@@ -13,34 +13,31 @@ const Calculate = {
 }
 
 function updateDebug() {
-  var debug = `Debug:<br>
+  let text = `
+<span style="font-size: 25px;"><b>  Debug:</b></span><br>
 <b>Player: </b> <br>
 &nbsp;x: ${player.pos.x}<br>
 &nbsp;y: ${player.pos.y}<br>
-&nbsp;zoomLVL: ${player.zoom} <br>
+&nbsp;zoom: ${player.zoom} <br>
 &nbsp;selectedGridX: ${player.selectedGrid.x} <br>
 &nbsp;selectedGridy: ${player.selectedGrid.y} <br>
-<b>FPS: ${fps}</b> <br>
-<b>PING: ${ping.pong}</b> <br>
-<b>TPS: ${tps}</b> <br>
+&nbsp;admin: ${player.admin} <br>
 <b>Screen: </b> <br>
 &nbsp;width: ${screen.width} <br>
 &nbsp;height: ${screen.height} <br>
-<b>Stats: </b> <br>
+<b>World: </b> <br>
 &nbsp;bullets: ${Calculate.totalbullets()} <br>
+<b>Other: </b> <br>
+&nbsp;FPS: ${fps} <br>
+&nbsp;PING: ${ping.pong} <br>
+&nbsp;TPS: ${tps} <br>
+`
 
-`
-  if(player.admin) {
-    debug += `
-<b>admin: </b> True <br>
-`
-  }
-  $("#debugpanel").html(debug)
+  $("#debugpanel").html(text)
 }
 function toggleDebugPanel() {
   $("#adminpassInput").toggle()
   $("#debugpanel").toggle()
-  
 }
 
 $(function() {
