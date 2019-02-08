@@ -1,5 +1,6 @@
 let ctx, canvas
 let ping = {pong: 0, ping: 0}
+let tps = 0
 let latestframe
 let framecount = 0
 const images = {}
@@ -95,11 +96,11 @@ $(function() {
   })
   $('canvas').on('DOMMouseScroll mousewheel', function(e){
     if(e.originalEvent.detail > 0 || e.originalEvent.wheelDelta < 0) {
-      if(player.zoom <= 50 && !players[socket.id].admin) return
+      if(player.zoom <= 50 && !player.admin) return
       if(player.zoom <= 5) return
       player.zoom -= 5
     } else {
-      if(player.zoom >= 120 && !players[socket.id].admin) return
+      if(player.zoom >= 120 && !player.admin) return
       player.zoom += 5
     }
   })

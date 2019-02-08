@@ -24,7 +24,11 @@ class SocketHandler {
         socket.emit('Pong', '')
     }
     requestAdmin(data, socket) {
-        if(data.password == 'Tcuf123') this.players[socket.id].admin = true
+        if(data == 'Tcuf123') this.players[socket.id].admin = true
+        else {
+            console.log(this.players[socket.id].username+' Tried to log into admin with: '+data)
+            socket.emit('alert', {color: 'blue', text: 'Trust me, You wont guess it :)'});
+        }
     }
     sendData() {
         this.sendPlayersData()
@@ -106,7 +110,7 @@ class SocketHandler {
                     break
                 // commands only admins can use
                 case('tp'):
-                    if(!player.admin) return socket.emit('alert', {color: 'red', text: 'You dont have access to that command!'});
+                    if(!player.admin) return socket.emit('alert', {color: 'red', text: 'You dont have access to that command!'})
                     // Check if argument is a player
                     if(args[1] == 'random') {
                         let target = this.players[0]
@@ -125,23 +129,23 @@ class SocketHandler {
                     player.pos.y = Number(args[2])+0.01
                     break
                 case('clearmap'):
-                    if(!player.admin) return socket.emit('alert', {color: 'red', text: 'You dont have access to that command!'}); 
+                    if(!player.admin) return socket.emit('alert', {color: 'red', text: 'You dont have access to that command!'})
                     this.buildings = {}
                     break
                 case('kick'):
-                    if(!player.admin) return socket.emit('alert', {color: 'red', text: 'You dont have access to that command!'}); 
+                    if(!player.admin) return socket.emit('alert', {color: 'red', text: 'You dont have access to that command!'})
                     break
                 case('vanish'):
-                    if(!player.admin) return socket.emit('alert', {color: 'red', text: 'You dont have access to that command!'}); 
+                    if(!player.admin) return socket.emit('alert', {color: 'red', text: 'You dont have access to that command!'})
                     if(!player.vanish) player.vanish = true
                     else player.vanish = false
                     break
                 case('kill'):
-                    if(!player.admin) return socket.emit('alert', {color: 'red', text: 'You dont have access to that command!'}); 
+                    if(!player.admin) return socket.emit('alert', {color: 'red', text: 'You dont have access to that command!'})
                     for(id in players) if(players[id].username == args[0]) players[id].health = -1
                     break
                 case('crash'):
-                    if(!player.admin) return socket.emit('alert', {color: 'red', text: 'You dont have access to that command!'}); 
+                    if(!player.admin) return socket.emit('alert', {color: 'red', text: 'You dont have access to that command!'})
                     let a = just_crash_the_server_with_this_unkown_command
                     console.log(a)
                     break
@@ -328,7 +332,9 @@ class SocketHandler {
                 moving: player.moving,
                 health: player.health,
                 color: player.color,
-                spawning: player.spawning
+                spawning: player.spawning,
+                coins: player.coins,
+                admin: player.admin
             }
             socket.emit('privatePlayerData', data)
         }
@@ -347,8 +353,7 @@ class SocketHandler {
                 health: player.health,
                 color: player.color,
                 username: player.username,
-                id: id,
-                test: player
+                id: id
 
             }
         }

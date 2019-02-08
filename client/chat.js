@@ -1,5 +1,10 @@
-$(function() {
-  $(window).keydown(function(event) {
+$(() => {
+  $('#body').keydown(event => {
+    // If on playscreen. Join
+    if($('#playScreen').css('display') != 'none') {
+      $('#playButton').click()
+      return
+    }
     if(event.keyCode == 13) showChat()
   })
 })
@@ -15,6 +20,7 @@ function sendMessage() {
   })
   $('#chatInput').val('')
 }
+
 function showChat() {
   // Show
   if($('#chatInput').css('opacity') == '0') {
@@ -33,6 +39,7 @@ function showChat() {
     if($('#chatInput').val() != '') sendMessage()
   }
 }
+
 socket.on('chat', function(data) {
   $("#chatOutput").html($("#chatOutput").html() + `<strong><span style="color: ${players[data.id].color}">` + players[data.id].username + '</span></strong>: ' + data.message + '<br>')
   updateScroll()
