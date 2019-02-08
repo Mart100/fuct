@@ -1,5 +1,5 @@
 function tick(world) {
-  tickCount++
+  world.tickCount++
 
   // loop trough all buildings
   for(let id in world.buildings) buildingTick(id, world)
@@ -17,11 +17,11 @@ module.exports = tick
 
 function checkTPS(world) {
   // Check if latest TPScheck was 1sec ago
-  if(process.hrtime()[0] > latestTPS) {
-    console.log(tickCount)
-    world.socketHandler.broadcast('TPS', tickCount)
-    tickCount = 0
-    latestTPS = process.hrtime()[0]
+  if(process.hrtime()[0] > world.latestTPS) {
+    console.log(world.tickCount)
+    world.socketHandler.broadcast('TPS', world.tickCount)
+    world.tickCount = 0
+    world.latestTPS = process.hrtime()[0]
   }
 }
 
