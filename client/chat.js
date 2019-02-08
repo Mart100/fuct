@@ -39,19 +39,19 @@ function showChat() {
 
 socket.on('chat', data => {
   let username = ''
+  let message = data.text
   let color = 'black'
   // if sender of message is another player
   if(players[data.id] != undefined) {
     username = players[data.id].username
     color = players[data.id].color
+    message = message.replace(/</g, '&lt;').replace(/>/g, '&gt;')
   }
   // If sender of message is the server
   if(data.id == 'Server') {
     username = 'Server'
-    color = 'black'
+    color = 'red'
   }
-  let message = data.text.replace(/</g, '&lt;')
-  message = message.replace(/>/g, '&gt;')
   $("#chatOutput").append(`<strong><span style="color: ${color}"> ${username}</span></strong>: ${message}<br>`)
   updateScroll()
 })
