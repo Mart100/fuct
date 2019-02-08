@@ -26,7 +26,7 @@ class World {
         x: Math.random()*5,
         y: Math.random()*5
       },
-      admin: true,
+      admin: false,
       moving: {
         north: false,
         east: false,

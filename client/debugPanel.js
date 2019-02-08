@@ -1,4 +1,5 @@
 let framecount1, framecount2, fps
+
 const Calculate = {
  totalbullets() {
    let counting = 0
@@ -10,6 +11,7 @@ const Calculate = {
    return counting
  }
 }
+
 function updateDebug() {
   var debug = `Debug:<br>
 <b>Player: </b> <br>
@@ -48,16 +50,13 @@ $(function() {
     framecount2 = framecount
     
   }, 1000)
+
   $(window).keydown(function(event) {
-    if($("#adminpassInput").val()) {
-      if(SHA256($("#adminpassInput").val()) == "7e87ccd85d4abbdc98f19c2005268d1b772f722a9ec19d96418a2727616342f5") {
-         player.admin = true
-      } else {
-        player.admin = false
-      }
-    }
-    if(event.keyCode == 113) {
-      toggleDebugPanel()
-    }
+    if(event.keyCode == 113) toggleDebugPanel()
+  })
+
+  // on admin input change
+  $('#adminpassInput').on('change', () => {
+    socket.emit('requestAdmin', $("#adminpassInput").val())
   })
 })

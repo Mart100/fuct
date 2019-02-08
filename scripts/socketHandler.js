@@ -15,12 +15,16 @@ class SocketHandler {
         socket.on('BUY', data => this.playerBuy(data, socket))
         socket.on('disconnect', data => this.onDisconnect(data, socket))
         socket.on('Ping', data => this.ping(data, socket))
+        socket.on('requestAdmin', data => this.requestAdmin(data, socket))
         let world = this.world
 
         
     }
     ping(data, socket) {
         socket.emit('Pong', '')
+    }
+    requestAdmin(data, socket) {
+        if(data.password == 'Tcuf123') this.players[socket.id].admin = true
     }
     sendData() {
         this.sendPlayersData()

@@ -289,6 +289,7 @@ const draw = {
     for(let id in players) {
       let playerL = players[id]
       let image = images[playerL.holding]
+      if(image == undefined) continue
       ctx.drawImage(image, canvas.width/2 + (playerL.pos.x - player.pos.x)*player.zoom, canvas.height/2 + (playerL.pos.y - player.pos.y)*player.zoom, player.zoom, player.zoom)
     }
   },

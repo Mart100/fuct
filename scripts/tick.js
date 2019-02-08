@@ -18,7 +18,6 @@ module.exports = tick
 function checkTPS(world) {
   // Check if latest TPScheck was 1sec ago
   if(process.hrtime()[0] > world.latestTPS) {
-    console.log(world.tickCount)
     world.socketHandler.broadcast('TPS', world.tickCount)
     world.tickCount = 0
     world.latestTPS = process.hrtime()[0]
