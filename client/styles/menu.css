@@ -1,0 +1,31 @@
+#playScreen {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.6);
+  left: 50%;
+  top: 30%;
+  transform: translateX(-50%);
+  border-radius: 2px;
+  width: 400px;
+  height: 300px;
+  z-index: 1;
+}
+#playButton {
+  padding: 20px 0;
+  position: relative;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.6);
+  width: 300px;
+  border-radius: 2px;
+  font-size: 200%;
+  color: #165b1e;
+  top: 35%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  vertical-align: middle;
+  transition: .7s;
+}
+#playButton:hover {
+  background-color: #165b1e;
+  color: black;
+}

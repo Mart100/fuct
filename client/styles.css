@@ -18,33 +18,6 @@ body {
   background-color: yellow;
   opacity: 0.3;
 }
-#chatOutput {
-  position: absolute;
-  overflow: auto;
-  padding: 5px;
-  left: 0px;
-  bottom: 60px;
-  width: 350px;
-  height: 200px;
-  background-color: rgba(0, 0, 0, 0);
-  border-radius: 0px 10px 0px 0px;
-  color: white;
-  font-family: Arial;
-}
-#chatInput {
-  position: absolute;
-  padding: 5px;
-  left: 0px;
-  bottom: 0px;
-  width: 350px;
-  height: 50px;
-  background-color: black;
-  border-radius: 0px 0px 10px 0px;
-  opacity: 0;
-  border: none;
-  color: white;
-  font-size: 150%;
-}
 #backgroundOpacity {
   position: absolute;
   background-color: black;
@@ -55,40 +28,9 @@ body {
   height: 100%;
   z-index: 0;
 }
-#playScreen {
-  position: absolute;
-  background-color: rgba(0, 0, 0, 0.6);
-  left: 50%;
-  top: 30%;
-  transform: translateX(-50%);
-  border-radius: 2px;
-  width: 400px;
-  height: 300px;
-  z-index: 1;
-}
-#playButton {
-  padding: 20px 0;
-  position: relative;
-  cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.6);
-  width: 300px;
-  border-radius: 2px;
-  font-size: 200%;
-  color: #165b1e;
-  top: 35%;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-  vertical-align: middle;
-  transition: .7s;
-}
-#playButton:hover {
-  background-color: #165b1e;
-  color: black;
-}
 #HUD {
-    z-index: 2;
-    user-select: none;
+  z-index: 2;
+  user-select: none;
 }
 #nameInput {
   position: relative;
