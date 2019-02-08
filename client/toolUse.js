@@ -19,13 +19,14 @@ $(() => {
                         target = players[num]
                     }
                 }
+                // if target found
+                if(target != 'none') {
+                    // if out of range Return
+                    if(player.hotbar.list[tool].range < getDistanceBetween(player.pos, target.pos)) return
 
-                // if out of range Return
-                if(player.hotbar.list[tool].range < getDistanceBetween(player.pos, target.pos)) return
-
-                // damage player
-                if(target != 'none') socket.emit('PLAYER_DATA', {target: target.id, type: 'damage'})
-
+                    // damage player
+                    socket.emit('PLAYER_DATA', {target: target.id, type: 'damage'})
+                }
                 break
             }
             case('pickaxe'): {

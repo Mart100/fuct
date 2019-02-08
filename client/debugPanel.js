@@ -3,7 +3,9 @@ const Calculate = {
  totalbullets() {
    let counting = 0
    for(id in buildings) {
-     counting += buildings.bullets.length
+     if(buildings[id].bullets != undefined) {
+       counting += buildings[id].bullets.length
+     }
    }
    return counting
  }
