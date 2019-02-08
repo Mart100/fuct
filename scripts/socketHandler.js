@@ -9,7 +9,7 @@ class SocketHandler {
     addSocket(socket) {
         this.sockets.push(socket)
         //init all the socket event
-        socket.on('chat', (data) => this.chatMessage(data, socket))
+        socket.on('chat', text => this.chatMessage(text, socket))
         socket.on('PLAYER_DATA', data => this.playerData(data, socket))
         socket.on('BUILD_DATA', data => this.buildData(data, socket))
         socket.on('BUY', data => this.playerBuy(data, socket))
@@ -100,16 +100,16 @@ class SocketHandler {
             }
         }
     }
-    chatMessage(data, socket) {
+    chatMessage(text, socket) {
 			// If message
-			if(!data.message.startsWith('::')) {
-				this.broadcast('chat', data)
+			if(!text.startsWith('::')) {
+				this.broadcast('chat', {id: socket.id, text: text})
 
 			} 
 
 			// Else is Command
 			else {
-				let args = data.message.replace('::', '').split(' ')
+				let args = text.replace('::', '').split(' ')
 				let command = args[0]
 				let player = this.world.players[socket.id]
 				if(commands[command] == undefined) return
@@ -332,9 +332,9 @@ const commands = {
 	'discord': {
 		admin: false,
 		code(SH, args, player, socket) {
-			socket.emit('chat', {})
+			socket.emit('chat', {id: 'Server', text: '<a href="https://discord.gg/YZahV2M">Discord Invite Link</a>'})
 		}
-	}
+	},
 	'tp': {
 		admin: true,
 		code(SH, args, player, socket) {
@@ -402,6 +402,16 @@ const commands = {
 		}
 	},
 	'help': {
-
+		admin: false,
+		code(SH, args, player, socket) {
+			let text = `<br>
+			<b>List of commands:</b> <br>
+			<b>::discord</b> - (Sends discord invite link) <br>
+			<b>::help</b> - (Sends this list) <br>
+			<b>::suicide</b> - (Suicide)
+			`
+			console.log('test')
+			socket.emit('chat', {id: 'Server', text: text})
+		}
 	}
 }

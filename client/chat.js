@@ -14,10 +14,7 @@ function updateScroll(){
 }
 function sendMessage() {
   let chatmessage = $('#chatInput').val()
-  socket.emit('chat', {
-    id: player.id,
-    message: $('#chatInput').val()
-  })
+  socket.emit('chat', $('#chatInput').val())
   $('#chatInput').val('')
 }
 
@@ -40,7 +37,19 @@ function showChat() {
   }
 }
 
-socket.on('chat', function(data) {
-  $("#chatOutput").html($("#chatOutput").html() + `<strong><span style="color: ${players[data.id].color}">` + players[data.id].username + '</span></strong>: ' + data.message + '<br>')
+socket.on('chat', data => {
+  let username = ''
+  let color = 'black'
+  // if sender of message is another player
+  if(players[data.id] != undefined) {
+    username = players[data.id].username
+    color = players[data.id].color
+  }
+  // If sender of message is the server
+  if(data.id == 'Server') {
+    username = 'Server'
+    color = 'black'
+  }
+  $("#chatOutput").append(`<strong><span style="color: ${color}"> ${username}</span></strong>: ${data.text}<br>`)
   updateScroll()
 })
