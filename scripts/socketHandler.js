@@ -49,9 +49,9 @@ class SocketHandler {
         if(data.item == 'miner') {
             let buildingsArray = Object.values(this.buildings)
             let amountOfMiners = buildingsArray.filter((a) => a.owner == socket.id && a.type == 'miner' ).length
-            let price = shopPrices[item]
-            for(i=0;i>amountOfMiners;i++) price += price * 0.8
-            console.log(amountOfMiners)
+            amountOfMiners += player.building.list[item].amount
+            itemPrice = shopPrices[item] * amountOfMiners * amountOfMiners
+            console.log(itemPrice)
         }
         
         // if player doesnt have enough money. return
@@ -314,7 +314,7 @@ module.exports = SocketHandler
 const shopPrices = {
     sword: [50, 100, 500, 1000],
     pickaxe: [50, 100, 500, 1000],
-    miner: 10,
+    miner: 2,
     turret: 100,
     wall: 10,
     landmine: 10,
