@@ -14,14 +14,13 @@ class SocketHandler {
         socket.on('BUILD_DATA', data => this.buildData(data, socket))
         socket.on('BUY', data => this.playerBuy(data, socket))
         socket.on('disconnect', data => this.onDisconnect(data, socket))
-        socket.on('ping', data => this.ping(data, socket))
+        socket.on('Ping', data => this.ping(data, socket))
         let world = this.world
 
         
     }
     ping(data, socket) {
-        console.log('Ping received')
-        socket.emit('pong', '') 
+        socket.emit('Pong', '')
     }
     sendData() {
         //console.log(this.world)
@@ -86,9 +85,6 @@ class SocketHandler {
             let player = this.world.players[socket.id]
             switch(args[0]) {
                 // commands everyone can access
-                case('ping'):
-                    socket.emit('alert', {color: 'white', text: data.text})
-                    break
                 case('suicide'):
                     player.health = -1
                     socket.emit('alert', {color: 'white', text: 'Congratz you just suicided!'})

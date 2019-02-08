@@ -3,9 +3,8 @@ socket.on('buildings', function(data) {
   buildings = data
 })
 
-socket.on('pong', () => {
+socket.on('Pong', () => {
   ping.pong = performance.now() - ping.ping
-  console.log('Pong: ', performance.now())
 })
 
 socket.on('players', function(data) {
@@ -16,6 +15,5 @@ socket.on('players', function(data) {
 // ping
 setInterval(() => {
   ping.ping = performance.now()
-  socket.emit('ping', ping.ping)
-  console.log('Ping: ',ping.ping)
+  socket.emit('Ping', ping.ping)
 }, 1000)
