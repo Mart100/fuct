@@ -19,6 +19,7 @@ $(() => {
                         target = players[num]
                     }
                 }
+                
                 // if target found
                 if(target != 'none') {
                     // if out of range Return

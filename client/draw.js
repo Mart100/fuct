@@ -287,12 +287,8 @@ const draw = {
     // loop trough players
     for(let id in players) {
       let playerL = players[id]
-      for(let item in players[id].hotbar.list) {
-        if(playerL.hotbar.list[item].slot == playerL.hotbar.selected) {
-          let image = images[item]
-          ctx.drawImage(image, canvas.width/2 + (playerL.pos.x - player.pos.x)*player.zoom, canvas.height/2 + (playerL.pos.y - player.pos.y)*player.zoom, player.zoom, player.zoom)
-        }
-      }
+      let image = images[playerL.holding]
+      ctx.drawImage(image, canvas.width/2 + (playerL.pos.x - player.pos.x)*player.zoom, canvas.height/2 + (playerL.pos.y - player.pos.y)*player.zoom, player.zoom, player.zoom)
     }
   },
   hudData() {

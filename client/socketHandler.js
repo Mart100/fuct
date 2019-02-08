@@ -7,9 +7,12 @@ socket.on('Pong', () => {
   ping.pong = performance.now() - ping.ping
 })
 
-socket.on('players', function(data) {
+socket.on('players', data => {
   players = data
-  if(data[socket.id] != undefined) jQuery.extend(player, data[socket.id])
+})
+
+socket.on('privatePlayerData', data => {
+  player = jQuery.extend(player, data)
 })
 
 // ping

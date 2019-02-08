@@ -23,9 +23,10 @@ class SocketHandler {
         socket.emit('Pong', '')
     }
     sendData() {
-        //console.log(this.world)
-        this.broadcast('players', this.world.players)
+        this.sendPlayersData()
+        this.sendPrivatePlayerData()
         this.broadcast('buildings', this.world.buildings)
+
     }
     onDisconnect(data, socket) {
         // Remove buildings
@@ -51,7 +52,6 @@ class SocketHandler {
             let amountOfMiners = buildingsArray.filter((a) => a.owner == socket.id && a.type == 'miner' ).length
             amountOfMiners += player.building.list[item].amount
             itemPrice = shopPrices[item] * amountOfMiners * amountOfMiners
-            console.log(itemPrice)
         }
         
         // if player doesnt have enough money. return
@@ -176,10 +176,14 @@ class SocketHandler {
         let bPosY = data.pos.y
         switch(data.type) {
             case('add'): {
-                // if player does not have building return
+                // if player does not have that building return
                 if(player.building.list[data.typeBuilding].amount < 1) return socket.emit('alert', {id: socket.id, color: 'red', text: `You dont have enough of this building!`})
-                //if building already exists return
+                
+                //if building at that place already exists return
                 if(this.buildings[`${data.pos.x},${data.pos.y}`] != undefined && data.typeBuilding != 'bulldozer') return
+
+                // If player hasnt build a core yet
+
                 // create building template
                 let building = {
                     'type': data.typeBuilding,
@@ -304,8 +308,48 @@ class SocketHandler {
         return result
     }
     broadcast(channel, data) {
-          for(let socket of this.sockets) {
+        for(let socket of this.sockets) {
             socket.emit(channel, data)
+        }
+    }
+    sendPrivatePlayerData() {
+        for(let socket of this.sockets) {
+            let player = this.players[socket.id]
+            let data = {
+                pos: player.pos,
+                building: player.building,
+                hotbar: player.hotbar,
+                moving: player.moving,
+                health: player.health,
+                color: player.color,
+                spawning: player.spawning
+            }
+            socket.emit('privatePlayerData', data)
+        }
+    }
+    sendPlayersData() {
+        let data = {}
+
+        // collect players data to send
+        for(let id in this.players) {
+            let player = this.players[id]
+            let holding
+            for(let item in player.hotbar.list) if(player.hotbar.list[item].slot == player.hotbar.selected) holding = item
+            data[id] = {
+                pos: player.pos,
+                holding: holding,
+                health: player.health,
+                color: player.color,
+                username: player.username,
+                id: id,
+                test: player
+
+            }
+        }
+
+        // send to everyone
+        for(let socket of this.sockets) {
+            socket.emit('players', data)
         }
     }
 }
@@ -319,4 +363,7 @@ const shopPrices = {
     wall: 10,
     landmine: 10,
     barbedwire: 10
+}
+function getBuildingsArray(buildings) {
+    return Object.values(buildings)
 }
