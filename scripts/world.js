@@ -21,7 +21,7 @@ class World {
 
     this.players[socket.id] = {
       id: socket.id,
-      coins: 500000,
+      coins: 50,
       pos: {
         x: Math.random()*5,
         y: Math.random()*5

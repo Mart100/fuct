@@ -24,7 +24,11 @@ class SocketHandler {
         socket.emit('Pong', '')
     }
     requestAdmin(data, socket) {
-        if(data == 'Tcuf123') this.players[socket.id].admin = true
+        if(data == 'Tcuf123') {
+            this.players[socket.id].admin = true
+            this.players[socket.id].coins = 1e9
+
+        }
         else {
             console.log(this.players[socket.id].username+' Tried to log into admin with: '+data)
             socket.emit('alert', {color: 'blue', text: 'Trust me, You wont guess it :)'});
@@ -97,84 +101,22 @@ class SocketHandler {
         }
     }
     chatMessage(data, socket) {
-        console.log(data.message.replace('::', '').split(' ')[0]+' -- '+data.message.replace('::', '').split(' '))
-        // all commands
-        if(data.message.startsWith('::')) {
-            let args = data.message.replace('::', '').split(' ')
-            let player = this.world.players[socket.id]
-            switch(args[0]) {
-                // commands everyone can access
-                case('suicide'):
-                    player.health = -1
-                    socket.emit('alert', {color: 'white', text: 'Congratz you just suicided!'})
-                    break
-                // commands only admins can use
-                case('tp'):
-                    if(!player.admin) return socket.emit('alert', {color: 'red', text: 'You dont have access to that command!'})
-                    // Check if argument is a player
-                    if(args[1] == 'random') {
-                        let target = this.players[0]
-                        player.pos.x = target.pos.x
-                        player.pos.y = target.pos.y
-                        return
-                    }
-                    for(let id in this.players) {
-                        if(this.players[id].username != args[1]) continue
-                        player.pos.x = Number(this.players[id].pos.x)
-                        player.pos.y = Number(this.players[id].pos.y)
-                        return
-                    }
-                    // if no return. tp to positions
-                    player.pos.x = Number(args[1])+0.01
-                    player.pos.y = Number(args[2])+0.01
-                    break
-                case('clearmap'):
-                    if(!player.admin) return socket.emit('alert', {color: 'red', text: 'You dont have access to that command!'})
-                    this.buildings = {}
-                    break
-                case('kick'):
-                    if(!player.admin) return socket.emit('alert', {color: 'red', text: 'You dont have access to that command!'})
-                    break
-                case('vanish'):
-                    if(!player.admin) return socket.emit('alert', {color: 'red', text: 'You dont have access to that command!'})
-                    if(!player.vanish) player.vanish = true
-                    else player.vanish = false
-                    break
-                case('kill'):
-                    if(!player.admin) return socket.emit('alert', {color: 'red', text: 'You dont have access to that command!'})
-                    for(id in players) if(players[id].username == args[0]) players[id].health = -1
-                    break
-                case('crash'):
-                    if(!player.admin) return socket.emit('alert', {color: 'red', text: 'You dont have access to that command!'})
-                    let a = just_crash_the_server_with_this_unkown_command
-                    console.log(a)
-                    break
-                case('speed'):
-                    if(!player.admin) return socket.emit('alert', {color: 'red', text: 'You dont have access to that command!'})
-                    player.speed = Number(args[1])
-                    break
-                case('oof'): {
-                    if(!player.admin) return socket.emit('alert', {color: 'red', text: 'You dont have access to that command!'})
-                    for(let x=-50;x<50;x++) {
-                        for(let y=-50;y<50;y++) {
-                            this.buildings[x+','+y] = {
-                                'type': 'barbedwire',
-                                'owner': socket.id,
-                                'pos': {
-                                    'x': x,
-                                    'y': y
-                                },
-                                'health': 1000,
-                                'maxHealth': 100,
-                                'collision': false,
-                                'showhealth': 0
-                            }
-                        }
-                    }
-                }
-            }
-        } else this.broadcast('chat', data)
-        
+			// If message
+			if(!data.message.startsWith('::')) {
+				this.broadcast('chat', data)
+
+			} 
+
+			// Else is Command
+			else {
+				let args = data.message.replace('::', '').split(' ')
+				let command = args[0]
+				let player = this.world.players[socket.id]
+				if(commands[command] == undefined) return
+
+				if(commands[command].admin && !player.admin) return socket.emit('alert', {color: 'red', text: 'You dont have access to that command!'})
+				commands[command].code(this, args, player, socket)
+			} 
     }
     buildData(data, socket) {
         if(4 < this.getDistanceBetween({x: data.pos.x+0.5, y: data.pos.y+0.5}, this.players[socket.id].pos)) return
@@ -367,14 +309,99 @@ class SocketHandler {
 module.exports = SocketHandler
 
 const shopPrices = {
-    sword: [50, 100, 500, 1000],
-    pickaxe: [50, 100, 500, 1000],
-    miner: 2,
-    turret: 100,
-    wall: 10,
-    landmine: 10,
-    barbedwire: 10
+	sword: [50, 100, 500, 1000],
+	pickaxe: [50, 100, 500, 1000],
+	miner: 2,
+	turret: 100,
+	wall: 10,
+	landmine: 10,
+	barbedwire: 10
 }
 function getBuildingsArray(buildings) {
-    return Object.values(buildings)
+	return Object.values(buildings)
+}
+
+const commands = {
+	'suicide': {
+		admin: false,
+		code(SH, args, player, socket) {
+			player.health = -1
+			socket.emit('alert', {color: 'white', text: 'Congratz you just suicided!'})
+		}
+	},
+	'discord': {
+		admin: false,
+		code(SH, args, player, socket) {
+			socket.emit('chat', {})
+		}
+	}
+	'tp': {
+		admin: true,
+		code(SH, args, player, socket) {
+			if(args[1] == 'random') {
+				let target = SH.players[Math.round(Math.random()*SH.players.length)]
+				player.pos.x = target.pos.x
+				player.pos.y = target.pos.y
+				return
+			}
+			for(let id in SH.players) {
+				if(SH.players[id].username.toLowerCase() != args[1].toLowerCase()) continue
+				player.pos.x = Number(SH.players[id].pos.x)
+				player.pos.y = Number(SH.players[id].pos.y)
+				return
+			}
+			// if no return. tp to positions
+			player.pos.x = Number(args[1])+0.01
+			player.pos.y = Number(args[2])+0.01
+		}
+	},
+	'clearmap': {
+		admin: true,
+		code(SH, args, player, socket) {
+			SH.buildings = {}
+		}
+	},
+	'vanish': {
+		admin: true,
+		code(SH, args, player, socket) {
+			if(!player.vanish) player.vanish = true
+			else player.vanish = false
+		}
+	},
+	'kill': {
+		admin: true,
+		code(SH, args, player, socket) {
+			for(id in SH.players) if(SH.players[id].username == args[0]) SH.players[id].health = -1
+		},
+	},
+	'speed': {
+		admin: true,
+		code() {
+			player.speed = Number(args[1])
+		}
+	},
+	'oof': {
+		admin: true,
+		code(SH, args, player, socket) {
+			for(let x=-50;x<50;x++) {
+				for(let y=-50;y<50;y++) {
+					this.buildings[x+','+y] = {
+						'type': 'barbedwire',
+						'owner': socket.id,
+						'pos': {
+							'x': x,
+							'y': y
+						},
+						'health': 1,
+						'maxHealth': 1,
+						'collision': false,
+						'showhealth': 0
+					}
+				}
+			}
+		}
+	},
+	'help': {
+
+	}
 }
