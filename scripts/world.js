@@ -3,13 +3,15 @@ const SocketHandler = require('./socketHandler.js')
 const getShopPrices = require('./shopPrices.js')
 
 class World {
-  constructor(id) {
+  constructor(id, settings) {
     this.id = id
     this.players = {}
     this.buildings = {}
     this.socketHandler = new SocketHandler(this)
     this.latestTPS = process.hrtime()[0]
     this.tickCount = 0
+    if(settings == undefined) settings = {}
+    this.settings = settings
   }
   tick() {
     tick(this)
