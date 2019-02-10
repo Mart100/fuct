@@ -18,6 +18,7 @@ class World {
     socket.join(this.id)
 
     socket.emit('buildings', this.buildings)
+    socket.emit('shopPrices', )
 
     this.players[socket.id] = {
       id: socket.id,
@@ -68,6 +69,7 @@ class World {
       isDead: false
     }
     this.socketHandler.addSocket(socket)
+
 
   }
   moveAllowed(player, direction) {

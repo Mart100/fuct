@@ -1,4 +1,5 @@
 let commands = require('./commands.js')
+let getShopPrices = require('./shopPrices.js')
 
 
 class SocketHandler {
@@ -54,20 +55,8 @@ class SocketHandler {
     playerBuy(data, socket) {
         let player = this.players[socket.id]
         let item = data.item
-        let itemPrice = 0
-
-        // get item price
-        if(data.type == 'building') itemPrice = shopPrices[item]
-        if(data.type == 'tool') {
-            let currentLevel = player.hotbar.list[item].level
-            itemPrice = shopPrices[item][currentLevel]
-        }
-        if(data.item == 'miner') {
-            let buildingsArray = Object.values(this.buildings)
-            let amountOfMiners = buildingsArray.filter((a) => a.owner == socket.id && a.type == 'miner' ).length
-            amountOfMiners += player.building.list[item].amount
-            itemPrice = shopPrices[item] * amountOfMiners * amountOfMiners
-        }
+        let itemPrice = getShopPrices(item, this, socket)
+        console.log(itemPrice)
         
         // if player doesnt have enough money. return
         if(player.coins < itemPrice) return socket.emit('alert', {id: socket.id, color: 'red', text: `You need ${itemPrice-player.coins}$ more for ${item}`})
@@ -311,15 +300,6 @@ class SocketHandler {
 }
 module.exports = SocketHandler
 
-const shopPrices = {
-	sword: [50, 100, 500, 1000],
-	pickaxe: [50, 100, 500, 1000],
-	miner: 2,
-	turret: 100,
-	wall: 10,
-	landmine: 10,
-	barbedwire: 10
-}
 function getBuildingsArray(buildings) {
 	return Object.values(buildings)
 }
