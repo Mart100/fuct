@@ -1,11 +1,13 @@
 $(() => {
   $('#body').keydown(event => {
-    // If on playscreen. Join
-    if($('#playScreen').css('display') != 'none') {
-      $('#playButton').click()
-      return
+    // Enter button
+    if(event.keyCode == 13) {
+
+      // If on playscreen. Join
+      if($('#playScreen').css('display') != 'none') return $('#playButton').click()
+      
+      showChat()
     }
-    if(event.keyCode == 13) showChat()
   })
 })
 function updateScroll(){
