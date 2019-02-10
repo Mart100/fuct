@@ -125,6 +125,12 @@ class SocketHandler {
                 if(this.buildings[`${data.pos.x},${data.pos.y}`] != undefined && data.typeBuilding != 'bulldozer') return
 
                 // If player hasnt build a core yet
+                if(getBuildingsArray(this.buildings).find((a) => a.owner == socket.id && a.type == 'core')) return socket.emit('alert', {id: socket.id, color: 'white', text: `Place your core first!`})
+
+                // If building is outside borders
+                let borders = this.world.settings.borders
+                if(data.pos.x > borders.x || data.pos.x < -borders.x   ||   data.pos.y > borders.y || data.pos.y < -borders.y) return
+
 
                 // create building template
                 let building = {

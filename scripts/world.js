@@ -77,42 +77,17 @@ class World {
   }
   moveAllowed(player, direction) {
 
-    let radius = 0.9/2
-    let halfRect = 0.5
     let playerX = player.pos.x
     let playerY = player.pos.y
-    let allowedDirections = {
-      N: true,
-      S: true,
-      W: true,
-      E: true
-    }
+    let borders = this.settings.borders
 
-    switch(direction) {
-      case('north'): {
-        playerY -= player.speed
-        break
-      }
-      case('south'): {
-        playerY += player.speed
-        break
-      }
-      case('east'): {
-        playerX += player.speed
-        break
-      }
-      case('west'): {
-        playerX -= player.speed
-        break
-      }
-      default: {
+    if(direction == 'north') playerY -= player.speed
+    if(direction == 'east') playerX += player.speed
+    if(direction == 'south') playerY += player.speed
+    if(direction == 'west') playerX -= player.speed
 
-        break
-      }
-    }
     let collidingBuildings = this.getCollidingBuildings(playerX, playerY)
     return collidingBuildings == 0
-    
 
   }
   getCollidingBuildings(playerX, playerY) {
@@ -139,14 +114,9 @@ class World {
         collidingBuildings.push(building)
         continue
       }
-      /** Test for collision at rect corner. 
-        * Think of a line from the rect center to any rect corner
-        * Now extend that line by the radius of the circle
-        * If the circle’s center is on that line they are colliding at exactly that rect corner
-        * Using Pythagoras formula to compare the distance between circle and rect centers.
-        */ 
-        let dx = distX-halfRect
-        let dy = distY-halfRect
+
+      let dx = distX-halfRect
+      let dy = distY-halfRect
 
       
       if (dx*dx+dy*dy<=(radius*radius)) {

@@ -267,10 +267,14 @@ function playerTick(id, world) {
   
 
   //Collision checking and moving
-  if(player.moving.north && world.moveAllowed(player, 'north') && player.spawning <= 0) player.pos.y -= Number(playerSpeed)
-  if(player.moving.east && world.moveAllowed(player, 'east') && player.spawning <= 0) player.pos.x += Number(playerSpeed)
-  if(player.moving.south && world.moveAllowed(player, 'south') && player.spawning <= 0) player.pos.y += Number(playerSpeed)
-  if(player.moving.west && world.moveAllowed(player, 'west') && player.spawning <= 0) player.pos.x -= Number(playerSpeed)
+  if(player.spawning <= 0) {
+    let borders = world.settings.borders
+    let PR = 0.9/2 // PlayerRadius
+    if(player.moving.north && world.moveAllowed(player, 'north') && player.pos.y-PR > -borders.y) player.pos.y -= Number(playerSpeed)
+    if(player.moving.east && world.moveAllowed(player, 'east') && player.pos.x+PR < borders.x) player.pos.x += Number(playerSpeed)
+    if(player.moving.south && world.moveAllowed(player, 'south') && player.pos.y+PR < borders.x) player.pos.y += Number(playerSpeed)
+    if(player.moving.west && world.moveAllowed(player, 'west') && player.pos.x-PR > -borders.x) player.pos.x -= Number(playerSpeed) 
+  }
 
   
 

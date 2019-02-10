@@ -297,7 +297,7 @@ const draw = {
   borders() {
     // prepare
     let borders = player.worldInfo.borders
-    ctx.fillStyle = 'black'
+    ctx.fillStyle = '#6d6d6d'
 
 
     // North
