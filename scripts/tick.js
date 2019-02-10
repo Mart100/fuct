@@ -1,4 +1,8 @@
 function tick(world) {
+  
+  // if no players. return
+  if(world.players.length == 0) return
+
   world.tickCount++
 
   // loop trough all buildings
