@@ -1,5 +1,6 @@
 const tick = require('./tick.js')
 const SocketHandler = require('./socketHandler.js')
+const getShopPrices = require('./shopPrices.js')
 
 class World {
   constructor(id) {
@@ -18,7 +19,7 @@ class World {
     socket.join(this.id)
 
     socket.emit('buildings', this.buildings)
-    socket.emit('shopPrices', )
+    socket.emit('shopPrices', getShopPrices('full', this.socketHandler, socket))
 
     this.players[socket.id] = {
       id: socket.id,

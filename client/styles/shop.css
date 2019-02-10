@@ -19,6 +19,17 @@
     margin: 20px;
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 5px;
+    text-align: right;
+}
+.shopItemPrice {
+    position: absolute;
+    width: auto;
+    padding: 2px;
+    height: 15px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    transform: translateX(-100%) translateY(101px);
+    border-radius: 2px 0 0 0;
 }
 .HUD-shopItem:hover {
     background-color: rgba(0, 0, 0, 0.6);

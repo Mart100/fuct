@@ -1,5 +1,5 @@
-let commands = require('./commands.js')
-let getShopPrices = require('./shopPrices.js')
+const commands = require('./commands.js')
+const getShopPrices = require('./shopPrices.js')
 
 
 class SocketHandler {

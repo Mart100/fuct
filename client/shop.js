@@ -13,6 +13,8 @@ $(function() {
         else {
             player.inshop = true
             $('#HUD-shop').fadeIn(400)
+            if($('#HUD-shopNavBuildings').css('cursor') == 'default') showBuildings()
+            else if($('#HUD-shopNavBuildings').css('cursor') == 'default') showTools()
         }
     })
 
@@ -40,26 +42,28 @@ $(function() {
     }
 
     // show tools
-    showTools()
+    setTimeout(showBuildings, 1000)
 })
 
-function showTools() {
+async function showTools() {
+    let toolPrices = getToolPrices(player)
     $('#HUD-shopNavTools').css({'background-color': 'rgba(0, 0, 0, 1)', 'cursor': 'default'})
     $('#HUD-shopNavBuildings').css({'background-color': 'rgba(0, 0, 0, 0.4)', 'cursor': 'pointer'})
     $('#HUD-shopIndex').html('')
     for(let num in shop.tools) {
         let tool = shop.tools[num]
-        $('#HUD-shopIndex').append(`<div id="HUD-shopList-${tool.for}" class="HUD-shopItem"><img src="${tool.img}"/></div>`)
+        $('#HUD-shopIndex').append(`<div id="HUD-shopList-${tool.for}" class="HUD-shopItem"><img src="${tool.img}"/><span class="shopItemPrice">${toolPrices[tool.for]}$</span></div>`)
     }
     shopElementClick('tool')
 }
-function showBuildings() {
+async function showBuildings() {
+    let buildingPrices = getBuildingPrices(buildings, player)
     $('#HUD-shopNavTools').css({'background-color': 'rgba(0, 0, 0, 0.4)', 'cursor': 'pointer'})
     $('#HUD-shopNavBuildings').css({'background-color': 'rgba(0, 0, 0, 1)', 'cursor': 'default'})
     $('#HUD-shopIndex').html('')
     for(let num in shop.buildings) {
         let building = shop.buildings[num]
-        $('#HUD-shopIndex').append(`<div id="HUD-shopList-${building.for}" class="HUD-shopItem"><img src="${building.img}"/></div>`)
+        $('#HUD-shopIndex').append(`<div id="HUD-shopList-${building.for}" class="HUD-shopItem"><img src="${building.img}"/><span class="shopItemPrice">${buildingPrices[building.for]}$</span></div>`)
     }
     shopElementClick('building')
 }
@@ -79,5 +83,11 @@ function shopElementClick(type) {
 
         // refresh amount / level
         if(type == 'building') setTimeout(updateBuildBar, 100)
+
+        // refresh shop
+        setTimeout(() => {
+            if(type == 'building') showBuildings()
+            if(type == 'tool') showTools()
+        }, 10)
     })
 }

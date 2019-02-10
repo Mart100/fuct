@@ -19,6 +19,9 @@ function getShopPrices(a, SH, socket) {
   // get specific tool type
   if(shopPrices.tools[a] != undefined) return getToolPrice(a, SH, socket)
 
+  // get shopPrices object
+  if(a == 'full') return shopPrices
+
   return 'ERR: shopPrice not found'
 }
 
@@ -40,7 +43,7 @@ function getToolPrices(SH, socket) {
 
 function getBuildingPrices(SH, socket) {
   let buildingPrices = {}
-  for(let building in shopPrices.buildings) toolPrices[tool] = getBuildingPrice(building, SH, socket)
+  for(let building in shopPrices.buildings) buildingPrices[building] = getBuildingPrice(building, SH, socket)
   return buildingPrices
 }
 
