@@ -16,6 +16,7 @@ async function frame() {
     draw.inhand()
     draw.objects()
     draw.hudData()
+    draw.borders()
     // If player is in buildmode
     if(player.buildmode) draw.selectedGrid()
   }
@@ -291,6 +292,36 @@ const draw = {
       let image = images[playerL.holding]
       if(image == undefined) continue
       ctx.drawImage(image, canvas.width/2 + (playerL.pos.x - player.pos.x)*player.zoom, canvas.height/2 + (playerL.pos.y - player.pos.y)*player.zoom, player.zoom, player.zoom)
+    }
+  },
+  borders() {
+    // prepare
+    let borders = player.worldInfo.borders
+    ctx.fillStyle = 'black'
+
+
+    // North
+    if((player.pos.y + borders.y)*player.zoom*-1 + canvas.height/2 > 0) {
+      let distance = (player.pos.y + borders.y)*player.zoom*-1 + canvas.height/2
+      ctx.fillRect(0, 0, canvas.width, distance)
+    }
+
+    // East
+    if((borders.x - player.pos.x)*player.zoom - canvas.width/2 < 0) {
+      let distance = (borders.x - player.pos.x)*player.zoom - canvas.width/2
+      ctx.fillRect(canvas.width, 0, distance, canvas.height)
+    }
+
+    // South
+    if((borders.y - player.pos.y)*player.zoom - canvas.height/2 < 0) {
+      let distance = (borders.y - player.pos.y)*player.zoom - canvas.height/2
+      ctx.fillRect(0, canvas.height, canvas.width, distance)
+    }
+
+    // West
+    if((player.pos.x + borders.x)*player.zoom*-1 + canvas.width/2 > 0) {
+      let distance = (player.pos.x + borders.x)*player.zoom*-1 + canvas.width/2
+      ctx.fillRect(0, 0, distance, canvas.height)
     }
   },
   hudData() {

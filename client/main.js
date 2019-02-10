@@ -76,24 +76,7 @@ $(function() {
   //window.addEventListener('scroll', function(e){
  //rame()
   // When PLAY is pressed
-  $("#playButton").on("click", function(e) {
-    player.id = socket.id
-
-    if($('#nameInput').val() != '') player.username = $('#nameInput').val()
-    else player.username = 'Guest-'+Math.round(Math.random()*1000)
-
-    // request world
-    socket.emit('requestWorld', player.username , (err, id) => {
-        if(err == null) {
-            player.world = id
-            setTimeout(() => { joinedWorld() }, 100)
-        } else {
-            console.log('Error trying to request server: '+id)
-            alert({color: 'red', text: err})
-        }
-    })
-
-  })
+  $("#playButton").on("click", (e) => { onPlayButton(e)})
   $('canvas').on('DOMMouseScroll mousewheel', function(e){
     if(e.originalEvent.detail > 0 || e.originalEvent.wheelDelta < 0) {
       if(player.zoom <= 50 && !player.admin) return
@@ -107,9 +90,30 @@ $(function() {
 
 
 })
+
+function onPlayButton() {
+    player.id = socket.id
+
+    if($('#nameInput').val() != '') player.username = $('#nameInput').val()
+    else player.username = 'Guest-'+Math.round(Math.random()*1000)
+
+    // request world
+    socket.emit('requestWorld', player.username , (err, worldInfo) => {
+
+        // succesfully connected
+        if(err == null) {
+            player.worldInfo = worldInfo
+
+            setTimeout(() => { joinedWorld() }, 100)
+
+        // error
+        } else alert({color: 'red', text: err})
+    })
+}
+
 function joinedWorld() {
 
-    history.replaceState(player.world, '', `/${player.world}/`)    
+    history.replaceState(player.worldInfo.id, '', `/${player.worldInfo.id}/`)    
 
 
 
@@ -120,6 +124,7 @@ function joinedWorld() {
     mouseListener()
     updateBuildBar()
 }
+
 function getDistanceBetween(a, b) {
     var c = a.x - b.x
     var d = a.y - b.y
