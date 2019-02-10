@@ -52,6 +52,7 @@ function buildingTick(id, world) {
 function turretTick(building, world) {
   building.timer++
   buildingMiddlePos = {x: building.pos.x+0.5, y: building.pos.y+0.5}
+  
 
   // check if bullet hits player
   for(let i in building.bullets) {
@@ -135,6 +136,8 @@ function playerTick(id, world) {
       playerSpeed = player.speed/4
   }
   
+  let halfRect = 0.5
+  let radius = 0.9/2
 
   // move world.players
   let collidingBuildings = world.getCollidingBuildings(player.pos.x, player.pos.y)
@@ -143,11 +146,8 @@ function playerTick(id, world) {
     
     let buildX = collidingBuildings[0].pos.x
     let buildY = collidingBuildings[0].pos.y
-    let halfRect = 0.5
     let distX = player.pos.x - buildX-halfRect
     let distY = player.pos.y - buildY-halfRect
-
-    
 
     
     if(Math.abs(distX) > Math.abs(distY)) {
@@ -179,8 +179,6 @@ function playerTick(id, world) {
 
     let buildX = collidingBuildings[0].pos.x
     let buildY = collidingBuildings[0].pos.y
-    let halfRect = 0.5
-    let radius = 0.9/2
     let distX = Math.abs(player.pos.x - buildX-halfRect)
     let distY = Math.abs(player.pos.y-0.05 - buildY-halfRect)
 
@@ -200,8 +198,6 @@ function playerTick(id, world) {
   if(player.moving.south && collidingBuildings.length==1) {
     let buildX = collidingBuildings[0].pos.x
     let buildY = collidingBuildings[0].pos.y
-    let halfRect = 0.5
-    let radius = 0.9/2
     let distX = Math.abs(player.pos.x - buildX-halfRect)
     let distY = Math.abs(player.pos.y+0.05 - buildY-halfRect)
 
@@ -220,8 +216,6 @@ function playerTick(id, world) {
   if(player.moving.south && collidingBuildings.length==1) {
     let buildX = collidingBuildings[0].pos.x
     let buildY = collidingBuildings[0].pos.y
-    let halfRect = 0.5
-    let radius = 0.9/2
     let distX = Math.abs(player.pos.x - buildX-halfRect)
     let distY = Math.abs(player.pos.y+0.05 - buildY-halfRect)
 
@@ -240,8 +234,6 @@ function playerTick(id, world) {
   if(player.moving.east && collidingBuildings.length==1) {
     let buildX = collidingBuildings[0].pos.x
     let buildY = collidingBuildings[0].pos.y
-    let halfRect = 0.5
-    let radius = 0.9/2
     let distX = Math.abs(player.pos.x+0.05 - buildX-halfRect)
     let distY = Math.abs(player.pos.y - buildY-halfRect)
 
@@ -260,8 +252,6 @@ function playerTick(id, world) {
   if(player.moving.west && collidingBuildings.length==1) {
     let buildX = collidingBuildings[0].pos.x
     let buildY = collidingBuildings[0].pos.y
-    let halfRect = 0.5
-    let radius = 0.9/2
     let distX = Math.abs(player.pos.x-0.05 - buildX-halfRect)
     let distY = Math.abs(player.pos.y - buildY-halfRect)
 
