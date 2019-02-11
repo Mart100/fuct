@@ -56,7 +56,6 @@ class SocketHandler {
         let player = this.players[socket.id]
         let item = data.item
         let itemPrice = getShopPrices(item, this, socket)
-        console.log(itemPrice)
         
         // if player doesnt have enough money. return
         if(player.coins < itemPrice) return socket.emit('alert', {color: 'red', text: `You need ${itemPrice-player.coins}$ more for ${item}`})
