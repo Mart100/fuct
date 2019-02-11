@@ -165,9 +165,12 @@ function playerTick(id, world) {
   // if spawning timer ender
   if(player.spawning && new Date() - player.spawning > 5000) {
     player.health = 100
-    player.pos.x = (Math.random()*world.settings.borders.x*2)-world.settings.borders.x
-    player.pos.y = (Math.random()*world.settings.borders.y*2)-world.settings.borders.y
     player.spawning = false
+
+    // tp player back closest to core
+    let core = Object.values(world.buildings).find((a) => a.owner == player.id && a.type == 'core' )
+    if(core == undefined) return
+    player.pos = findEmptySpaceClosestToCore(core, world)
   }
 
   // if player is in vanish
@@ -265,4 +268,29 @@ function circleCollision(a, b) {
   let distance = getDistanceBetween(a, b)
   if(distance < a.radius+b.radius) return true
   return false
-} 
+}
+
+function findEmptySpaceClosestToCore(core, world) {
+  let checkedSpots = []
+  let spot = {x: core.pos.x, y: core.pos.y}
+  // loop trough circles
+  for(let i=0;i<10;i++) {
+    // loop trough directions
+    for(let j=0;j<4;j++) {
+      let dir = {}
+      if(j == 0) dir = {x: 1, y: 0}
+      if(j == 1) dir = {x: 0, y: 1}
+      if(j == 2) dir = {x: -1, y: 0}
+      if(j == 3) dir = {x: 0, y: -1}
+
+      // loop trough grid
+      for(let k=0;k<i*2+Math.round(j/2);k++) {
+        spot.x += dir.x
+        spot.y += dir.y
+        if(world.buildings[spot.x+','+spot.y] == undefined) return spot
+      }
+    }
+  }
+
+  return {x: 0, y: 0}
+}
