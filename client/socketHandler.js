@@ -16,6 +16,11 @@ socket.on('TPS', data => {
 socket.on('privatePlayerData', data => {
   player = jQuery.extend(player, data)
 })
+socket.on('dead', (data) => {
+  $('#playScreen').show()
+  $('#backgroundOpacity').show()
+  $('#backgroundOpacity').animate({'opacity': '0.6'}, 1000)
+})
 
 // ping
 setInterval(() => {

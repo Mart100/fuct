@@ -55,9 +55,8 @@ $(function() {
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
     loadImages()
-    // load frame
-    frame()
     setInterval(tick, 10)
+    draw.grid()
     // Update SelectedGrid
     setInterval(() => {
         if(player.pos == undefined) return
@@ -118,11 +117,14 @@ function joinedWorld() {
 
 
     $("#playScreen").hide()
-    $('#backgroundOpacity').animate({'opacity': '0'}, 500, () => $('#backgroundOpacity').remove())
+    $('#backgroundOpacity').animate({'opacity': '0'}, 500, () => $('#backgroundOpacity').hide())
     updateHotbarImages()
     keyListener()
     mouseListener()
     updateBuildBar()
+
+    // Begin drawing
+    frame()
 }
 
 function getDistanceBetween(a, b) {

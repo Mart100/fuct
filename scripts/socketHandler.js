@@ -5,13 +5,13 @@ const getShopPrices = require('./shopPrices.js')
 class SocketHandler {
     constructor(world) {
         this.world = world
-        this.sockets = []
+        this.sockets = {}
         this.buildings = world.buildings
         this.players = world.players
         
     }
     addSocket(socket) {
-        this.sockets.push(socket)
+        this.sockets[socket.id] = socket
         //init all the socket event
         socket.on('chat', text => this.chatMessage(text, socket))
         socket.on('PLAYER_DATA', data => this.playerData(data, socket))
@@ -59,7 +59,7 @@ class SocketHandler {
         console.log(itemPrice)
         
         // if player doesnt have enough money. return
-        if(player.coins < itemPrice) return socket.emit('alert', {id: socket.id, color: 'red', text: `You need ${itemPrice-player.coins}$ more for ${item}`})
+        if(player.coins < itemPrice) return socket.emit('alert', {color: 'red', text: `You need ${itemPrice-player.coins}$ more for ${item}`})
 
         // remove price from players balance
         player.coins -= itemPrice 
@@ -70,6 +70,7 @@ class SocketHandler {
     }
     playerData(data, socket) {
         let player = this.players[socket.id]
+        if(player == undefined) return
         switch(data.type) {
             case('movement'): {
                 player.moving[data.direction] = data.isDown
@@ -114,18 +115,23 @@ class SocketHandler {
         if(4 < this.getDistanceBetween({x: data.pos.x+0.5, y: data.pos.y+0.5}, this.players[socket.id].pos)) return
         let building = this.buildings[`${data.pos.x},${data.pos.y}`]
         let player = this.players[socket.id]
+        if(player == undefined) return
         let bPosX = data.pos.x
         let bPosY = data.pos.y
         switch(data.type) {
             case('add'): {
                 // if player does not have that building return
-                if(player.building.list[data.typeBuilding].amount < 1) return socket.emit('alert', {id: socket.id, color: 'red', text: `You dont have enough of this building!`})
+                if(player.building.list[data.typeBuilding].amount < 1) {
+                    return socket.emit('alert', {color: 'red', text: `You dont have enough of this building!`})
+                }
                 
                 //if building at that place already exists return
                 if(this.buildings[`${data.pos.x},${data.pos.y}`] != undefined && data.typeBuilding != 'bulldozer') return
 
                 // If player hasnt build a core yet
-                if(getBuildingsArray(this.buildings).find((a) => a.owner == socket.id && a.type == 'core')) return socket.emit('alert', {id: socket.id, color: 'white', text: `Place your core first!`})
+                if(getBuildingsArray(this.buildings).find((a) => a.owner == socket.id && a.type == 'core') == undefined && data.typeBuilding != 'core') {
+                    return socket.emit('alert', {color: 'white', text: `Place your core first!`})
+                }
 
                 // If building is outside borders
                 let borders = this.world.settings.borders
@@ -170,7 +176,7 @@ class SocketHandler {
                             // continue if building is not for the player
                             if(this.buildings[id].owner != socket.id) continue
                             // else player already has core. so return
-                            return socket.emit('alert', {id: socket.id, color: 'red', text: `You already placed your core!`})
+                            return socket.emit('alert', {color: 'red', text: `You already placed your core!`})
                         }
                         socket.emit('alert', {color: 'white', text: `You placed your core!`})
                         break
@@ -229,8 +235,12 @@ class SocketHandler {
                         break
                     }
                     case('core'): {
-                        socket.emit('alert', {id: player.id, color: 'green', text: `You destroyed ${this.players[building.owner].username}'s core!`})
-                        socket.emit('alert', {id: building.owner, color: 'red', text: `${player.username} destroyed your core!`})
+                        socket.emit('alert', {color: 'green', text: `You destroyed ${this.players[building.owner].username}'s core!`})
+                        this.sockets[building.owner].emit('alert', {color: 'red', text: `${player.username} destroyed your core!`})
+
+                        let playerScore = calculatePlayerScore(this.players[building.owner])
+                        this.sockets[building.owner].emit('dead', {score: playerScore })
+                        this.onDisconnect({}, this.sockets[building.owner])
                         break
                     }
                 }
@@ -257,13 +267,14 @@ class SocketHandler {
         return result
     }
     broadcast(channel, data) {
-        for(let socket of this.sockets) {
-            socket.emit(channel, data)
+        for(let id in this.sockets) {
+            this.sockets[id].emit(channel, data)
         }
     }
     sendPrivatePlayerData() {
-        for(let socket of this.sockets) {
-            let player = this.players[socket.id]
+        for(let socketID in this.sockets) {
+            let player = this.players[socketID]
+            let socket = this.sockets[socketID]
             if(player == undefined) continue
             let data = {
                 pos: player.pos,
@@ -299,13 +310,15 @@ class SocketHandler {
         }
 
         // send to everyone
-        for(let socket of this.sockets) {
-            socket.emit('players', data)
-        }
+        for(let id in this.sockets) this.sockets[id].emit('players', data)
     }
 }
 module.exports = SocketHandler
 
 function getBuildingsArray(buildings) {
 	return Object.values(buildings)
+}
+
+function calculatePlayerScore(player) {
+
 }
