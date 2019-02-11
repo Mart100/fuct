@@ -135,176 +135,7 @@ function playerTick(id, world) {
       player.health -= 0.1
       playerSpeed = player.speed/4
   }
-  
-  let halfRect = 0.5
-  let radius = 0.9/2
 
-  // move world.players
-  let collidingBuildings = world.getCollidingBuildings(player.pos.x, player.pos.y)
-  
-  if(collidingBuildings.length != 0) {
-    
-    let buildX = collidingBuildings[0].pos.x
-    let buildY = collidingBuildings[0].pos.y
-    let distX = player.pos.x - buildX-halfRect
-    let distY = player.pos.y - buildY-halfRect
-
-    
-    if(Math.abs(distX) > Math.abs(distY)) {
-      
-
-      if(distX < 0) {
-        player.pos.x -= 0.1
-      } else {
-        player.pos.x += 0.1
-      }
-    } else {
-      
-
-
-      if(distY < 0) {
-        player.pos.y -= 0.1
-      } else {
-        player.pos.y += 0.1
-      }
-    }
-    
-  }
-
-
-  //Sliding off edges
-  collidingBuildings = world.getCollidingBuildings(player.pos.x, player.pos.y-0.05)
-  
-  if(player.moving.north && collidingBuildings.length==1) {
-
-    let buildX = collidingBuildings[0].pos.x
-    let buildY = collidingBuildings[0].pos.y
-    let distX = Math.abs(player.pos.x - buildX-halfRect)
-    let distY = Math.abs(player.pos.y-0.05 - buildY-halfRect)
-
-    let dx = distX-halfRect
-    let dy = distY-halfRect
-
-    let xOffset = buildX-player.pos.x
-    if (dx*dx+dy*dy<=(radius*radius)) {
-      if(xOffset > 0) player.pos.x -= playerSpeed
-      if(xOffset < -1) player.pos.x += playerSpeed
-    }
-    
-  }
-
-  collidingBuildings = world.getCollidingBuildings(player.pos.x, player.pos.y+0.05)
-  
-  if(player.moving.south && collidingBuildings.length==1) {
-    let buildX = collidingBuildings[0].pos.x
-    let buildY = collidingBuildings[0].pos.y
-    let distX = Math.abs(player.pos.x - buildX-halfRect)
-    let distY = Math.abs(player.pos.y+0.05 - buildY-halfRect)
-
-    let dx = distX-halfRect
-    let dy = distY-halfRect
-
-    let xOffset = buildX-player.pos.x
-    if (dx*dx+dy*dy<=(radius*radius)) {
-      if(xOffset > 0) player.pos.x -= playerSpeed
-      if(xOffset < -1) player.pos.x += playerSpeed
-    }
-  }
-
-  collidingBuildings = world.getCollidingBuildings(player.pos.x, player.pos.y+0.05)
-  
-  if(player.moving.south && collidingBuildings.length==1) {
-    let buildX = collidingBuildings[0].pos.x
-    let buildY = collidingBuildings[0].pos.y
-    let distX = Math.abs(player.pos.x - buildX-halfRect)
-    let distY = Math.abs(player.pos.y+0.05 - buildY-halfRect)
-
-    let dx = distX-halfRect
-    let dy = distY-halfRect
-
-    let xOffset = buildX-player.pos.x
-    if (dx*dx+dy*dy<=(radius*radius)) {
-      if(xOffset > 0) player.pos.x -= playerSpeed
-      if(xOffset < -1) player.pos.x += playerSpeed
-    }
-  }
-
-  collidingBuildings = world.getCollidingBuildings(player.pos.x+0.05, player.pos.y)
-  
-  if(player.moving.east && collidingBuildings.length==1) {
-    let buildX = collidingBuildings[0].pos.x
-    let buildY = collidingBuildings[0].pos.y
-    let distX = Math.abs(player.pos.x+0.05 - buildX-halfRect)
-    let distY = Math.abs(player.pos.y - buildY-halfRect)
-
-    let dx = distX-halfRect
-    let dy = distY-halfRect
-
-    let yOffset = buildY-player.pos.y
-    if (dx*dx+dy*dy<=(radius*radius)) {
-      if(yOffset > 0) player.pos.y -= playerSpeed
-      if(yOffset < -1) player.pos.y += playerSpeed
-    }
-  }
-
-  collidingBuildings = world.getCollidingBuildings(player.pos.x-0.05, player.pos.y)
-  
-  if(player.moving.west && collidingBuildings.length==1) {
-    let buildX = collidingBuildings[0].pos.x
-    let buildY = collidingBuildings[0].pos.y
-    let distX = Math.abs(player.pos.x-0.05 - buildX-halfRect)
-    let distY = Math.abs(player.pos.y - buildY-halfRect)
-
-    let dx = distX-halfRect
-    let dy = distY-halfRect
-
-    let yOffset = buildY-player.pos.y
-    if (dx*dx+dy*dy<=(radius*radius)) {
-      if(yOffset > 0) player.pos.y -= playerSpeed
-      if(yOffset < -1) player.pos.y += playerSpeed
-    }
-  }
-  
-
-  //Collision checking and moving
-  if(player.spawning <= 0) {
-    let borders = world.settings.borders
-    let PR = 0.9/2 // PlayerRadius
-    if(player.moving.north && world.moveAllowed(player, 'north') && player.pos.y-PR > -borders.y) player.pos.y -= Number(playerSpeed)
-    if(player.moving.east && world.moveAllowed(player, 'east') && player.pos.x+PR < borders.x) player.pos.x += Number(playerSpeed)
-    if(player.moving.south && world.moveAllowed(player, 'south') && player.pos.y+PR < borders.x) player.pos.y += Number(playerSpeed)
-    if(player.moving.west && world.moveAllowed(player, 'west') && player.pos.x-PR > -borders.x) player.pos.x -= Number(playerSpeed) 
-  }
-
-  
-
-  // building collision
-  
-  // player.directions = directions
-
-  // let A = 50
-  // let B = 0.5
-
-  // if(directions.W || directions.SW || directions.WN) player.pos.x += (Math.abs(Number('0.' + player.pos.x.toString().split('.')[1])-B))/A
-  // if(directions.E || directions.NE || directions.ES) player.pos.x -= (Math.abs(Number('0.' + player.pos.x.toString().split('.')[1])-B))/A
-  // if(directions.N || directions.NE || directions.WN) player.pos.y += (Math.abs(Number('0.' + player.pos.y.toString().split('.')[1])-B))/A
-  // if(directions.S || directions.SW || directions.ES) player.pos.y -= (Math.abs(Number('0.' + player.pos.y.toString().split('.')[1])-B))/A
-  // player collision
-  for(let idColl in world.players) {
-    let playerColl = world.players[idColl]
-    // if player is undefined return
-    if(playerColl == undefined || playerColl.pos == undefined) continue
-    // if player is player return
-    if(id == idColl) continue
-    let dx = player.pos.x - playerColl.pos.x
-    let dy = player.pos.y - playerColl.pos.y;
-    let distance = Math.sqrt(dx * dx + dy * dy)
-    if (distance < 0.9) {
-      let angle = Math.atan2(player.pos.y - playerColl.pos.y, player.pos.x - playerColl.pos.x)
-      player.pos.x += Math.cos(angle) * (1-Math.abs(Number('0.' + player.pos.x.toString().split('.')[1])-Number('0.' + playerColl.pos.x.toString().split('.')[1])))/40
-      player.pos.y += Math.sin(angle) * (1-Math.abs(Number('0.' + player.pos.y.toString().split('.')[1])-Number('0.' + playerColl.pos.x.toString().split('.')[1])))/40
-    }
-  }
   // When player stands on landmine
   if(world.buildings[Math.floor(player.pos.x)+','+Math.floor(player.pos.y)] != undefined
       && world.buildings[Math.floor(player.pos.x)+','+Math.floor(player.pos.y)].type == 'landmine'
@@ -321,6 +152,10 @@ function playerTick(id, world) {
     }
 
   }
+  // collisions
+  playerCollisions(player, world, playerSpeed)
+
+
   // if player has 0 health
   if(player.health <= 0) {
       player.spawning = 5
@@ -338,6 +173,83 @@ function playerTick(id, world) {
   // regenerate player
   if(player.health < 100) player.health += 0.01
 }
+
+
+function playerCollisions(player, world, playerSpeed) {
+  // move players when their inside of blocks
+  let collidingBuildings = world.getCollidingBuildings(player.pos.x, player.pos.y)
+  
+  if(collidingBuildings.length != 0) {
+    
+    let distX = player.pos.x - collidingBuildings[0].pos.x-0.5
+    let distY = player.pos.y - collidingBuildings[0].pos.y-0.5
+    
+    let axis = Math.abs(distX) > Math.abs(distY)
+
+    if(axis && distX < 0) player.pos.x -= 0.1
+    if(axis && distX > 0) player.pos.x += 0.1
+    if(!axis && distX < 0) player.pos.y -= 0.1
+    if(!axis && distX > 0) player.pos.y += 0.1
+  }
+
+
+  // Sliding off edges
+  for(let i=0;i<4;i++) {
+    let a = {}
+    if(i == 0) a = {offset: {x: 0, y: -0.05}, axis: 'x', dir: 'north'}
+    if(i == 1) a = {offset: {x: 0.05, y: 0}, axis: 'y', dir: 'east'}
+    if(i == 2) a = {offset: {x: 0, y: 0.05}, axis: 'x', dir: 'south'}
+    if(i == 3) a = {offset: {x: -0.05, y: 0}, axis: 'y', dir: 'west'}
+
+    let CB = world.getCollidingBuildings(player.pos.x + a.offset.x, player.pos.y + a.offset.y) // First building that collide with player+offset
+    let PR = 0.9/2 // PlayerRadius
+  
+    if(player.moving[a.dir] && CB.length==1) {
+
+      let distX = Math.abs(player.pos.x + a.offset.x - CB[0].pos.x - 0.5)
+      let distY = Math.abs(player.pos.y + a.offset.y - CB[0].pos.y - 0.5)
+
+      let dx = distX-0.5
+      let dy = distY-0.5
+
+      let xOffset = CB[0].pos[a.axis]-player.pos[a.axis]
+      if (dx*dx+dy*dy<=(PR*PR)) {
+        if(xOffset > 0) player.pos[a.axis] -= playerSpeed
+        if(xOffset < -1) player.pos[a.axis] += playerSpeed
+      }
+      
+    }
+  }
+  
+
+  //Collision checking and moving
+  if(player.spawning <= 0) {
+    let borders = world.settings.borders
+    let PR = 0.9/2 // PlayerRadius
+    if(player.moving.north && world.moveAllowed(player, 'north') && player.pos.y-PR > -borders.y) player.pos.y -= Number(playerSpeed)
+    if(player.moving.east && world.moveAllowed(player, 'east') && player.pos.x+PR < borders.x) player.pos.x += Number(playerSpeed)
+    if(player.moving.south && world.moveAllowed(player, 'south') && player.pos.y+PR < borders.x) player.pos.y += Number(playerSpeed)
+    if(player.moving.west && world.moveAllowed(player, 'west') && player.pos.x-PR > -borders.x) player.pos.x -= Number(playerSpeed) 
+  }
+  
+  // player collision
+  for(let idColl in world.players) {
+    let playerColl = world.players[idColl]
+
+    // if player is player return
+    if(player.id == idColl) continue
+
+    let dx = player.pos.x - playerColl.pos.x
+    let dy = player.pos.y - playerColl.pos.y;
+    let distance = Math.sqrt(dx * dx + dy * dy)
+    if (distance < 0.9) {
+      let angle = Math.atan2(player.pos.y - playerColl.pos.y, player.pos.x - playerColl.pos.x)
+      player.pos.x += Math.cos(angle) * (1-Math.abs(Number('0.' + player.pos.x.toString().split('.')[1])-Number('0.' + playerColl.pos.x.toString().split('.')[1])))/40
+      player.pos.y += Math.sin(angle) * (1-Math.abs(Number('0.' + player.pos.y.toString().split('.')[1])-Number('0.' + playerColl.pos.x.toString().split('.')[1])))/40
+    }
+  }
+}
+
 
 function getDistanceBetween(a, b) {
   let c = a.x - b.x
