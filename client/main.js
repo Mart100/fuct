@@ -23,6 +23,7 @@ let player = {
     buildmodeFired: false,
     inshop: false,
     inshopFired: false,
+    spawning: false,
     color: 'rgb(255, 0, 0)',
     offset: {
         x() {

@@ -37,7 +37,7 @@ class World {
         south: false,
         west: false
       },
-      spawning: 0,
+      spawning: false,
       speed: 0.05,
       building: {
         selected: 'core',

@@ -239,7 +239,7 @@ class SocketHandler {
                         this.sockets[building.owner].emit('alert', {color: 'red', text: `${player.username} destroyed your core!`})
 
                         let playerScore = calculatePlayerScore(this.players[building.owner])
-                        this.sockets[building.owner].emit('dead', {score: playerScore })
+                        this.sockets[building.owner].emit('destroyed', {score: playerScore })
                         this.onDisconnect({}, this.sockets[building.owner])
                         break
                     }

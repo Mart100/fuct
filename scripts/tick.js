@@ -18,7 +18,6 @@ function tick(world) {
   
 module.exports = tick
 
-
 function checkTPS(world) {
   // Check if latest TPScheck was 1sec ago
   if(process.hrtime()[0] > world.latestTPS) {
@@ -158,18 +157,22 @@ function playerTick(id, world) {
 
   // if player has 0 health
   if(player.health <= 0) {
-      player.spawning = 5
-      player.health = 100000000
-      player.pos = {x: Math.random()*1e9, y: Math.random()*1e9} 
+    player.spawning = new Date()
+    player.health = 100000000
+    player.pos = {x: 1e9, y: 1e9}
   }
-  if(player.spawning <= 0.01 && player.spawning > 0) {
-      player.health = 100
-      player.pos = {x: Math.random()*10, y: Math.random()*10} 
+
+  // if spawning timer ender
+  if(player.spawning && new Date() - player.spawning > 5000) {
+    player.health = 100
+    player.pos.x = (Math.random()*world.settings.borders.x*2)-world.settings.borders.x
+    player.pos.y = (Math.random()*world.settings.borders.y*2)-world.settings.borders.y
+    player.spawning = false
   }
-  // countdown spawning
-  if(player.spawning > 0) player.spawning -= 0.01
+
   // if player is in vanish
   if(player.vanish) player.health = 100
+
   // regenerate player
   if(player.health < 100) player.health += 0.01
 }
@@ -262,4 +265,4 @@ function circleCollision(a, b) {
   let distance = getDistanceBetween(a, b)
   if(distance < a.radius+b.radius) return true
   return false
-}
+} 

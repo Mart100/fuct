@@ -1,13 +1,10 @@
 function tick() {
     updateDebug()
     // countdown spawning
-    if(player.spawning > 0) {
-        $('#HUD-spawning').css('display', 'block')
-        $('#HUD-spawning span').html(Math.round(player.spawning*10)/10)
-        if(player.spawning < 0.1) {
-            setTimeout(() => {
-                $('#HUD-spawning').css('display', 'none')
-            }, 100)
-        }
+    if(player.spawning) {
+        $('#HUD-spawning').show()
+        let timeLeft = Math.round(50 - (new Date() - new Date(player.spawning))/100)/10
+        $('#HUD-spawning span').html(timeLeft)
     }
+    if($('#HUD-spawning').css('display') == 'block' && !player.spawning) $('#HUD-spawning').hide()
 }
