@@ -51,13 +51,15 @@ let player = {
 $(function() {
     canvas = document.getElementById('canvas')
     ctx = canvas.getContext("2d")
-    // save ctx
+
     // Set Canvas size
     canvas.width = window.innerWidth
     canvas.height = window.innerHeight
+
     loadImages()
     setInterval(tick, 10)
     draw.grid()
+
     // Update SelectedGrid
     setInterval(() => {
         if(player.pos == undefined) return
@@ -68,15 +70,17 @@ $(function() {
         player.selectedGrid.x = Math.floor((player.mouse.x - canvas.width/2 + offsetX * player.zoom) / player.zoom)
         player.selectedGrid.y = Math.floor((player.mouse.y - canvas.height/2 + offsetY * player.zoom) / player.zoom)
     }, 10)
+
+    // mouse Movement
     $('body').on('mousemove', (event) => {
         player.mouse.x = event.clientX
         player.mouse.y = event.clientY
     })
-  // Zooming
-  //window.addEventListener('scroll', function(e){
- //rame()
+
   // When PLAY is pressed
   $("#playButton").on("click", (e) => { onPlayButton(e)})
+
+  // Zooming
   $('canvas').on('DOMMouseScroll mousewheel', function(e){
     if(e.originalEvent.detail > 0 || e.originalEvent.wheelDelta < 0) {
       if(player.zoom <= 50 && !player.admin) return
@@ -117,7 +121,7 @@ function joinedWorld() {
 
 
 
-    $("#playScreen").hide()
+    $("#menu").hide()
     $('#backgroundOpacity').animate({'opacity': '0'}, 500, () => $('#backgroundOpacity').hide())
     updateHotbar()
     keyListener()

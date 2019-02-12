@@ -2,6 +2,7 @@ let shop = {}
 $(function() {
     // Toggle Shop with S
     $('body').on('keydown', (event) => {
+        if(isChatting()) return
         if(event.keyCode != 70 || player.inshopFired) return
         player.inshopFired = true
         // No longer in shop

@@ -29,3 +29,27 @@
   background-color: #165b1e;
   color: black;
 }
+
+#info {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.6);
+  left: 80%;
+  top: 30%;
+  transform: translateX(-50%);
+  border-radius: 2px;
+  width: 360px;
+  height: 260px;
+  z-index: 1;
+  color: white;
+  padding: 20px;
+}
+#info span {
+  font-size: 20px;
+  font-weight: 300;
+}
+#info div a {
+  color: white;
+}
+#info b {
+  font-weight: 800;
+}

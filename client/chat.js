@@ -4,7 +4,7 @@ $(() => {
     if(event.keyCode == 13) {
 
       // If on playscreen. Join
-      if($('#playScreen').css('display') != 'none') return $('#playButton').click()
+      if($('#menu').css('display') != 'none') return $('#playButton').click()
       
       showChat()
     }
@@ -26,17 +26,37 @@ function showChat() {
     player.typing = true
     $('#chatInput').val('')
     $('#chatInput').animate({'opacity': '0.8'}, 300)
-    $('#chatOutput').css({'background-color': 'rgba(0, 0, 0, 0.5)'})
+    fadeInChatOutput() 
+
     $('#chatInput').focus()
   }
   // If Chat is Open
   else {
-    // Hide chat and send message
+    // Hide chat
     player.typing = false
     $('#chatInput').animate({'opacity': '0'}, 300)
-    $('#chatOutput').css({'background-color': 'rgba(0, 0, 0, 0)'})
+    fadeOutChatOutput() 
+    $('#chatInput').blur()
     if($('#chatInput').val() != '') sendMessage()
   }
+}
+
+function fadeOutChatOutput() {
+  let i = 0.5
+  let interval = setInterval(() => {
+    i-=0.01
+    $('#chatOutput').css('background-color', `rgba(0,0,0,${i})`)
+    if(i <= 0) clearInterval(interval)
+  }, 4)
+}
+
+function fadeInChatOutput() {
+  let i = 0
+  let interval = setInterval(() => {
+    i+=0.01
+    $('#chatOutput').css('background-color', `rgba(0,0,0,${i})`)
+    if(i >= 0.5) clearInterval(interval)
+  }, 4)
 }
 
 socket.on('chat', data => {
@@ -57,3 +77,8 @@ socket.on('chat', data => {
   $("#chatOutput").append(`<strong><span style="color: ${color}"> ${username}</span></strong>: ${message}<br>`)
   updateScroll()
 })
+
+function isChatting() {
+  if($('#chatInput').is(':focus')) return true
+  return false
+}

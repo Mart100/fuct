@@ -41,14 +41,35 @@
 
 
     </head>
-    <body id="body" oncontextmenu="return false">
+    <body id="body">
         <div id="alerts"></div>
-        <div id="playScreen">
-            <input id="nameInput" placeholder="username"></input>
-            <div id="playButton">Play</div>
+        <div id="menu">
+            <div id="playScreen">
+                <input id="nameInput" placeholder="username"></input>
+                <div id="playButton">Play</div>
+            </div>
+            <div id="info">
+                <span><b>Controls:</b></span>
+                <div>
+                    - WASD to move around<br>
+                    - ENTER to chat<br>
+                    - B to toggle build mode<br>
+                    - F to open shop<br>
+                </div><br>
+                <span><b>Links:</b></span>
+                <div>
+                    - <a href="https://discord.gg/YZahV2M">Discord</a> <br>
+                    - <a href="https://trello.com/b/LNk99wHx/fuct">Roadmap</a><br>
+                </div><br>
+                <span><b>Made by:</b></span>
+                <div>
+                    - <b>Founder: </b><a href="https://martve.site">Mart van Enckevort</a> <br>
+                    - <b>Partner Manager: </b>Xeukxz#4192</a> <br>
+                </div>
+            </div>
         </div>
         <div id="backgroundOpacity"></div>
-        <div id="HUD">
+        <div id="HUD" oncontextmenu="return false">
             <div id="buildbar"></div>
             <div id="hotbar"></div>
             <div id="HUD-shop" style="display: none;">
@@ -62,11 +83,13 @@
                 <span id="coins">Coins: 50$</span>
             </div>
             <div id="HUD-spawning" style="display: none;">spawning in:<br><span>5</span></div>
+        <div id="chat">
+            <input id="chatInput" autoselect type="text" placeholder='Press "enter" to start typing...'></input>
+            <div id="chatOutput"></div>
         </div>
-        <input id="chatInput" autoselect type="text" placeholder='Press "enter" to start typing...'></input>
-        <div id="chatOutput"></div>
+        </div>
         <div id="debugpanel" onclick="toggleDebugPanel()" hidden>Debug</div>
         <input id="adminpassInput" type="password" hidden placeholder="Insert admin/mod password"></input>
-        <canvas id="canvas" ></canvas>
+        <canvas id="canvas" oncontextmenu="return false"></canvas>
     </body>
 </html>
