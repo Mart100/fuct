@@ -1,0 +1,38 @@
+#buildbar {
+  position: absolute;
+  height: 70px;
+  width: 0px;
+  padding: 0px;
+  background-color: rgba(0, 0, 0, 0.3);
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 5px;
+  z-index: 3;
+  overflow: hidden;
+}
+.buildSlot {
+  position: relative;
+  height: 60px;
+  width: 60px;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 5px;
+  margin: 5px;
+  cursor: pointer;
+  display: inline-block;
+}
+.buildSlot img {
+  position: absolute;
+  height: 50px;
+  width: 50px;
+  margin: 5px;
+  cursor: pointer;
+}
+.buildSlot span {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  color: white;
+  background-color: rgba(100, 0, 0, 1);
+  border-radius: 2px;
+}

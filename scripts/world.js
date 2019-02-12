@@ -48,8 +48,7 @@ class World {
           landmine: { amount: 0 },
           wall: { amount: 10 },
           barbedwire: { amount: 0 },
-          spongebob: { amount: 0 },
-          bulldozer: { amount: Infinity }
+          spongebob: { amount: 0 }
         }
       },
       hotbar: {

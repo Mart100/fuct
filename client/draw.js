@@ -46,7 +46,7 @@ const draw = {
     for(buildingname in buildings) {
       let building = buildings[buildingname]
       if(players[building.owner] == undefined) continue
-      switch(building.type) {  
+      switch(building.type) {
           case('turret'):
             ctx.beginPath()
             ctx.fillStyle = players[building.owner].color

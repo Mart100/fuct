@@ -218,7 +218,7 @@ class SocketHandler {
                     }
                 }
                 this.buildings[`${data.pos.x},${data.pos.y}`] = building
-                player.building.list[building.type].amount--
+                player.building.list[data.typeBuilding].amount--
                 break;
             }
             case('remove'):
@@ -256,7 +256,7 @@ class SocketHandler {
                 if(building.health <= 0) this.buildData({pos: building.pos, type: 'remove'}, socket)
                 break
             default:
-            console.log('received unkown type request via socket "buildings": '+data.type+' data: '+data.data+' for building: '+data.id)
+            console.log('ERR: 4857,received unkown type request via socket "buildings": '+data)
         }
     }
     getDistanceBetween(a, b) {

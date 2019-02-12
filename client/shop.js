@@ -82,7 +82,7 @@ function shopElementClick(type) {
         socket.emit('BUY', {item: item, type: type})
 
         // refresh amount / level
-        if(type == 'building') setTimeout(updateBuildBar, 100)
+        if(type == 'building') setTimeout(updateBuildbar, 100)
 
         // refresh shop
         setTimeout(() => {

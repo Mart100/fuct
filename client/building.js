@@ -6,14 +6,20 @@ $(function() {
             // No longer in buildmode
             if(player.buildmode) {
                 player.buildmode = false
-                $('.HUD-buildSlot').css('display','none')
-                $('#HUD-building').animate({'width': '0px', 'padding': '0px'}, 300)
+                $('.buildSlot').css('display','none')
+                $('#buildbar').animate({'width': '0px', 'padding': '0px'}, 300)
             }
             // In buildmode
             else {
                 player.buildmode = true
-                $('#HUD-building').animate({'width': '741px', 'padding': '5px'}, 300, () => {
-                $('.HUD-buildSlot').css('display','inline-block')
+
+                $('.buildSlot').css('display','inline-block')
+
+                $('#buildbar').css('width', 'auto')
+                let buildbarAutoWidth = $('#buildbar').css('width', 'auto').width()
+                $('#buildbar').css('width', '0')
+
+                $('#buildbar').animate({'width': buildbarAutoWidth, 'padding': '5px'}, 300, () => {
                 })
             }
         }
@@ -33,8 +39,8 @@ $(function() {
         clearInterval(player.placingInterval)
     })
     // Clicking on builders taskbar
-    $('#HUD-building').on('click', '*', (event) => {
-        $('.HUD-buildSlot').css('background-color', 'rgba(0, 0, 0, 0.6)')
+    $('#buildbar').on('click', '*', (event) => {
+        $('.buildSlot').css('background-color', 'rgba(0, 0, 0, 0.6)')
         // Color selected building darker
         // clicked image
         let slot
@@ -42,7 +48,8 @@ $(function() {
         if($(event.target).css('height') == '60px') slot = $(event.target) // slot itself
         else slot = $(event.target).parent() // amount text or image
 
-        socket.emit('PLAYER_DATA', {type: 'buildSelected', selected: getSelectedBuilding(slot.attr('id')) })
+        let selected = slot.attr('id').replace('buildSlot-','')
+        socket.emit('PLAYER_DATA', {type: 'buildSelected', selected: selected })
         slot.css('background-color', 'rgba(0, 0, 0, 0.85)')
     })
 })
@@ -56,26 +63,23 @@ function build() {
     // go away if out of range
     if(4 < getDistanceBetween({x: pos.x+0.5, y: pos.y+0.5}, player.pos)) return
     socket.emit('BUILD_DATA', { pos: pos, type: 'add', typeBuilding: player.building.selected })
-    setTimeout(() => {updateBuildBar()}, 100)
+    setTimeout(() => {updateBuildbar()}, 100)
 }
 
-function updateBuildBar() {
-    for(let i = 0; i < 10; i++) {
-        let name = getKeyByIndex(player.building.list, i)
+function updateBuildbar() {
+    $('#buildbar').html('')
+    for(let name in player.building.list) {
+
         let image = images[name]
         if(name == 'wall') image = images.walls.sides0
-        if(image == undefined) $('#HUD-buildSlot'+i+' > img').attr('src', 'https://i.imgur.com/GyZRyx1.png')
-        else {
-            $('#HUD-buildSlot'+i).html(`
-                <img src="${image.src}"/>
-                <span>${player.building.list[name].amount}</span>
-            `)
-        }
+
+        let building = player.building.list[name]
+
+        $('#buildbar').append(`
+        <div class="buildSlot" id="buildSlot-${name}">
+            <img src="${image.src}"/>
+            <span>${player.building.list[name].amount}</span>
+        </div>
+        `)
     }
-}
-function getSelectedBuilding(id) {
-    let index = Number(id.replace('HUD-buildSlot',''))
-    let name = getKeyByIndex(player.building.list, index)
-    if(name == undefined) return 'empty'
-    return name
 }

@@ -122,7 +122,7 @@ function joinedWorld() {
     updateHotbar()
     keyListener()
     mouseListener()
-    updateBuildBar()
+    updateBuildbar()
 
     // Begin drawing
     frame()
