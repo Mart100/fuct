@@ -1,0 +1,30 @@
+#hotbar {
+  position: absolute;
+  height: 70px;
+  width: auto;
+  padding: 0px;
+  background-color: rgba(0, 0, 0, 0.3);
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 5px;
+  z-index: 3;
+}
+.hotbarSlot {
+  position: relative;
+  height: 60px;
+  width: 60px;
+  opacity: 0.6;
+  background-color: black;
+  border-radius: 5px;
+  display: inline-block;
+  margin: 5px;
+  cursor: pointer;
+}
+.hotbarSlot img {
+  position: absolute;
+  height: 50px;
+  width: 50px;
+  margin: 5px;
+  cursor: pointer;
+}

@@ -14,11 +14,22 @@ var app = express();
 
 // require scripts
 const World = require('./scripts/world.js')
+
+// Create Main World
 let mainWorldSettings = {
   password: '6j6l10sjema',
-  borders: {x: 10, y: 10}
+  borders: {x: 100, y: 100}
 }
 worlds['main'] = new World('main', mainWorldSettings)
+
+// Create Testing World
+let testingWorldSettings = {
+  password: 'mv4ses70s0',
+  borders: {x: 10, y: 10}
+}
+worlds['testing'] = new World('testing', testingWorldSettings)
+
+
 app.use('/', express.static('client'))
 
 app.use('/:id/', express.static('client'))

@@ -119,7 +119,7 @@ function joinedWorld() {
 
     $("#playScreen").hide()
     $('#backgroundOpacity').animate({'opacity': '0'}, 500, () => $('#backgroundOpacity').hide())
-    updateHotbarImages()
+    updateHotbar()
     keyListener()
     mouseListener()
     updateBuildBar()
@@ -135,11 +135,10 @@ function getDistanceBetween(a, b) {
     return result
 }
 
-function updateHotbarImages() {
-    // hotbar stuff
+function updateHotbar() {
+    $('#hotbar').html('')
     for(let i in player.hotbar.list) {
-        // loop trough items in player.hotbar
-        $('#HUD-hotbarSlot'+player.hotbar.list[i].slot+' > img').attr('src', images[i].src)
+        $('#hotbar').append(`<div class="hotbarSlot" id="hotbarSlot-${i}"><img src="${images[i].src}"/></div>`)
     }
 }
 function getKeyByIndex(object, index) {

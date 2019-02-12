@@ -90,36 +90,6 @@ body {
     background-color: rgba(100, 0, 0, 1);
     border-radius: 2px;
 }
-#HUD-hotbar {
-  position: absolute;
-  height: 70px;
-  width: 741px;
-  padding: 0px;
-  background-color: rgba(0, 0, 0, 0.3);
-  bottom: 5%;
-  left: 50%;
-  transform: translateX(-50%);
-  border-radius: 5px;
-  z-index: 3;
-}
-.HUD-hotbarSlot {
-  position: relative;
-  height: 60px;
-  width: 60px;
-  opacity: 0.6;
-  background-color: black;
-  border-radius: 5px;
-  display: inline-block;
-  margin: 5px;
-  cursor: pointer;
-}
-.HUD-hotbarSlot img {
-  position: absolute;
-  height: 50px;
-  width: 50px;
-  margin: 5px;
-  cursor: pointer;
-}
 #adminpassInput {
   position: absolute;
   top: 500px;

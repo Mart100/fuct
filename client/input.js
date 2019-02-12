@@ -37,27 +37,24 @@ function keyListener() {
 }
 function mouseListener() {
     // Clicking on hotbar
-  $('#HUD-hotbar').on('click', '*', (event) => {
+  $('#hotbar').on('click', '*', (event) => {
     // Color selected hotbaring darker
 
     // clicked image
-    if($(event.target).css('height') == '50px') changeHotbarSlot($(event.target).parent().attr('id').replace('HUD-hotbarSlot',''))
-    
+    if($(event.target).css('height') == '50px') changeHotbarSlot($(event.target).parent().attr('id').replace('hotbarSlot-',''))
     // clicked background
-    else changeHotbarSlot($(event.target).attr('id').replace('HUD-hotbarSlot',''))
+    else changeHotbarSlot($(event.target).attr('id').replace('hotbarSlot-',''))
 
-    socket.emit('players', {id: player.id, type: 'hotbar', player: player.hotbar})
   })
 
 }
 
-function changeHotbarSlot(slot) {
-    slot = Number(slot)
-    $('.HUD-hotbarSlot').css('opacity', '0.6')
+function changeHotbarSlot(item) {
+    $('.hotbarSlot').css('opacity', '0.6')
 
     // Color selected hotbaring darker
-    $(`#HUD-hotbarSlot${slot}`).css('opacity', '0.8')
+    $(`#hotbarSlot-${item}`).css('opacity', '0.8')
     
     // send new item the player is holding to the server
-    socket.emit('PLAYER_DATA', {id: player.id, type: 'hotbarSelected', selected: slot})
+    socket.emit('PLAYER_DATA', {id: player.id, type: 'hotbarSelected', selected: item})
 }

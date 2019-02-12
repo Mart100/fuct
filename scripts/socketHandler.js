@@ -295,11 +295,9 @@ class SocketHandler {
         // collect players data to send
         for(let id in this.players) {
             let player = this.players[id]
-            let holding
-            for(let item in player.hotbar.list) if(player.hotbar.list[item].slot == player.hotbar.selected) holding = item
             data[id] = {
                 pos: player.pos,
-                holding: holding,
+                holding: player.hotbar.selected,
                 health: player.health,
                 color: player.color,
                 username: player.username,

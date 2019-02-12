@@ -1,12 +1,12 @@
 $(() => {
     $('#canvas').on('click', function(event) {
         let mousePos = {x: event.pageX, y: event.pageY}
-        let tool
 
         // if building return
         if(player.buildmode) return
         // get tool
-        for(item in player.hotbar.list) if(player.hotbar.list[item].slot == player.hotbar.selected) tool = item
+        let tool = player.hotbar.selected
+        console.log(tool)
 
         switch(tool) {
             case('sword'): {
