@@ -1,0 +1,46 @@
+#stats {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.6);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 2px;
+  width: 360px;
+  height: 300px;
+  z-index: 1;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  display: none;
+}
+#stats > #continue {
+  padding: 20px 0;
+  position: relative;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.6);
+  width: 300px;
+  border-radius: 2px;
+  font-size: 200%;
+  color: #165b1e;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  vertical-align: middle;
+  transition: .7s;
+}
+#stats > #continue:hover {
+  background-color: #165b1e;
+  color: black;
+}
+#stats span {
+  font-size: 30px;
+  font-weight: 300;
+}
+#stats p {
+  font-size: 20px;
+}
+
+#stats b {
+  font-weight: 800;
+}

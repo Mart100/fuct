@@ -66,7 +66,13 @@ class World {
       username: username,
       color: `rgb(${Math.round(Math.random() * 255)},${Math.round(Math.random() * 255)},${Math.round(Math.random() * 255)})`,
       health: 100,
-      isDead: false
+      isDead: false,
+      stats: {
+        kills: 0,
+        deaths: 0,
+        coreDestroys: 0,
+        totalCoins: 0
+      }
     }
     this.socketHandler.addSocket(socket)
 

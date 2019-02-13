@@ -17,6 +17,8 @@
         <link rel="stylesheet" type="text/css" href="./styles/menu.css">
         <link rel="stylesheet" type="text/css" href="./styles/hotbar.css">
         <link rel="stylesheet" type="text/css" href="./styles/buildbar.css">
+        <link rel="stylesheet" type="text/css" href="./styles/stats.css">
+        <link rel="stylesheet" type="text/css" href="./styles/leaderboard.css">
 
         <!-- Jquery-->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -68,6 +70,11 @@
                 </div>
             </div>
         </div>
+        <div id="stats">
+            <span>Statistics:</span>
+            <p></p>
+            <div id="continue">Continue</div>
+        </div>
         <div id="backgroundOpacity"></div>
         <div id="HUD" oncontextmenu="return false">
             <div id="buildbar"></div>
@@ -83,10 +90,11 @@
                 <span id="coins">Coins: 50$</span>
             </div>
             <div id="HUD-spawning" style="display: none;">spawning in:<br><span>5</span></div>
-        <div id="chat">
-            <input id="chatInput" autoselect type="text" placeholder='Press "enter" to start typing...'></input>
-            <div id="chatOutput"></div>
-        </div>
+            <div id="chat">
+                <input id="chatInput" autoselect type="text" placeholder='Press "enter" to start typing...'></input>
+                <div id="chatOutput"></div>
+            </div>
+            <div id="leaderboard"></div>
         </div>
         <div id="debugpanel" onclick="toggleDebugPanel()" hidden>Debug</div>
         <input id="adminpassInput" type="password" hidden placeholder="Insert admin/mod password"></input>

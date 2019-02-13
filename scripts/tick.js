@@ -44,7 +44,8 @@ function buildingTick(id, world) {
 
   //goldmine
   if(building.type == 'miner') {
-    world.players[building.owner].coins = Number(world.players[building.owner].coins) + 0.01
+    world.players[building.owner].coins += 0.01
+    world.players[building.owner].stats.totalCoins += 0.01
   }
 }
 
@@ -160,6 +161,7 @@ function playerTick(id, world) {
     player.spawning = new Date()
     player.health = 100000000
     player.pos = {x: 1e9, y: 1e9}
+    player.stats.deaths++
   }
 
   // if spawning timer ender

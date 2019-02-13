@@ -80,6 +80,7 @@ class SocketHandler {
                 if(player.hotbar.list['sword'].range < this.getDistanceBetween(player.pos, this.players[data.target].pos)) return
 
                 this.players[data.target].health -= 5+(player.hotbar.list['sword'].level*2)
+                if(this.players[data.target].health < 0) player.stats.kills++
                 break
             }
             case('buildSelected'): {
@@ -237,8 +238,8 @@ class SocketHandler {
                         socket.emit('alert', {color: 'green', text: `You destroyed ${this.players[building.owner].username}'s core!`})
                         this.sockets[building.owner].emit('alert', {color: 'red', text: `${player.username} destroyed your core!`})
 
-                        let playerScore = calculatePlayerScore(this.players[building.owner])
-                        this.sockets[building.owner].emit('destroyed', {score: playerScore })
+                        let playerStats = this.players[building.owner].stats
+                        this.sockets[building.owner].emit('destroyed', {stats: playerStats })
                         this.onDisconnect({}, this.sockets[building.owner])
                         break
                     }
