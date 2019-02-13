@@ -56,12 +56,10 @@ class World {
         list: {
           sword: {
             level: 1,
-            slot: 0,
             range: 3
           },
           pickaxe: {
             level: 1,
-            slot: 1
           }
         }
       },
