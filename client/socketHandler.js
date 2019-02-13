@@ -39,7 +39,12 @@ socket.on('destroyed', (data) => {
 
 socket.on('leaderboard', (data) => {
   let html = ''
-  for(playerL of data) html += `<b>${playerL.username}: </b>${playerL.totalCoins}<br>`
+  for(playerL of data) {
+    let name = `<b>${playerL.username}: </b>`
+    if(player.username == playerL.username) name = '<u>'+name+'</u>'
+    let total = `${name} ${playerL.totalCoins}<br>`
+    html += total
+  }
   $('#leaderboard').html(html)
 })
 
