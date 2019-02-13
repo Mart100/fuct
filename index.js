@@ -54,7 +54,10 @@ io.on('connection', function(socket) {
     console.log(`Player ${username} tries to join world `+gameID)
     let world = worlds[gameID]
 
+    username = username.trim()
+
     // return when errors
+    if(username == '') return callback('EMPTY_USERNAME', gameID)
     if(username.length > 20) return callback('USERNAME_TOO_LONG', gameID)
     if(world == undefined) return callback('WORLD_UNDEFINED', gameID)
 
