@@ -98,7 +98,7 @@ $(function() {
 function onPlayButton() {
     player.id = socket.id
 
-    if($('#nameInput').val() != '') player.username = $('#nameInput').val()
+    if($('#nameInput').val() != '') player.username = $('#nameInput').val().trim()
     else player.username = 'Guest-'+Math.round(Math.random()*1000)
 
     // request world
