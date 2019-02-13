@@ -10,6 +10,10 @@ function tick(world) {
 
   // playerTick
   for(let id in world.players) playerTick(id, world)
+
+  // updateLeaderboard
+  if(world.tickCount % 100 == 1) sendLeaderboard(world)
+  //else console.log(world.tickCount % 100)
  
   checkTPS(world)
 
@@ -20,10 +24,11 @@ module.exports = tick
 
 function checkTPS(world) {
   // Check if latest TPScheck was 1sec ago
-  if(process.hrtime()[0] > world.latestTPS) {
-    world.socketHandler.broadcast('TPS', world.tickCount)
-    world.tickCount = 0
-    world.latestTPS = process.hrtime()[0]
+  if(process.hrtime()[0] > world.tps.latestTPS) {
+    let tps = world.tickCount - world.tps.startTickCount
+    world.socketHandler.broadcast('TPS', tps)
+    world.tps.startTickCount = world.tickCount
+    world.tps.latestTPS = process.hrtime()[0]
   }
 }
 
@@ -47,6 +52,21 @@ function buildingTick(id, world) {
     world.players[building.owner].coins += 0.01
     world.players[building.owner].stats.totalCoins += 0.01
   }
+}
+
+function sendLeaderboard(world) {
+  let players = []
+  
+  for(let player of Object.values(world.players)) {
+    players.push({
+      totalCoins: Math.round(player.stats.totalCoins),
+      username: player.username
+    })
+  }
+  players.sort((a, b) => b.totalCoins-a.totalCoins)
+  players.slice(0, 10)
+  world.socketHandler.broadcast('leaderboard', players)
+
 }
 
 function turretTick(building, world) {

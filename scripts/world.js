@@ -8,7 +8,10 @@ class World {
     this.players = {}
     this.buildings = {}
     this.socketHandler = new SocketHandler(this)
-    this.latestTPS = process.hrtime()[0]
+    this.tps = {
+      latestTPS: process.hrtime()[0],
+      startTickCount: 0
+    }
     this.tickCount = 0
     if(settings == undefined) settings = {}
     this.settings = settings

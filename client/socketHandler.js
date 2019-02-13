@@ -37,6 +37,12 @@ socket.on('destroyed', (data) => {
   
 })
 
+socket.on('leaderboard', (data) => {
+  let html = ''
+  for(playerL of data) html += `<b>${playerL.username}: </b>${playerL.totalCoins}<br>`
+  $('#leaderboard').html(html)
+})
+
 // ping
 setInterval(() => {
   ping.ping = performance.now()

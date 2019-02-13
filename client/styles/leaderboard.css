@@ -1,0 +1,13 @@
+#leaderboard {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-size: 20px;
+  top: 0px;
+  right: 0px;
+  width: 150px;
+  height: auto;
+  border-radius: 0px 0px 0px 4px;
+  padding: 10px;
+  user-select: none;
+}
