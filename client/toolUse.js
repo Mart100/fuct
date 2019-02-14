@@ -6,7 +6,6 @@ $(() => {
         if(player.buildmode) return
         // get tool
         let tool = player.hotbar.selected
-        console.log(tool)
 
         switch(tool) {
             case('sword'): {
