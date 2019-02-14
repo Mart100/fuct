@@ -12,7 +12,7 @@ function tick(world) {
   for(let id in world.players) playerTick(id, world)
 
   // updateLeaderboard
-  if(world.tickCount % 1000 == 1) sendLeaderboard(world)
+  if(world.tickCount % 100 == 1) sendLeaderboard(world)
   //else console.log(world.tickCount % 100)
  
   checkTPS(world)
