@@ -2,8 +2,13 @@ let ctx, canvas
 let ping = {pong: 0, ping: 0}
 let tps = 0
 let latestframe
+let cookiesAccepted = false
 let framecount = 0
 const images = {}
+let settings = {
+    volume: 50,
+    chatEnabled: true,
+}
 let players = {}
 let buildings = {}
 // the player object
@@ -48,7 +53,10 @@ let player = {
     zoom: 100,
 }
 
-$(function() {
+$(() => {
+
+    if(document.cookie != '') cookiesAccepted = true
+
     canvas = document.getElementById('canvas')
     ctx = canvas.getContext("2d")
 

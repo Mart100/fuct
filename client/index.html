@@ -19,6 +19,7 @@
         <link rel="stylesheet" type="text/css" href="./styles/buildbar.css">
         <link rel="stylesheet" type="text/css" href="./styles/stats.css">
         <link rel="stylesheet" type="text/css" href="./styles/leaderboard.css">
+        <link rel="stylesheet" type="text/css" href="./styles/settings.css">
 
         <!-- Jquery-->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -40,6 +41,8 @@
         <script src="input.js"></script>
         <script src="toolUse.js"></script>
         <script src="shopPrices.js"></script>
+        <script src="settings.js"></script>
+        <script src="cookies.js"></script>
 
 
     </head>
@@ -74,6 +77,11 @@
             <span>Statistics:</span>
             <p></p>
             <div id="continue">Continue</div>
+        </div>
+        <div id="settings">
+            <div id="exit"><img src="https://i.imgur.com/WAFVb0c.png"/></div>
+            Sound volume:<input id="volume" type="range" min="0" max="100"><br>
+            Chat enabled:<input id="chat" type="checkbox">
         </div>
         <div id="backgroundOpacity"></div>
         <div id="HUD" oncontextmenu="return false">
