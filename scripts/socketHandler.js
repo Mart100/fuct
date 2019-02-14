@@ -112,6 +112,7 @@ class SocketHandler {
 			} 
     }
     buildData(data, socket) {
+        if(this.players[socket.id] == undefined) return 
         if(4 < this.getDistanceBetween({x: data.pos.x+0.5, y: data.pos.y+0.5}, this.players[socket.id].pos)) return
         let building = this.buildings[`${data.pos.x},${data.pos.y}`]
         let player = this.players[socket.id]

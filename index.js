@@ -25,7 +25,7 @@ worlds['main'] = new World('main', mainWorldSettings)
 // Create Testing World
 let testingWorldSettings = {
   password: 'mv4ses70s0',
-  borders: {x: 10, y: 10}
+  borders: {x: 40, y: 40}
 }
 worlds['testing'] = new World('testing', testingWorldSettings)
 
