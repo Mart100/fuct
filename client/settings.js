@@ -16,6 +16,8 @@ $(() => {
       cookiesAccepted = true
       $('#settings > #cookies').remove()
       setCookie('cookiesAccepted', 'true')
+      setCookie('soundVolume', Number($('#settings > #volume').val()))
+      setCookie('chatEnabled', $('#settings > #chat').prop('checked'))
     })
   }
 })
