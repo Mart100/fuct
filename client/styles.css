@@ -31,6 +31,8 @@ body {
 #HUD {
   z-index: 2;
   user-select: none;
+  -moz-user-select: none;
+  cursor: default;
 }
 #nameInput {
   position: relative;
