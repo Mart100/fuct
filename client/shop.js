@@ -53,7 +53,7 @@ async function showTools() {
     $('#HUD-shopIndex').html('')
     for(let num in shop.tools) {
         let tool = shop.tools[num]
-        $('#HUD-shopIndex').append(`<div id="HUD-shopList-${tool.for}" class="HUD-shopItem"><img src="${tool.img}"/><span class="shopItemPrice">${toolPrices[tool.for]}$</span></div>`)
+        $('#HUD-shopIndex').append(`<div id="HUD-shopList-${tool.for}" class="HUD-shopItem"><span id="itemName">${tool.for}</span><img src="${tool.img}"/><span class="shopItemPrice">${toolPrices[tool.for]}$</span></div>`)
     }
     shopElementClick('tool')
 }
@@ -64,7 +64,7 @@ async function showBuildings() {
     $('#HUD-shopIndex').html('')
     for(let num in shop.buildings) {
         let building = shop.buildings[num]
-        $('#HUD-shopIndex').append(`<div id="HUD-shopList-${building.for}" class="HUD-shopItem"><img src="${building.img}"/><span class="shopItemPrice">${buildingPrices[building.for]}$</span></div>`)
+        $('#HUD-shopIndex').append(`<div id="HUD-shopList-${building.for}" class="HUD-shopItem"><span id="itemName">${building.for}</span><img src="${building.img}"/><span class="shopItemPrice">${buildingPrices[building.for]}$</span></div>`)
     }
     shopElementClick('building')
 }

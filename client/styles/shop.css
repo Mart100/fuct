@@ -24,11 +24,11 @@
 .shopItemPrice {
     position: absolute;
     width: auto;
-    padding: 2px;
+    padding: 3px;
     height: 15px;
     background-color: rgba(0, 0, 0, 0.6);
     color: white;
-    transform: translateX(-100%) translateY(101px);
+    transform: translateX(-100%) translateY(99px);
     border-radius: 2px 0 0 0;
 }
 .HUD-shopItem:hover {
@@ -61,4 +61,16 @@
 #HUD-shopNavTools {
     float: left;
     border-radius: 5px 0px 0px 0px;
+}
+
+.HUD-shopItem #itemName {
+    position: absolute;
+    width: 100px;
+    padding: 1px 10px;
+    font-size: 15px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    transform: translateY(0px);
+    border-radius: 2px 0 0 0;
+    text-align: center;
 }

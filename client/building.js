@@ -20,8 +20,7 @@ $(function() {
                 let buildbarAutoWidth = $('#buildbar').css('width', 'auto').width()
                 $('#buildbar').css('width', '0')
 
-                $('#buildbar').animate({'width': buildbarAutoWidth, 'padding': '5px'}, 300, () => {
-                })
+                $('#buildbar').animate({'width': buildbarAutoWidth, 'padding': '5px'}, 300)
             }
         }
     })
@@ -75,6 +74,7 @@ function updateBuildbar() {
         if(name == 'wall') image = images.walls.sides0
 
         let building = player.building.list[name]
+        if(building.amount < 1) continue
 
         $('#buildbar').append(`
         <div class="buildSlot" id="buildSlot-${name}">
@@ -83,4 +83,10 @@ function updateBuildbar() {
         </div>
         `)
     }
+
+    // update width of buildBar
+    let buildbarCurrentWidth = $('#buildbar').width()
+    let buildbarAutoWidth = $('#buildbar').css('width', 'auto').width()
+    $('#buildbar').css('width', buildbarCurrentWidth)
+    $('#buildbar').animate({'width': buildbarAutoWidth, 'padding': '5px'}, 300)
 }
