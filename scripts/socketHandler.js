@@ -144,8 +144,8 @@ class SocketHandler {
                     'type': data.typeBuilding,
                     'owner': socket.id,
                     'pos': {
-                    'x': data.pos.x,
-                    'y': data.pos.y
+                        'x': data.pos.x,
+                        'y': data.pos.y
                     },
                     'health': 100,
                     'maxHealth': 100,
@@ -220,7 +220,24 @@ class SocketHandler {
                     }
                 }
                 this.buildings[`${data.pos.x},${data.pos.y}`] = building
+
+                // if size is bigger
                 if(this.world.buildingsData[data.typeBuilding].size != {x: 1, y: 1}) {
+                    let size = this.world.buildingsData[data.typeBuilding].size
+                    let xs = building.pos.x // x start
+                    let ys = building.pos.y // y start
+                    for(let x=xs;x<size.x+xs;x++)  {
+                        for(let y=ys;y<size.y+ys;y++) {
+                            if(x == xs && y == ys) continue
+                            let buildingExt = {
+                                ext: `${data.pos.x},${data.pos.y}`,
+                                pos: { x: x, y: y },
+                                collision: true
+                            }
+                            this.buildings[`${x},${y}`] = buildingExt
+                        }
+                    }
+                }
                 player.building.list[data.typeBuilding].amount--
                 break;
             }
@@ -246,7 +263,16 @@ class SocketHandler {
                         break
                     }
                 }
-                // then delete building
+                
+                // if size remove all extensions of building
+                if(this.world.buildingsData[building.type].size != {x: 1, y: 1}) {
+                    for(let id in this.buildings) {
+                        let e = this.buildings[id]
+                        if(e.ext && e.ext == bPosX+','+bPosY) delete this.buildings[id]
+                    }
+                }
+
+                // delete building
                 delete this.buildings[`${bPosX},${bPosY}`]
                 break
             case('damage'):
