@@ -129,6 +129,10 @@ class SocketHandler {
                 //if building at that place already exists return
                 if(this.buildings[`${data.pos.x},${data.pos.y}`] != undefined && data.typeBuilding != 'bulldozer') return
 
+                // if building with size. check extension overlap
+                let buildingSize = this.world.buildingsData[data.typeBuilding].size
+                for(let x=data.pos.x;x<buildingSize.x+data.pos.x;x++) for(let y=data.pos.y;y<buildingSize.y+data.pos.y;y++) if(this.buildings[x+','+y]) return
+
                 // If player hasnt build a core yet
                 if(getBuildingsArray(this.buildings).find((a) => a.owner == socket.id && a.type == 'core') == undefined && data.typeBuilding != 'core') {
                     return socket.emit('alert', {color: 'white', text: `Place your core first!`})
@@ -222,8 +226,8 @@ class SocketHandler {
                 this.buildings[`${data.pos.x},${data.pos.y}`] = building
 
                 // if size is bigger
-                if(this.world.buildingsData[data.typeBuilding].size != {x: 1, y: 1}) {
-                    let size = this.world.buildingsData[data.typeBuilding].size
+                if(buildingSize != {x: 1, y: 1}) {
+                    let size = buildingSize
                     let xs = building.pos.x // x start
                     let ys = building.pos.y // y start
                     for(let x=xs;x<size.x+xs;x++)  {
@@ -286,7 +290,7 @@ class SocketHandler {
                 if(building.health <= 0) this.buildData({pos: building.pos, type: 'remove'}, socket)
                 break
             default:
-            console.log('ERR: 4857,received unkown type request via socket "buildings": '+data)
+                console.log('ERR: 4857,received unkown type request via socket "buildings": '+data)
         }
     }
     getDistanceBetween(a, b) {
