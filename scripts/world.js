@@ -44,15 +44,7 @@ class World {
       speed: 0.05,
       building: {
         selected: 'core',
-        list: {
-          core: { amount: 1 },
-          miner: { amount: 1 },
-          turret: { amount: 1 },
-          landmine: { amount: 0 },
-          wall: { amount: 10 },
-          barbedwire: { amount: 0 },
-          spongebob: { amount: 0 }
-        }
+        list: {}
       },
       hotbar: {
         selected: 1,
@@ -76,6 +68,12 @@ class World {
         coreDestroys: 0,
         totalCoins: 0
       }
+    }
+
+    // add startBuildings to building.list
+    for(let buildingName in this.buildingsData) {
+      let building = this.buildingsData[buildingName]
+      this.players[socket.id].building.list[buildingName] = {amount: building.startAmount}
     }
     this.socketHandler.addSocket(socket)
 
