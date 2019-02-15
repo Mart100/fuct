@@ -73,6 +73,9 @@ function loadImages() {
   //miner
   images.miner = new Image()
   images.miner.src = 'https://cdn.discordapp.com/attachments/235452993741389824/424195191700848640/miner.png'
+  //cloneFactory
+  images.cloneFactory = new Image()
+  images.cloneFactory.src = 'https://gyazo.com/3b9acfb270e46946247dfcd1e766f659.png'
   // empty
   images.empty = new Image()
   images.empty.src = 'https://i.imgur.com/GyZRyx1.png'
