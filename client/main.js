@@ -30,18 +30,6 @@ let player = {
     inshopFired: false,
     spawning: false,
     color: 'rgb(255, 0, 0)',
-    offset: {
-        x() {
-            let offset = player.pos.x > 0 ? Number('0.'+player.pos.x.toString().split('.')[1]) : -Number('0.'+player.pos.x.toString().split('.')[1])
-            if(offset == undefined || isNaN(offset)) offset = 0
-            return offset
-        },
-        y() {
-            let offset = player.pos.y > 0 ? Number('0.'+player.pos.y.toString().split('.')[1]) : -Number('0.'+player.pos.y.toString().split('.')[1])
-            if(offset == undefined || isNaN(offset)) offset = 0
-            return offset
-        }
-    },
     selectedGrid: {
         x: 0.01,
         y: 0.01
@@ -72,11 +60,8 @@ $(() => {
     setInterval(() => {
         if(player.pos == undefined) return
 
-        let offsetX = player.offset.x()
-        let offsetY = player.offset.y()
-
-        player.selectedGrid.x = Math.floor((player.mouse.x - canvas.width/2 + offsetX * player.zoom) / player.zoom)
-        player.selectedGrid.y = Math.floor((player.mouse.y - canvas.height/2 + offsetY * player.zoom) / player.zoom)
+        player.selectedGrid.x = Math.floor((player.mouse.x - canvas.width/2 + PGO.x * player.zoom) / player.zoom)
+        player.selectedGrid.y = Math.floor((player.mouse.y - canvas.height/2 + PGO.y * player.zoom) / player.zoom)
     }, 10)
 
     // mouse Movement

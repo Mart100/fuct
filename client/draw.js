@@ -1,3 +1,5 @@
+let PGO = {x: 0, y: 0} // Player Grid Offset
+
 async function frame() {
     requestAnimationFrame(frame)
     if(player == undefined) return
@@ -6,6 +8,15 @@ async function frame() {
     // set canvas to screen
     if(canvas.width != window.innerWidth) canvas.width = window.innerWidth
     if(canvas.height != window.innerHeight) canvas.height = window.innerHeight
+
+    // update playerGridOffset
+    let offsetX = player.pos.x > 0 ? Number('0.'+player.pos.x.toString().split('.')[1]) : -Number('0.'+player.pos.x.toString().split('.')[1])
+    if(offsetX == undefined || isNaN(offsetX)) offsetX = 0
+    PGO.x = offsetX
+
+    let offsetY = player.pos.y > 0 ? Number('0.'+player.pos.y.toString().split('.')[1]) : -Number('0.'+player.pos.y.toString().split('.')[1])
+    if(offsetY == undefined || isNaN(offsetY)) offsetY = 0
+    PGO.y = offsetY
 
     // Clear Screen
     ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -17,8 +28,10 @@ async function frame() {
     draw.objects()
     draw.hudData()
     draw.borders()
+
     // If player is in buildmode
     if(player.buildmode) draw.selectedGrid()
+
   }
 
 const draw = {
@@ -28,17 +41,15 @@ const draw = {
     ctx.beginPath()
     ctx.strokeStyle = "#6d6d6d"
     ctx.lineWidth = 1
-    let offX = player.offset.x()
-    let offY = player.offset.y()
     let zoom = player.zoom
 
     for (let i = -Math.round(canvas.width/zoom/2); i <= Math.round(canvas.width/zoom/2); i++) { // lines on Y
-        ctx.moveTo(canvas.width/2 + i*zoom - offX*zoom, 0)
-        ctx.lineTo(canvas.width/2 + i*zoom - offX*zoom, canvas.height)
+        ctx.moveTo(canvas.width/2 + i*zoom - PGO.x*zoom, 0)
+        ctx.lineTo(canvas.width/2 + i*zoom - PGO.x*zoom, canvas.height)
     }
     for (let i = -Math.round(canvas.height/zoom/2); i <= Math.round(canvas.height/zoom/2); i++) { // lines on X  
-        ctx.moveTo(0           , canvas.height/2 + i*zoom - offY*zoom)
-        ctx.lineTo(canvas.width, canvas.height/2 + i*zoom - offY*zoom)
+        ctx.moveTo(0           , canvas.height/2 + i*zoom - PGO.y*zoom)
+        ctx.lineTo(canvas.width, canvas.height/2 + i*zoom - PGO.y*zoom)
     }
     ctx.stroke()
   },
@@ -268,21 +279,22 @@ const draw = {
     }
   },
   selectedGrid() {
-    ctx.beginPath()
+    
+    // draw border around image hologram. Green if building can be placed there. Red if not
     ctx.lineWidth = 10
-    if(buildings[`${player.selectedGrid.x+Number(player.pos.x.toString().split('.')[0])},${player.selectedGrid.y+Number(player.pos.y.toString().split('.')[0])}`] != undefined 
-    || 4 < getDistanceBetween({x: player.selectedGrid.x+0.5-player.offset.x(), y: player.selectedGrid.y+0.5-player.offset.y()}, {x: 0, y: 0}))
+    if(buildings[`${player.selectedGrid.x+PGO.x},${player.selectedGrid.y+PGO.y}`] != undefined 
+    || 4 < getDistanceBetween({x: player.selectedGrid.x+0.5-PGO.x, y: player.selectedGrid.y+0.5-PGO.y}, {x: 0, y: 0}))
     {
         ctx.strokeStyle = "#bc0909"
     }
     else ctx.strokeStyle = "#4dd130"
-    ctx.rect(canvas.width/2 + (player.selectedGrid.x-player.offset.x())*player.zoom, canvas.height/2 + (player.selectedGrid.y-player.offset.y())*player.zoom, player.zoom, player.zoom)
     ctx.globalAlpha = 0.5
+    ctx.strokeRect(canvas.width/2 + (player.selectedGrid.x-PGO.x)*player.zoom, canvas.height/2 + (player.selectedGrid.y-PGO.y)*player.zoom, player.zoom, player.zoom)
 
+    // draw hologram of building player is about to place
     let image = images[player.building.selected]
     if(player.building.selected == 'wall') image = images.walls.sides0
-    ctx.drawImage(image, canvas.width/2 + (player.selectedGrid.x-player.offset.x())*player.zoom, canvas.height/2 + (player.selectedGrid.y-player.offset.y())*player.zoom, player.zoom, player.zoom)
-    ctx.stroke()
+    ctx.drawImage(image, canvas.width/2 + (player.selectedGrid.x-PGO.x)*player.zoom, canvas.height/2 + (player.selectedGrid.y-PGO.y)*player.zoom, player.zoom, player.zoom)
     ctx.globalAlpha = 1
   },
   inhand() {
