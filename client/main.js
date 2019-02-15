@@ -110,11 +110,14 @@ function onPlayButton() {
     else player.username = 'Guest-'+Math.round(Math.random()*1000)
 
     // request world
-    socket.emit('requestWorld', player.username , (err, worldInfo) => {
+    socket.emit('requestWorld', player.username , (err, data) => {
 
         // succesfully connected
         if(err == null) {
-            player.worldInfo = worldInfo
+            player.world = {}
+            player.world.borders = data.worldBorders
+            player.world.id = data.worldID
+            player.buildingsData = data.buildingsData
 
             setTimeout(() => { joinedWorld() }, 100)
 
@@ -125,7 +128,7 @@ function onPlayButton() {
 
 function joinedWorld() {
 
-    history.replaceState(player.worldInfo.id, '', `/${player.worldInfo.id}/`)    
+    history.replaceState(player.world.id, '', `/${player.world.id}/`)    
 
 
 

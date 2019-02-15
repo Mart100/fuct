@@ -13,8 +13,8 @@ class World {
       startTickCount: 0
     }
     this.tickCount = 0
-    if(settings == undefined) settings = {}
-    this.settings = settings
+    this.buildingsData = settings.buildingsData
+    this.borders = settings.borders
   }
   tick() {
     tick(this)
@@ -30,8 +30,8 @@ class World {
       id: socket.id,
       coins: 50,
       pos: {
-        x: (Math.random()*this.settings.borders.x*2)-this.settings.borders.x,
-        y: (Math.random()*this.settings.borders.y*2)-this.settings.borders.y
+        x: (Math.random()*this.borders.x*2)-this.borders.x,
+        y: (Math.random()*this.borders.y*2)-this.borders.y
       },
       admin: false,
       moving: {
@@ -85,7 +85,7 @@ class World {
 
     let playerX = player.pos.x
     let playerY = player.pos.y
-    let borders = this.settings.borders
+    let borders = this.borders
 
     if(direction == 'north') playerY -= player.speed
     if(direction == 'east') playerX += player.speed

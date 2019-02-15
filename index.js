@@ -14,18 +14,21 @@ var app = express();
 
 // require scripts
 const World = require('./scripts/world.js')
+const buildingsData = require('./scripts/buildingsData.js')
 
 // Create Main World
 let mainWorldSettings = {
   password: '6j6l10sjema',
-  borders: {x: 100, y: 100}
+  borders: {x: 100, y: 100},
+  buildingsData: buildingsData
 }
 worlds['main'] = new World('main', mainWorldSettings)
 
 // Create Testing World
 let testingWorldSettings = {
   password: 'mv4ses70s0',
-  borders: {x: 40, y: 40}
+  borders: {x: 10, y: 10},
+  buildingsData: buildingsData
 }
 worlds['testing'] = new World('testing', testingWorldSettings)
 
@@ -65,11 +68,12 @@ io.on('connection', function(socket) {
 
     world.addPlayer(socket, username)
     
-    let worldInfoToClient = {
-      borders: world.settings.borders,
-      id: gameID
+    let infoToClient = {
+      worldBorders: world.borders,
+      worldID: gameID,
+      buildingsData: world.buildingsData
     }
-    callback(null, worldInfoToClient)
+    callback(null, infoToClient)
   })
 
   console.log('made connection:', socket.id)

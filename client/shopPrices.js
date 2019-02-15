@@ -31,7 +31,7 @@ function getMinerPrice(buildings, player) {
   let buildingsArray = Object.values(buildings)
   let amountOfMiners = buildingsArray.filter((a) => a.owner == socket.id && a.type == 'miner' ).length
   amountOfMiners += player.building.list['miner'].amount
-  return shopPrices.buildings.miner * amountOfMiners * amountOfMiners
+  return 2 * amountOfMiners * amountOfMiners
 }
 
 function getToolPrices(player) {
@@ -53,8 +53,11 @@ function getToolPrice(tool, player) {
 
 function getBuildingPrice(building, buildings, player) {
   let price = 0
-  if(building == 'miner') price = getMinerPrice(buildings, player)
-  else price = shopPrices.buildings[building]
+  let buildingData = player.buildingsData[building]
+  if(buildingData.price == undefined) {
+    if(building == 'miner') price = getMinerPrice(buildings, player)
+  }
+  else price = buildingData.price
   return price
 }
 

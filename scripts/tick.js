@@ -252,7 +252,7 @@ function playerCollisions(player, world, playerSpeed) {
 
   //Collision checking and moving
   if(player.spawning <= 0) {
-    let borders = world.settings.borders
+    let borders = world.borders
     let PR = 0.9/2 // PlayerRadius
     if(player.moving.north && world.moveAllowed(player, 'north') && player.pos.y-PR > -borders.y) player.pos.y -= Number(playerSpeed)
     if(player.moving.east && world.moveAllowed(player, 'east') && player.pos.x+PR < borders.x) player.pos.x += Number(playerSpeed)

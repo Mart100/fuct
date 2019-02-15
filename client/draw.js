@@ -296,7 +296,7 @@ const draw = {
   },
   borders() {
     // prepare
-    let borders = player.worldInfo.borders
+    let borders = player.world.borders
     ctx.fillStyle = '#6d6d6d'
 
 
