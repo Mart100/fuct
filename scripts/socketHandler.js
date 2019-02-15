@@ -220,6 +220,7 @@ class SocketHandler {
                     }
                 }
                 this.buildings[`${data.pos.x},${data.pos.y}`] = building
+                if(this.world.buildingsData[data.typeBuilding].size != {x: 1, y: 1}) {
                 player.building.list[data.typeBuilding].amount--
                 break;
             }
