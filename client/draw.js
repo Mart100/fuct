@@ -279,22 +279,25 @@ const draw = {
     }
   },
   selectedGrid() {
+    let bz = player.buildingsData[player.building.selected].size // size of building
+    let pz = player.zoom // player zoom
+    let sg = player.selectedGrid // Selected grid
+    let ch = canvas.height // canvas height
+    let cw = canvas.width // canvas width
     
     // draw border around image hologram. Green if building can be placed there. Red if not
     ctx.lineWidth = 10
     if(buildings[`${player.selectedGrid.x+PGO.x},${player.selectedGrid.y+PGO.y}`] != undefined 
-    || 4 < getDistanceBetween({x: player.selectedGrid.x+0.5-PGO.x, y: player.selectedGrid.y+0.5-PGO.y}, {x: 0, y: 0}))
-    {
-        ctx.strokeStyle = "#bc0909"
-    }
+    || 4 < getDistanceBetween({x: sg.x+0.5-PGO.x, y: sg.y+0.5-PGO.y}, {x: 0, y: 0}))
+    { ctx.strokeStyle = "#bc0909" }
     else ctx.strokeStyle = "#4dd130"
     ctx.globalAlpha = 0.5
-    ctx.strokeRect(canvas.width/2 + (player.selectedGrid.x-PGO.x)*player.zoom, canvas.height/2 + (player.selectedGrid.y-PGO.y)*player.zoom, player.zoom, player.zoom)
+    ctx.strokeRect(cw/2 + (sg.x-PGO.x)*pz, ch/2 + (sg.y-PGO.y)*pz, pz*bz.x, pz*bz.y)
 
     // draw hologram of building player is about to place
     let image = images[player.building.selected]
     if(player.building.selected == 'wall') image = images.walls.sides0
-    ctx.drawImage(image, canvas.width/2 + (player.selectedGrid.x-PGO.x)*player.zoom, canvas.height/2 + (player.selectedGrid.y-PGO.y)*player.zoom, player.zoom, player.zoom)
+    ctx.drawImage(image, cw/2 + (sg.x-PGO.x)*pz, ch/2 + (sg.y-PGO.y)*pz, pz*bz.x, pz*bz.y)
     ctx.globalAlpha = 1
   },
   inhand() {
