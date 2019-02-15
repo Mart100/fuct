@@ -43,7 +43,7 @@ $(() => {
                 // if theres no building at cursor return
                 if(building == undefined) return
                 // if its too far away return
-                if(4 < getDistanceBetween({x: player.selectedGrid.x+0.5-player.offset.x(), y: player.selectedGrid.y+0.5-player.offset.y()}, {x: 0, y: 0})) return
+                if(4 < getDistanceBetween({x: player.selectedGrid.x+0.5-PGO.x, y: player.selectedGrid.y+0.5-PGO.y}, {x: 0, y: 0})) return
 
                 // damage building
                 socket.emit('BUILD_DATA', { pos: pos, type: 'damage'})
