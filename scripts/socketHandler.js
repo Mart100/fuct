@@ -263,7 +263,7 @@ class SocketHandler {
                         break
                     }
                 }
-                
+
                 // if size remove all extensions of building
                 if(this.world.buildingsData[building.type].size != {x: 1, y: 1}) {
                     for(let id in this.buildings) {
@@ -276,8 +276,9 @@ class SocketHandler {
                 delete this.buildings[`${bPosX},${bPosY}`]
                 break
             case('damage'):
-                // if undefined building. return
-                if(building == undefined) return
+                // if extension. Go to main
+                if(building.ext) building = this.buildings[building.ext]
+
                 building.health -= 5+(player.hotbar.list['pickaxe'].level*2)
                 // show health of building
                 building.showhealth = 10
