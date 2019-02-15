@@ -54,9 +54,28 @@ const draw = {
     ctx.stroke()
   },
   objects() {
-    for(buildingname in buildings) {
-      let building = buildings[buildingname]
-      if(players[building.owner] == undefined) continue
+    // some shortcuts
+    let pz = player.zoom // player zoom
+    let ch = canvas.height // canvas height
+    let cw = canvas.width // canvas width
+    let ppx = player.pos.x // player position x
+    let ppy = player.pos.y // player position y
+
+    // loop trough all buildings
+    for(buildingID in buildings) {
+
+      // if extension return
+      if(buildings[buildingID].ext) continue
+
+      // some more shortcuts
+      let building = buildings[buildingID]
+      let b = building
+      let bs = player.buildingsData[building.type].size // size of building
+      let bpx = b.pos.x // building position x
+      let bpy = b.pos.y // building position y
+      
+
+      // switch case statement for building type
       switch(building.type) {
           case('turret'):
             ctx.beginPath()
@@ -195,24 +214,26 @@ const draw = {
             }
             break
         case('barbedwire'): {
-            ctx.beginPath()
-            if(building.owner == socket.id) {
-                ctx.strokeStyle = players[building.owner].color
-                ctx.rect(canvas.width/2 + (building.pos.x-player.pos.x)*player.zoom, canvas.height/2 + (building.pos.y-player.pos.y)*player.zoom, player.zoom, player.zoom)
-                ctx.stroke()
-            }
-            ctx.drawImage(images[building.type], canvas.width/2 + (building.pos.x-player.pos.x)*player.zoom, canvas.height/2 + (building.pos.y-player.pos.y)*player.zoom, player.zoom, player.zoom)
-            break
+          ctx.beginPath()
+          if(building.owner == socket.id) {
+              ctx.strokeStyle = players[building.owner].color
+              ctx.rect(canvas.width/2 + (building.pos.x-player.pos.x)*player.zoom, canvas.height/2 + (building.pos.y-player.pos.y)*player.zoom, player.zoom, player.zoom)
+              ctx.stroke()
+          }
+          ctx.drawImage(images[building.type], canvas.width/2 + (building.pos.x-player.pos.x)*player.zoom, canvas.height/2 + (building.pos.y-player.pos.y)*player.zoom, player.zoom, player.zoom)
+          break
         }
 
-          default:
-            ctx.beginPath()
-            ctx.fillStyle = players[building.owner].color
-            ctx.rect(canvas.width/2 + (building.pos.x-player.pos.x)*player.zoom, canvas.height/2 + (building.pos.y-player.pos.y)*player.zoom, player.zoom, player.zoom)
-            ctx.fill()
-            ctx.drawImage(images[building.type], canvas.width/2 + (building.pos.x-player.pos.x)*player.zoom, canvas.height/2 + (building.pos.y-player.pos.y)*player.zoom, player.zoom, player.zoom)
+        default: {
+          ctx.beginPath()
+          ctx.fillStyle = players[building.owner].color
+          ctx.rect(cw/2 + (bpx-ppx)*pz, ch/2 + (bpy-ppy)*pz, pz*bs.x, pz*bs.y)
+          ctx.fill()
+          ctx.drawImage(images[building.type], cw/2 + (bpx-ppx)*pz, ch/2 + (bpy-ppy)*pz, pz*bs.x, pz*bs.y)
+        }
       }
     }
+
     // after buildings are drawn. draw healthbar
     for(let id in buildings) {
       let building = buildings[id]
@@ -279,7 +300,7 @@ const draw = {
     }
   },
   selectedGrid() {
-    let bz = player.buildingsData[player.building.selected].size // size of building
+    let bs = player.buildingsData[player.building.selected].size // size of building
     let pz = player.zoom // player zoom
     let sg = player.selectedGrid // Selected grid
     let ch = canvas.height // canvas height
@@ -292,12 +313,12 @@ const draw = {
     { ctx.strokeStyle = "#bc0909" }
     else ctx.strokeStyle = "#4dd130"
     ctx.globalAlpha = 0.5
-    ctx.strokeRect(cw/2 + (sg.x-PGO.x)*pz, ch/2 + (sg.y-PGO.y)*pz, pz*bz.x, pz*bz.y)
+    ctx.strokeRect(cw/2 + (sg.x-PGO.x)*pz, ch/2 + (sg.y-PGO.y)*pz, pz*bs.x, pz*bs.y)
 
     // draw hologram of building player is about to place
     let image = images[player.building.selected]
     if(player.building.selected == 'wall') image = images.walls.sides0
-    ctx.drawImage(image, cw/2 + (sg.x-PGO.x)*pz, ch/2 + (sg.y-PGO.y)*pz, pz*bz.x, pz*bz.y)
+    ctx.drawImage(image, cw/2 + (sg.x-PGO.x)*pz, ch/2 + (sg.y-PGO.y)*pz, pz*bs.x, pz*bs.y)
     ctx.globalAlpha = 1
   },
   inhand() {
