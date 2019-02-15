@@ -27,14 +27,6 @@ function getShopPrices(a, SH, socket) {
 
 module.exports = getShopPrices
 
-function getMinerPrice(SH, socket) {
-  let buildingsArray = Object.values(SH.buildings)
-  let player = SH.players[socket.id]
-  let amountOfMiners = buildingsArray.filter((a) => a.owner == socket.id && a.type == 'miner' ).length
-  amountOfMiners += player.building.list['miner'].amount
-  return shopPrices.buildings.miner * amountOfMiners * amountOfMiners
-}
-
 function getToolPrices(SH, socket) {
   let toolPrices = {}
   for(let tool in shopPrices.tools) toolPrices[tool] = getToolPrice(tool, SH, socket)
@@ -54,9 +46,10 @@ function getToolPrice(tool, SH, socket) {
 }
 
 function getBuildingPrice(building, SH, socket) {
+  let buildingData = SH.world.buildingsData[building]
   let price = 0
-  if(building == 'miner') price = getMinerPrice(SH, socket)
-  else price = shopPrices.buildings[building]
+  if(typeof buildingData.price == 'function') price = buildingData.price(SH, socket)
+  else price = buildingData.price
   return price
 }
 
