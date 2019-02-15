@@ -41,7 +41,7 @@ function buildingTick(id, world) {
   // landmine
   if(building.type == 'landmine') {
     if(building.exploding >= 1) building.exploding += 0.2
-    if(building.exploding >= 19) delete world.buildings[key]
+    if(building.exploding >= 19) delete world.buildings[id]
   }
 
   // show health of building
