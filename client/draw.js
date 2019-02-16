@@ -60,6 +60,7 @@ const draw = {
     for(let pid in players) {
       let player = players[pid]
       for(let clone of player.clones) {
+        if(clone == undefined) continue
         ctx.beginPath()
         ctx.fillStyle = player.color
         ctx.lineWidth = player.zoom / 10

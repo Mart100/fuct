@@ -16,7 +16,7 @@ function tick(world) {
   //else console.log(world.tickCount % 100)
 
   // cloneTick
-  for(let id in world.players) for(let cloneNum in world.players[id].clones) cloneTick(cloneNum, playerID,  world)
+  for(let playerID in world.players) for(let cloneNum in world.players[playerID].clones) cloneTick(cloneNum, playerID,  world)
  
   checkTPS(world)
 
@@ -36,6 +36,8 @@ function checkTPS(world) {
 }
 
 function cloneTick(cloneNum, playerID, world) {
+  let clone = world.players[playerID].clones[cloneNum]
+  if(clone == undefined) return
   // some vars
   let cloneSpeed = Number(clone.speed)
   let mf = Math.floor
@@ -61,7 +63,7 @@ function cloneTick(cloneNum, playerID, world) {
   playerCollisions(clone, world, cloneSpeed)
 
   // if clone dieded
-  if(clone.health <= 0) delete clone
+  if(clone.health <= 0) delete world.players[playerID].clones[cloneNum]
 
   // regenerate clone
   if(clone.health < clone.maxHealth) clone.health += 0.01
@@ -330,8 +332,8 @@ function playerCollisions(player, world, playerSpeed) {
     let distance = Math.sqrt(dx * dx + dy * dy)
     if (distance < 0.9) {
       let angle = Math.atan2(player.pos.y - playerColl.pos.y, player.pos.x - playerColl.pos.x)
-      player.pos.x += Math.cos(angle) * (1-Math.abs(Number('0.' + player.pos.x.toString().split('.')[1])-Number('0.' + playerColl.pos.x.toString().split('.')[1])))/40
-      player.pos.y += Math.sin(angle) * (1-Math.abs(Number('0.' + player.pos.y.toString().split('.')[1])-Number('0.' + playerColl.pos.x.toString().split('.')[1])))/40
+      player.pos.x += Math.cos(angle) / 40
+      player.pos.y += Math.sin(angle) / 40
     }
   }
 }
