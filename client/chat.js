@@ -68,6 +68,7 @@ socket.on('chat', data => {
     username = players[data.id].username
     color = players[data.id].color
     message = message.replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    username = username.replace(/</g, '&lt;').replace(/>/g, '&gt;')
   }
   // If sender of message is the server
   if(data.id == 'Server') {
