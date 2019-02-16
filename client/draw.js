@@ -28,6 +28,7 @@ async function frame() {
     draw.objects()
     draw.hudData()
     draw.borders()
+    draw.clones()
 
     // If player is in buildmode
     if(player.buildmode) draw.selectedGrid()
@@ -52,6 +53,24 @@ const draw = {
         ctx.lineTo(canvas.width, canvas.height/2 + i*zoom - PGO.y*zoom)
     }
     ctx.stroke()
+  },
+  clones() {
+    let pz = player.zoom // player zoom
+
+    for(let pid in players) {
+      let player = players[pid]
+      for(let clone of player.clones) {
+        ctx.beginPath()
+        ctx.fillStyle = player.color
+        ctx.lineWidth = player.zoom / 10
+        ctx.strokeStyle = "#383838"
+        let cp = clone.pos // clone pos
+        let pp = player.pos // player pos
+        ctx.arc(canvas.width/2 + (cp.x-pp.x)*pz, canvas.height/2 + (cp.y-pp.y)*pz, pz/4, 0, 2*Math.PI)
+        ctx.fill()
+        ctx.stroke()
+      }
+    }
   },
   objects() {
     // some shortcuts

@@ -14,6 +14,9 @@ function tick(world) {
   // updateLeaderboard
   if(world.tickCount % 100 == 1) sendLeaderboard(world)
   //else console.log(world.tickCount % 100)
+
+  // cloneTick
+  for(let id in world.players) for(let clone of world.players[id].clones) cloneTick(clone, world)
  
   checkTPS(world)
 
@@ -31,6 +34,41 @@ function checkTPS(world) {
     world.tps.latestTPS = process.hrtime()[0]
   }
 }
+
+function cloneTick(clone, world) {
+  // some vars
+  let cloneSpeed = Number(clone.speed)
+  let mf = Math.floor
+  let cpx = clone.pos.x
+  let cpy = clone.pos.y
+  let buildings = world.buildings
+  let standingOn = buildings[mf(cpx)+','+mf(cpy)]
+  
+  // if player is standin on barbed wire
+  if(standingOn != undefined && standingOn.type == 'barbedwire') {
+      clone.health -= 0.1
+      cloneSpeed = player.speed/4
+  }
+
+  // When clone stands on landmine
+  if(standingOn != undefined && standingOn.type == 'landmine' && standingOn.owner != id && standingOn.exploding == 0) {
+    let landmine = standingOn
+    landmine.exploding = 1
+    clone.health -= 40
+  }
+
+  // collisions
+  playerCollisions(clone, world, cloneSpeed)
+
+  // if clone dieded
+  if(clone.health <= 0) delete clone
+
+  // regenerate clone
+  if(clone.health < clone.maxHealth) clone.health += 0.01
+
+}
+
+
 
 function buildingTick(id, world) {
   let building = world.buildings[id]
@@ -55,7 +93,21 @@ function buildingTick(id, world) {
 
   // cloneFactory
   if(building.type == 'cloneFactory') {
-    
+    building.cloneTimer--
+
+    // if cloneTimer ready. make clone
+    if(building.cloneTimer < 0) {
+      building.cloneTimer = 100
+      let clone = {
+        pos: {x: building.pos.x, y: building.pos.y},
+        owner: building.owner,
+        health: 100,
+        maxHealth: 100,
+        moving: {north: false, east: false, south: false, west: false}
+
+      }
+      world.players[building.owner].clones.push(clone)
+    }
   }
 }
 
@@ -223,6 +275,7 @@ function playerCollisions(player, world, playerSpeed) {
     if(axis && distX > 0) player.pos.x += 0.1
     if(!axis && distX < 0) player.pos.y -= 0.1
     if(!axis && distX > 0) player.pos.y += 0.1
+    player.health -= 0.5
   }
 
 

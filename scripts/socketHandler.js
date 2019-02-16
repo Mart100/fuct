@@ -218,6 +218,10 @@ class SocketHandler {
                         return
                         break
                     }
+                    case('cloneFactory'): {
+                        building.cloneTimer = 100
+                        break
+                    }
                     case('empty'): {
                         return
                         break
@@ -336,7 +340,8 @@ class SocketHandler {
                 health: player.health,
                 color: player.color,
                 username: player.username,
-                id: id
+                id: id,
+                clones: player.clones
 
             }
         }
