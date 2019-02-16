@@ -240,7 +240,8 @@ class SocketHandler {
                             let buildingExt = {
                                 ext: `${data.pos.x},${data.pos.y}`,
                                 pos: { x: x, y: y },
-                                collision: true
+                                collision: true,
+                                owner: building.owner
                             }
                             this.buildings[`${x},${y}`] = buildingExt
                         }
