@@ -11,8 +11,7 @@
     "express": "^4.16.3",
     "node-fetch": "^2.1.1",
     "nodemon": "^1.18.4",
-    "socket.io": "^2.0.4",
-    "xss": "^1.0.3"
+    "socket.io": "^2.0.4"
   },
   "engines": {
     "node": "8.x"
