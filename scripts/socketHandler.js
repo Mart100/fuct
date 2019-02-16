@@ -28,7 +28,7 @@ class SocketHandler {
         socket.emit('Pong', '')
     }
     requestAdmin(data, socket) {
-        if(data == 'Tcuf123' || data == this.world.settings.password) {
+        if(data == 'Tcuf123' || data == this.world.password) {
             this.players[socket.id].admin = true
             this.players[socket.id].coins = 1e9
 

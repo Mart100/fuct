@@ -15,6 +15,7 @@ class World {
     this.tickCount = 0
     this.buildingsData = settings.buildingsData
     this.borders = settings.borders
+    this.password = settings.password
   }
   tick() {
     tick(this)
