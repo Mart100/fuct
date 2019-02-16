@@ -229,7 +229,9 @@ const draw = {
           ctx.fillStyle = players[building.owner].color
           ctx.rect(cw/2 + (bpx-ppx)*pz, ch/2 + (bpy-ppy)*pz, pz*bs.x, pz*bs.y)
           ctx.fill()
-          ctx.drawImage(images[building.type], cw/2 + (bpx-ppx)*pz, ch/2 + (bpy-ppy)*pz, pz*bs.x, pz*bs.y)
+          let image = images[building.type]
+          if(image.length) image = image[Math.floor(framecount/5 % (image.length-1))+1]
+          ctx.drawImage(image, cw/2 + (bpx-ppx)*pz, ch/2 + (bpy-ppy)*pz, pz*bs.x, pz*bs.y)
         }
       }
     }
@@ -239,23 +241,27 @@ const draw = {
       let building = buildings[id]
       // if has to show healthbar
       if(building.showhealth > 0) {
-        // draw healthBar
+        // some vars
+        let xpos = canvas.width/2+(building.pos.x+0.5-player.pos.x)*pz
+        let ypos = canvas.height/2+(building.pos.y+0.5-player.pos.y)*pz
+        let bw = player.buildingsData[building.type].size.x // Building Width
+  
         // draw progress
         ctx.beginPath()
         ctx.fillStyle = "#49ad40"
-        ctx.rect(canvas.width/2 +(building.pos.x+0.5-player.pos.x)*player.zoom - player.zoom/1.5, canvas.height/2 + (building.pos.y+0.5-player.pos.y)*player.zoom - player.zoom/1.5, building.health * player.zoom / 75, player.zoom / 6)
+        ctx.rect(xpos - pz/1.5, ypos - pz/1.5, building.health * pz / 75, pz / 6)
         ctx.fill()
+
         // draw bar around
-        let playerpos = { x: canvas.width/2+(building.pos.x+0.5-player.pos.x)*player.zoom, y: canvas.height/2+(building.pos.y+0.5-player.pos.y)*player.zoom }
         ctx.beginPath()
         ctx.strokeStyle = "#383838"
-        ctx.lineWidth = player.zoom/20;
-        ctx.moveTo(playerpos.x, playerpos.y-player.zoom/1.5)
-        ctx.arcTo(playerpos.x+player.zoom/1.5, playerpos.y-player.zoom/1.5, playerpos.x+player.zoom/1.5, playerpos.y-player.zoom/2  , player.zoom/20)
-        ctx.arcTo(playerpos.x+player.zoom/1.5, playerpos.y-player.zoom/2  , playerpos.x                , playerpos.y-player.zoom/2  , player.zoom/20)
-        ctx.arcTo(playerpos.x-player.zoom/1.5, playerpos.y-player.zoom/2  , playerpos.x-player.zoom/1.5, playerpos.y-player.zoom/1.5, player.zoom/20)
-        ctx.arcTo(playerpos.x-player.zoom/1.5, playerpos.y-player.zoom/1.5, playerpos.x                , playerpos.y-player.zoom/1.5, player.zoom/20)
-        ctx.lineTo(playerpos.x, playerpos.y-player.zoom/1.5)
+        ctx.lineWidth = pz/20;
+        ctx.moveTo(xpos, ypos-pz/1.5)
+        ctx.arcTo(xpos+pz/1.5, ypos-pz/1.5, xpos+pz/1.5, ypos-pz/2  , pz/20)
+        ctx.arcTo(xpos+pz/1.5, ypos-pz/2  , xpos       , ypos-pz/2  , pz/20)
+        ctx.arcTo(xpos-pz/1.5, ypos-pz/2  , xpos-pz/1.5, ypos-pz/1.5, pz/20)
+        ctx.arcTo(xpos-pz/1.5, ypos-pz/1.5, xpos       , ypos-pz/1.5, pz/20)
+        ctx.lineTo(xpos, ypos-pz/1.5)
         ctx.stroke()
       }
     }
@@ -317,6 +323,7 @@ const draw = {
 
     // draw hologram of building player is about to place
     let image = images[player.building.selected]
+    if(image != undefined && image.length) image = image[1]
     if(player.building.selected == 'wall') image = images.walls.sides0
     ctx.drawImage(image, cw/2 + (sg.x-PGO.x)*pz, ch/2 + (sg.y-PGO.y)*pz, pz*bs.x, pz*bs.y)
     ctx.globalAlpha = 1

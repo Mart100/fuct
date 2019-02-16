@@ -47,7 +47,7 @@ function loadImages() {
   images.walls.sides3 = new Image()
   images.walls.sides3.src = 'https://gyazo.com/91793dfa84a870ad5e99b05eb25b494c.png'
   // explosion
-  images.explosion = {}
+  images.explosion = []
   for(let i = 1; i < 20; i++) {
     images.explosion[i] = new Image()
     if(i == 1) images.explosion[i].src = 'https://firebasestorage.googleapis.com/v0/b/fuct-db468.appspot.com/o/buildings%2Flandmine%2Fexplosion%2F1.png?alt=media&token=ea2ee003-7040-4c9b-8b77-c4f7fa609fb7'
@@ -74,8 +74,23 @@ function loadImages() {
   images.miner = new Image()
   images.miner.src = 'https://cdn.discordapp.com/attachments/235452993741389824/424195191700848640/miner.png'
   //cloneFactory
-  images.cloneFactory = new Image()
-  images.cloneFactory.src = 'https://gyazo.com/3b9acfb270e46946247dfcd1e766f659.png'
+  images.cloneFactory = []
+  for(let i = 1; i < 13; i++) {
+    images.cloneFactory[i] = new Image()
+    if(i == 1) images.cloneFactory[i].src = 'https://i.imgur.com/1ltadKR.png'
+    if(i == 2) images.cloneFactory[i].src = 'https://i.imgur.com/tfDvqFx.png'
+    if(i == 3) images.cloneFactory[i].src = 'https://i.imgur.com/EKkRLVS.png'
+    if(i == 4) images.cloneFactory[i].src = 'https://i.imgur.com/HG3dXBr.png'
+    if(i == 5) images.cloneFactory[i].src = 'https://i.imgur.com/ZUuFXPw.png'
+    if(i == 6) images.cloneFactory[i].src = 'https://i.imgur.com/uL1A7xi.png'
+    if(i == 7) images.cloneFactory[i].src = 'https://i.imgur.com/U6ajxco.png'
+    if(i == 8) images.cloneFactory[i].src = 'https://i.imgur.com/lrwbbOy.png'
+    if(i == 9) images.cloneFactory[i].src = 'https://i.imgur.com/7mptNp7.png'
+    if(i == 10) images.cloneFactory[i].src = 'https://i.imgur.com/BPtKxSH.png'
+    if(i == 11) images.cloneFactory[i].src = 'https://i.imgur.com/WOax6ra.png'
+    if(i == 12) images.cloneFactory[i].src = 'https://i.imgur.com/llFmCKY.png'
+  }
+
   // empty
   images.empty = new Image()
   images.empty.src = 'https://i.imgur.com/GyZRyx1.png'

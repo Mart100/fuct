@@ -52,6 +52,11 @@ function buildingTick(id, world) {
     world.players[building.owner].coins += 0.01
     world.players[building.owner].stats.totalCoins += 0.01
   }
+
+  // cloneFactory
+  if(building.type == 'cloneFactory') {
+    
+  }
 }
 
 function sendLeaderboard(world) {

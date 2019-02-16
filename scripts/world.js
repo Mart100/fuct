@@ -46,6 +46,7 @@ class World {
         selected: 'core',
         list: {}
       },
+      clones: [],
       hotbar: {
         selected: 1,
         list: {

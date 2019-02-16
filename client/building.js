@@ -72,6 +72,7 @@ function updateBuildbar() {
 
         let image = images[name]
         if(name == 'wall') image = images.walls.sides0
+        if(name == 'cloneFactory') image = images.cloneFactory[1]
 
         let building = player.building.list[name]
         if(building.amount < 1) continue

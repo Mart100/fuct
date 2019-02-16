@@ -280,9 +280,10 @@ class SocketHandler {
                 delete this.buildings[`${bPosX},${bPosY}`]
                 break
             case('damage'):
+                if(building == undefined) return
                 // if extension. Go to main
                 if(building.ext) building = this.buildings[building.ext]
-
+                
                 building.health -= 5+(player.hotbar.list['pickaxe'].level*2)
                 // show health of building
                 building.showhealth = 10
