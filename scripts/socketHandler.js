@@ -20,9 +20,14 @@ class SocketHandler {
         socket.on('disconnect', data => this.onDisconnect(data, socket))
         socket.on('Ping', data => this.ping(data, socket))
         socket.on('requestAdmin', data => this.requestAdmin(data, socket))
+        socket.on('cloneMode', mode => this.cloneMode(mode, socket))
         let world = this.world
 
         
+    }
+    cloneMode(mode, socket) {
+        if(mode != 'defend' && mode != 'attack' && mode != 'follow') return
+        this.players[socket.id].cloneMode = mode
     }
     ping(data, socket) {
         socket.emit('Pong', '')
@@ -112,10 +117,15 @@ class SocketHandler {
 			} 
     }
     buildData(data, socket) {
-        if(this.players[socket.id] == undefined) return 
-        if(4 < this.getDistanceBetween({x: data.pos.x+0.5, y: data.pos.y+0.5}, this.players[socket.id].pos)) return
+        let isClone = false
+        if(data.clone) isClone = true
+        if(!isClone && this.players[socket.id] == undefined) return
+        let player
+        if(!isClone) player = this.players[socket.id]
+        else player = data.clone
+
+        if(4 < this.getDistanceBetween({x: data.pos.x+0.5, y: data.pos.y+0.5}, player.pos)) return
         let building = this.buildings[`${data.pos.x},${data.pos.y}`]
-        let player = this.players[socket.id]
         if(player == undefined) return
         let bPosX = data.pos.x
         let bPosY = data.pos.y
@@ -263,6 +273,8 @@ class SocketHandler {
                         break
                     }
                     case('core'): {
+                        player = this.players[player.owner]
+                        socket = this.sockets[player.id]
                         socket.emit('alert', {color: 'green', text: `You destroyed ${this.players[building.owner].username}'s core!`})
                         this.sockets[building.owner].emit('alert', {color: 'red', text: `${player.username} destroyed your core!`})
 
@@ -289,11 +301,16 @@ class SocketHandler {
                 // if extension. Go to main
                 if(building.ext) building = this.buildings[building.ext]
                 
-                building.health -= 5+(player.hotbar.list['pickaxe'].level*2)
+                if(isClone) building.health -= 1
+                else building.health -= 5+(player.hotbar.list['pickaxe'].level*2)
                 // show health of building
                 building.showhealth = 10
+
                 // if buiding health is 0 remove building
-                if(building.health <= 0) this.buildData({pos: building.pos, type: 'remove'}, socket)
+                if(building.health <= 0) {
+                    if(isClone) this.buildData({pos: building.pos, clone: data.clone, type: 'remove'})
+                    else this.buildData({pos: building.pos, type: 'remove'}, socket)
+                }
                 break
             default:
                 console.log('ERR: 4857,received unkown type request via socket "buildings": '+data)

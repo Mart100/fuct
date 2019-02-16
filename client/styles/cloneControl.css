@@ -1,0 +1,40 @@
+#cloneControl {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 200px;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 5px;
+  display: none;
+}
+#cloneControl div {
+  position: absolute;
+  margin: 20px;
+  width: 160px;
+  height: 160px;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+
+#cloneAttack {
+  left: 0px;
+}
+#cloneFollow {
+  margin: 20px 0px 0px 0px !important;
+  left: 50%;
+  transform: translateX(-50%);
+}
+#cloneDefend {
+  right: 0px;
+}
+
+
+#cloneControl img {
+  width: 140px;
+  height: 140px;
+  margin: 10px;
+}

@@ -1,3 +1,5 @@
+let cloneAI = require('./cloneAI.js')
+
 function tick(world) {
   
   // if no players. return
@@ -17,6 +19,10 @@ function tick(world) {
 
   // cloneTick
   for(let playerID in world.players) for(let cloneNum in world.players[playerID].clones) cloneTick(cloneNum, playerID,  world)
+
+  // cloneAI
+  if(world.tickCount % 20 == 1) for(let playerID in world.players) for(let cloneNum in world.players[playerID].clones) cloneAI(world.players[playerID].clones[cloneNum], world)
+
  
   checkTPS(world)
 
@@ -39,7 +45,7 @@ function cloneTick(cloneNum, playerID, world) {
   let clone = world.players[playerID].clones[cloneNum]
   if(clone == undefined) return
   // some vars
-  let cloneSpeed = Number(clone.speed)
+  let cloneSpeed = 0.05
   let mf = Math.floor
   let cpx = clone.pos.x
   let cpy = clone.pos.y
@@ -49,7 +55,7 @@ function cloneTick(cloneNum, playerID, world) {
   // if player is standin on barbed wire
   if(standingOn != undefined && standingOn.type == 'barbedwire') {
     clone.health -= 0.1
-    cloneSpeed = player.speed/4
+    cloneSpeed = cloneSpeed/4
   }
 
   // When clone stands on landmine
@@ -311,7 +317,7 @@ function playerCollisions(player, world, playerSpeed) {
   
 
   //Collision checking and moving
-  if(player.spawning <= 0) {
+  if(player.spawning == undefined || player.spawning <= 0) {
     let borders = world.borders
     let PR = 0.9/2 // PlayerRadius
     if(player.moving.north && world.moveAllowed(player, 'north') && player.pos.y-PR > -borders.y) player.pos.y -= Number(playerSpeed)

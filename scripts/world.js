@@ -41,6 +41,7 @@ class World {
         south: false,
         west: false
       },
+      cloneMode: 'defend',
       spawning: false,
       speed: 0.05,
       building: {
