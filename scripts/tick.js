@@ -16,7 +16,7 @@ function tick(world) {
   //else console.log(world.tickCount % 100)
 
   // cloneTick
-  for(let id in world.players) for(let clone of world.players[id].clones) cloneTick(clone, world)
+  for(let id in world.players) for(let cloneNum in world.players[id].clones) cloneTick(cloneNum, playerID,  world)
  
   checkTPS(world)
 
@@ -35,7 +35,7 @@ function checkTPS(world) {
   }
 }
 
-function cloneTick(clone, world) {
+function cloneTick(cloneNum, playerID, world) {
   // some vars
   let cloneSpeed = Number(clone.speed)
   let mf = Math.floor
@@ -46,8 +46,8 @@ function cloneTick(clone, world) {
   
   // if player is standin on barbed wire
   if(standingOn != undefined && standingOn.type == 'barbedwire') {
-      clone.health -= 0.1
-      cloneSpeed = player.speed/4
+    clone.health -= 0.1
+    cloneSpeed = player.speed/4
   }
 
   // When clone stands on landmine
