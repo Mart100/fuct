@@ -39,10 +39,38 @@ function attackMode(clone, world) {
     goTo(clone, closestCore)
 
     // If building in the way use pickaxe
-    if(clone.moving.north) world.socketHandler.buildData({type: 'damage', clone: clone, pos: {x: Math.floor(clone.pos.x), y: Math.floor(clone.pos.y)-1}})
-    if(clone.moving.east)  world.socketHandler.buildData({type: 'damage', clone: clone, pos: {x: Math.floor(clone.pos.x)+1, y: Math.floor(clone.pos.y)}})
-    if(clone.moving.south) world.socketHandler.buildData({type: 'damage', clone: clone, pos: {x: Math.floor(clone.pos.x), y: Math.floor(clone.pos.y)+1}})
-    if(clone.moving.west)  world.socketHandler.buildData({type: 'damage', clone: clone, pos: {x: Math.floor(clone.pos.x)-1, y: Math.floor(clone.pos.y)}})
+
+    // North
+    if(clone.moving.north) {
+      let nBuilding = world.buildings[Math.floor(clone.pos.x)+','+Math.floor(clone.pos.y-1)]
+      if(nBuilding != undefined && nBuilding.owner != clone.owner) {
+        world.socketHandler.buildData({type: 'damage', clone: clone, pos: nBuilding.pos})
+      }
+    }
+
+    // East
+    if(clone.moving.east) {
+      let eBuilding = world.buildings[Math.floor(clone.pos.x+1)+','+Math.floor(clone.pos.y)]
+      if(eBuilding != undefined && eBuilding.owner != clone.owner) {
+        world.socketHandler.buildData({type: 'damage', clone: clone, pos: eBuilding.pos})
+      }
+    }
+
+    // South
+    if(clone.moving.south) {
+      let sBuilding = world.buildings[Math.floor(clone.pos.x)+','+Math.floor(clone.pos.y+1)]
+      if(sBuilding != undefined && sBuilding.owner != clone.owner) {
+        world.socketHandler.buildData({type: 'damage', clone: clone, pos: sBuilding.pos})
+      }
+    }
+
+    // West
+    if(clone.moving.west) {
+      let wBuilding = world.buildings[Math.floor(clone.pos.x-1)+','+Math.floor(clone.pos.y)]
+      if(wBuilding != undefined && wBuilding.owner != clone.owner) {
+        world.socketHandler.buildData({type: 'damage', clone: clone, pos: wBuilding.pos})
+      }
+    }
 
   }
 

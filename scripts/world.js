@@ -86,7 +86,6 @@ class World {
 
     let playerX = player.pos.x
     let playerY = player.pos.y
-    let borders = this.borders
 
     if(direction == 'north') playerY -= player.speed
     if(direction == 'east') playerX += player.speed

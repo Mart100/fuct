@@ -21,7 +21,14 @@ function tick(world) {
   for(let playerID in world.players) for(let cloneNum in world.players[playerID].clones) cloneTick(cloneNum, playerID,  world)
 
   // cloneAI
-  if(world.tickCount % 20 == 1) for(let playerID in world.players) for(let cloneNum in world.players[playerID].clones) cloneAI(world.players[playerID].clones[cloneNum], world)
+  if(world.tickCount % 20 == 1) {
+    for(let playerID in world.players) {
+      if(world.players[playerID] == undefined) continue
+      for(let cloneNum in world.players[playerID].clones) {
+        cloneAI(world.players[playerID].clones[cloneNum], world)
+      }
+    }
+  }
 
  
   checkTPS(world)
@@ -45,7 +52,7 @@ function cloneTick(cloneNum, playerID, world) {
   let clone = world.players[playerID].clones[cloneNum]
   if(clone == undefined) return
   // some vars
-  let cloneSpeed = 0.05
+  let cloneSpeed = clone.speed
   let mf = Math.floor
   let cpx = clone.pos.x
   let cpy = clone.pos.y
@@ -105,12 +112,13 @@ function buildingTick(id, world) {
 
     // if cloneTimer ready. make clone
     if(building.cloneTimer < 0) {
-      building.cloneTimer = 100
+      building.cloneTimer = 1000
       let clone = {
         pos: {x: building.pos.x, y: building.pos.y},
         owner: building.owner,
         health: 100,
         maxHealth: 100,
+        speed: 0.05,
         moving: {north: false, east: false, south: false, west: false}
 
       }
