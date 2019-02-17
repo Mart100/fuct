@@ -45,17 +45,18 @@ const draw = {
     let zoom = player.zoom
 
     for (let i = -Math.round(canvas.width/zoom/2); i <= Math.round(canvas.width/zoom/2); i++) { // lines on Y
-        ctx.moveTo(canvas.width/2 + i*zoom - PGO.x*zoom, 0)
-        ctx.lineTo(canvas.width/2 + i*zoom - PGO.x*zoom, canvas.height)
+      ctx.moveTo(canvas.width/2 + i*zoom - PGO.x*zoom, 0)
+      ctx.lineTo(canvas.width/2 + i*zoom - PGO.x*zoom, canvas.height)
     }
     for (let i = -Math.round(canvas.height/zoom/2); i <= Math.round(canvas.height/zoom/2); i++) { // lines on X  
-        ctx.moveTo(0           , canvas.height/2 + i*zoom - PGO.y*zoom)
-        ctx.lineTo(canvas.width, canvas.height/2 + i*zoom - PGO.y*zoom)
+      ctx.moveTo(0           , canvas.height/2 + i*zoom - PGO.y*zoom)
+      ctx.lineTo(canvas.width, canvas.height/2 + i*zoom - PGO.y*zoom)
     }
     ctx.stroke()
   },
   clones() {
     let pz = player.zoom // player zoom
+    let pp = player.pos // player pos
 
     for(let pid in players) {
       let player = players[pid]
@@ -66,7 +67,6 @@ const draw = {
         ctx.lineWidth = player.zoom / 10
         ctx.strokeStyle = "#383838"
         let cp = clone.pos // clone pos
-        let pp = player.pos // player pos
         ctx.arc(canvas.width/2 + (cp.x-pp.x)*pz, canvas.height/2 + (cp.y-pp.y)*pz, pz/4, 0, 2*Math.PI)
         ctx.fill()
         ctx.stroke()
