@@ -33,11 +33,19 @@ $(() => {
   })
 
   // chat Enabled
-  $('#settings > #chat').on('change', () => {
-    let v = $('#settings > #chat').prop('checked')
-    console.log(v)
+  $('#settings > #settings-chat').on('change', () => {
+    let v = $('#settings > #settings-chat').prop('checked')
     settings.chatEnabled = v
+    if(settings.chatEnabled) enableChat()
+    else disableChat()
     if(cookiesAccepted) setCookie('chatEnabled', v)
+  })
+
+  // grid
+  $('#settings > #settings-grid').on('change', () => {
+    let v = $('#settings > #settings-grid').prop('checked')
+    settings.grid = v
+    if(cookiesAccepted) setCookie('grid', v)
   })
 })
 
@@ -50,7 +58,26 @@ $(() => {
 
   // chat Enabled
   if(getCookie('chatEnabled') != "") settings.chatEnabled = (getCookie('chatEnabled') == 'true')
-  $('#settings > #chat').prop('checked', settings.chatEnabled)
+  $('#settings > #settings-chat').prop('checked', settings.chatEnabled)
+  if(settings.chatEnabled) enableChat()
+  else disableChat()
+
+  // Grid
+  if(getCookie('grid') != "") settings.grid = (getCookie('grid') == 'true')
+  $('#settings > #settings-grid').prop('checked', settings.grid)
 
 
 })
+
+
+
+// actual settings functions
+
+function enableChat() {
+  $('#chat').show()
+}
+
+function disableChat() {
+  $('#chat').hide()
+  player.typing = false
+}

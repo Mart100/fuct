@@ -6,7 +6,7 @@ $(() => {
       // If on playscreen. Join
       if($('#menu').css('display') != 'none') return $('#playButton').click()
       
-      showChat()
+      if(settings.chatEnabled) showChat()
     }
   })
 })
