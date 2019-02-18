@@ -86,7 +86,7 @@ const draw = {
     for(let clone of clones) {
       if(clone == undefined) continue
       ctx.beginPath()
-      ctx.fillStyle = player.color
+      ctx.fillStyle = clone.color
       ctx.lineWidth = player.zoom / 15
       ctx.strokeStyle = "#383838"
       let cp = clone.pos // clone pos
