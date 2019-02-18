@@ -1,7 +1,7 @@
 const buildingsData = {
   cloneFactory: {
     name: 'cloneFactory',
-    startAmount: 10,
+    startAmount: 1,
     price: 1000,
     size: {x: 2, y: 2},
     health: 500
