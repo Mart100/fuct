@@ -269,7 +269,8 @@ const draw = {
         default: {
           ctx.beginPath()
           ctx.fillStyle = players[building.owner].color
-          ctx.rect(cw/2 + (bpx-ppx)*pz, ch/2 + (bpy-ppy)*pz, pz*bs.x, pz*bs.y)
+          let edges = 10
+          ctx.rect(cw/2 + (bpx-ppx)*pz + edges, ch/2 + (bpy-ppy)*pz + edges, pz*bs.x - edges*2, pz*bs.y - edges*2)
           ctx.fill()
           let image = images[building.type]
           if(image.length) image = image[Math.floor(framecount/5 % (image.length-1))+1]
