@@ -22,6 +22,7 @@ async function frame() {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
     // draw
+    draw.background()
     draw.grid()
     draw.otherPlayers()
     draw.inhand()
@@ -53,6 +54,30 @@ const draw = {
       ctx.lineTo(canvas.width, canvas.height/2 + i*zoom - PGO.y*zoom)
     }
     ctx.stroke()
+  },
+  background() {
+    // some vars
+    let pz = player.zoom
+    let ch = canvas.height
+    let cw = canvas.width
+    let ppx = player.pos.x // player position x
+    let ppy = player.pos.y // player position y
+
+    let xStart = Math.round(ppx - cw/pz)
+    let xEnd = Math.round(ppx + cw/pz)
+    let yStart = Math.round(ppy - ch/pz)
+    let yEnd = Math.round(ppy + ch/pz)
+
+    for (let x = xStart; x <= xEnd; x++) {
+      for (let y = yStart; y <= yEnd; y++) {
+        if(background[x] == undefined || background[x][y] == undefined) continue
+        ctx.fillStyle = `rgb(0, ${background[x][y]}, 0)`
+        let pos = {}
+        pos.x = cw/2 + (x-ppx)*pz
+        pos.y = ch/2 + (y-ppy)*pz
+        ctx.fillRect(pos.x, pos.y, pz, pz)
+      }
+    }
   },
   clones() {
     let pz = player.zoom // player zoom
