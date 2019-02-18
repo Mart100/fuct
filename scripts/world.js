@@ -41,6 +41,13 @@ class World {
         south: false,
         west: false
       },
+      cloneAI: {
+        ownerCore: undefined,
+        attack: {
+          core: undefined,
+          timer: 1000
+        }
+      },
       cloneMode: 'defend',
       spawning: false,
       speed: 0.05,

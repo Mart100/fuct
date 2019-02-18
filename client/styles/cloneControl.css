@@ -19,6 +19,23 @@
   cursor: pointer;
 }
 
+#cloneControl div.selected,
+#cloneControl div:hover {
+  margin: 10px;
+  width: 180px;
+  height: 180px;
+}
+
+#cloneControl #cloneFollow.selected,
+#cloneControl #cloneFollow:hover {
+  margin: 10px 0px 0px 0px !important;
+}
+#cloneControl div.selected img,
+#cloneControl div:hover img {
+  width: 160px;
+  height: 160px;
+}
+
 
 #cloneAttack {
   left: 0px;

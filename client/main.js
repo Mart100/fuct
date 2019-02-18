@@ -3,6 +3,7 @@ let ping = {pong: 0, ping: 0}
 let tps = 0
 let latestframe
 let cookiesAccepted = false
+let background = []
 let framecount = 0
 const images = {}
 let settings = {
@@ -123,6 +124,7 @@ function joinedWorld() {
     keyListener()
     mouseListener()
     updateBuildbar()
+    createBackground()
 
     // Begin drawing
     frame()
@@ -143,4 +145,8 @@ function updateHotbar() {
 }
 function getKeyByIndex(object, index) {
   return Object.keys(object)[index];
+}
+
+function createBackground() {
+    size = player.world.borders
 }

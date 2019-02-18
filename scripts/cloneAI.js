@@ -1,3 +1,6 @@
+const defendCoreMinRange = 10
+
+
 function cloneAI(clone, world) {
   if(clone == undefined) return
   let mode = world.players[clone.owner].cloneMode
@@ -10,7 +13,28 @@ function cloneAI(clone, world) {
 module.exports = cloneAI
 
 function defendMode(clone, world) {
-  
+  let owner = world.players[clone.owner]
+
+  resetMoving(clone)
+
+  if(owner.cloneAI.ownerCore == undefined) owner.cloneAI.ownerCore = Object.values(world.buildings).find((a) => a.owner == owner.id && a.type == 'core' ).pos
+
+  // update inCoreRange
+  if(clone.defend.inCoreRangeCheckTimer < Date.now()) {
+    let distance = getDistanceBetween(clone.pos, owner.cloneAI.ownerCore)
+    // If in rane
+    if(distance < defendCoreMinRange) {
+      clone.defend.inCoreRange = true
+      clone.defend.inCoreRangeCheckTimer = Date.now() + 5 * 1000
+    } else {
+      clone.defend.inCoreRange = false
+      clone.defend.inCoreRangeCheckTimer = Date.now() + distance / 5 * 500
+    }
+  }
+
+  // Move to core if out of range
+  if(!clone.defend.inCoreRange) goTo(clone, owner.cloneAI.ownerCore)
+
 }
 
 function attackMode(clone, world) {

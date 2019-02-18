@@ -119,7 +119,14 @@ function buildingTick(id, world) {
         health: 100,
         maxHealth: 100,
         speed: 0.05,
-        moving: {north: false, east: false, south: false, west: false}
+        moving: {north: false, east: false, south: false, west: false},
+        attack: {
+
+        },
+        defend: {
+          inCoreRange: false,
+          inCoreRangeCheckTimer: Date.now()
+        }
 
       }
       world.players[building.owner].clones.push(clone)
