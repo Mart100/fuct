@@ -75,7 +75,7 @@ const draw = {
         let pos = {}
         pos.x = cw/2 + (x-ppx)*pz
         pos.y = ch/2 + (y-ppy)*pz
-        ctx.fillRect(pos.x, pos.y, pz, pz)
+        ctx.fillRect(pos.x, pos.y, pz+1, pz+1)
       }
     }
   },
