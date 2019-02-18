@@ -104,7 +104,7 @@ function followMode(clone, world) {
   let owner = world.players[clone.owner]
 
   resetMoving(clone)
-  goTo(clone, owner.pos)
+  if(getDistanceBetween(clone.pos, owner.pos) > 4) goTo(clone, owner.pos)
 
 }
 
