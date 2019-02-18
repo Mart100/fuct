@@ -364,8 +364,8 @@ const draw = {
 
 
     // North
-    if((player.pos.y + borders.y)*player.zoom*-1 + canvas.height/2 > 0) {
-      let distance = (player.pos.y + borders.y)*player.zoom*-1 + canvas.height/2
+    if((player.pos.y)*player.zoom*-1 + canvas.height/2 > 0) {
+      let distance = (player.pos.y)*player.zoom*-1 + canvas.height/2
       ctx.fillRect(0, 0, canvas.width, distance)
     }
 
@@ -382,8 +382,8 @@ const draw = {
     }
 
     // West
-    if((player.pos.x + borders.x)*player.zoom*-1 + canvas.width/2 > 0) {
-      let distance = (player.pos.x + borders.x)*player.zoom*-1 + canvas.width/2
+    if((player.pos.x)*player.zoom*-1 + canvas.width/2 > 0) {
+      let distance = (player.pos.x)*player.zoom*-1 + canvas.width/2
       ctx.fillRect(0, 0, distance, canvas.height)
     }
   },

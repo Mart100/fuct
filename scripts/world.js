@@ -31,8 +31,8 @@ class World {
       id: socket.id,
       coins: 50,
       pos: {
-        x: (Math.random()*this.borders.x*2)-this.borders.x,
-        y: (Math.random()*this.borders.y*2)-this.borders.y
+        x: (Math.random()*this.borders.x),
+        y: (Math.random()*this.borders.y)
       },
       admin: false,
       moving: {

@@ -150,7 +150,7 @@ class SocketHandler {
 
                 // If building is outside borders
                 let borders = this.world.borders
-                if(data.pos.x > borders.x || data.pos.x < -borders.x   ||   data.pos.y > borders.y || data.pos.y < -borders.y) return
+                if(data.pos.x > borders.x || data.pos.x < 0 || data.pos.y > borders.y || data.pos.y < 0) return
 
 
                 // create building template

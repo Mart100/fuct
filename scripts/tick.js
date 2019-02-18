@@ -335,10 +335,10 @@ function playerCollisions(player, world, playerSpeed) {
   if(player.spawning == undefined || player.spawning <= 0) {
     let borders = world.borders
     let PR = 0.9/2 // PlayerRadius
-    if(player.moving.north && world.moveAllowed(player, 'north') && player.pos.y-PR > -borders.y) player.pos.y -= Number(playerSpeed)
+    if(player.moving.north && world.moveAllowed(player, 'north') && player.pos.y-PR > 0) player.pos.y -= Number(playerSpeed)
     if(player.moving.east && world.moveAllowed(player, 'east') && player.pos.x+PR < borders.x) player.pos.x += Number(playerSpeed)
     if(player.moving.south && world.moveAllowed(player, 'south') && player.pos.y+PR < borders.x) player.pos.y += Number(playerSpeed)
-    if(player.moving.west && world.moveAllowed(player, 'west') && player.pos.x-PR > -borders.x) player.pos.x -= Number(playerSpeed) 
+    if(player.moving.west && world.moveAllowed(player, 'west') && player.pos.x-PR > 0) player.pos.x -= Number(playerSpeed) 
   }
   
   // player collision
