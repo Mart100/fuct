@@ -38,7 +38,8 @@ $(function() {
             { img: images['turret'].src, for: 'turret' },
             { img: images['landmine'].src, for: 'landmine' },
             { img: images.walls.sides0.src, for: 'wall' },
-            { img: images['barbedwire'].src, for: 'barbedwire' }
+            { img: images['barbedwire'].src, for: 'barbedwire' },
+            { img: images.cloneFactory[1].src, for: 'cloneFactory' }
         ],
     }
 

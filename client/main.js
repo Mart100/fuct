@@ -4,6 +4,7 @@ let tps = 0
 let clones = []
 let latestframe
 let cookiesAccepted = false
+let buildingsData
 let background = []
 let framecount = 0
 const images = {}
@@ -105,7 +106,8 @@ function onPlayButton() {
             player.world = {}
             player.world.borders = data.worldBorders
             player.world.id = data.worldID
-            player.buildingsData = data.buildingsData
+            buildingsData = data.buildingsData
+            for(let building in buildingsData) shopPrices.buildings[building] = buildingsData[building].price
 
             setTimeout(() => { joinedWorld() }, 100)
 

@@ -112,7 +112,7 @@ const draw = {
       // some more shortcuts
       let building = buildings[buildingID]
       let b = building
-      let bs = player.buildingsData[building.type].size // size of building
+      let bs = buildingsData[building.type].size // size of building
       let bpx = b.pos.x // building position x
       let bpy = b.pos.y // building position y
       
@@ -286,7 +286,7 @@ const draw = {
         // some vars
         let xpos = canvas.width/2+(building.pos.x+0.5-player.pos.x)*pz
         let ypos = canvas.height/2+(building.pos.y+0.5-player.pos.y)*pz
-        let bw = player.buildingsData[building.type].size.x // Building Width
+        let bw = buildingsData[building.type].size.x // Building Width
   
         // draw progress
         ctx.beginPath()
@@ -348,7 +348,7 @@ const draw = {
     }
   },
   selectedGrid() {
-    let bs = player.buildingsData[player.building.selected].size // size of building
+    let bs = buildingsData[player.building.selected].size // size of building
     let pz = player.zoom // player zoom
     let sg = player.selectedGrid // Selected grid
     let ch = canvas.height // canvas height

@@ -53,7 +53,7 @@ function getToolPrice(tool, player) {
 
 function getBuildingPrice(building, buildings, player) {
   let price = 0
-  let buildingData = player.buildingsData[building]
+  let buildingData = buildingsData[building]
   if(buildingData.price == undefined) {
     if(building == 'miner') price = getMinerPrice(buildings, player)
   }
@@ -63,4 +63,5 @@ function getBuildingPrice(building, buildings, player) {
 
 socket.on('shopPrices', (data) => {
   shopPrices = data
+  shopPrices.buildings = {}
 })
