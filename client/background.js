@@ -1,8 +1,8 @@
-let backgroundStrength = 50
+let backgroundStrength = 40
 let backgroundMin = 0
 let backgroundMax = 255
 let backgroundPlus = 1.5
-let backgroundTimes = 120
+let backgroundTimes = 50
 //defaultSettings()
 
 function createBackground() {

@@ -62,6 +62,8 @@ const draw = {
     let cw = canvas.width
     let ppx = player.pos.x // player position x
     let ppy = player.pos.y // player position y
+    let r = 0
+    let b = 30
 
     let xStart = Math.round(ppx - cw/pz)
     let xEnd = Math.round(ppx + cw/pz)
@@ -71,7 +73,7 @@ const draw = {
     for (let x = xStart; x <= xEnd; x++) {
       for (let y = yStart; y <= yEnd; y++) {
         if(background[x] == undefined || background[x][y] == undefined) continue
-        ctx.fillStyle = `rgb(0, ${background[x][y]}, 0)`
+        ctx.fillStyle = `rgb(${background[x][y]/2}, ${background[x][y]}, ${background[x][y]/5})`
         let pos = {}
         pos.x = cw/2 + (x-ppx)*pz
         pos.y = ch/2 + (y-ppy)*pz
