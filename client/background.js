@@ -1,3 +1,5 @@
+let backgroundNoiseStrength = 50
+
 function createBackground() {
   size = player.world.borders
   noise.seed(Math.random())
