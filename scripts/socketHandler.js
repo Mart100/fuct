@@ -47,6 +47,7 @@ class SocketHandler {
         this.sendPlayersData()
         this.sendPrivatePlayerData()
         this.broadcast('buildings', this.world.buildings)
+        this.sendClones()
 
     }
     onDisconnect(data, socket) {
@@ -358,14 +359,27 @@ class SocketHandler {
                 health: player.health,
                 color: player.color,
                 username: player.username,
-                id: id,
-                clones: player.clones
+                id: id
 
             }
         }
 
         // send to everyone
         for(let id in this.sockets) this.sockets[id].emit('players', data)
+    }
+    sendClones() {
+        for(let socketID in this.sockets) {
+            let player = this.players[socketID]
+            let clones = []
+            for(let id in this.players) {
+                for(let clone of this.players[id].clones) {
+                    if(clone == undefined) continue
+                    if(getDistanceBetween(clone.pos, player.pos) > 15) continue
+                    clones.push({pos: clone.pos, color: clone.color})
+                }
+            }
+            this.sockets[socketID].emit('clones', clones)
+        }
     }
 }
 module.exports = SocketHandler
@@ -374,6 +388,9 @@ function getBuildingsArray(buildings) {
 	return Object.values(buildings)
 }
 
-function calculatePlayerScore(player) {
-
+function getDistanceBetween(a, b) {
+  let c = a.x - b.x
+  let d = a.y - b.y
+  let result = Math.sqrt( c*c + d*d )
+  return result
 }

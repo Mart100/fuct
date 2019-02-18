@@ -117,6 +117,7 @@ function buildingTick(id, world) {
         pos: {x: building.pos.x, y: building.pos.y},
         owner: building.owner,
         health: 100,
+        color: world.players[building.owner].color,
         maxHealth: 100,
         speed: 0.05,
         moving: {north: false, east: false, south: false, west: false},

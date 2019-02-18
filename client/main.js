@@ -1,15 +1,16 @@
 let ctx, canvas
 let ping = {pong: 0, ping: 0}
 let tps = 0
+let clones = []
 let latestframe
 let cookiesAccepted = false
-let backgroundNoiseStrength = 20
 let background = []
 let framecount = 0
 const images = {}
 let settings = {
     volume: 50,
     chatEnabled: true,
+    grid: false
 }
 let players = {}
 let buildings = {}

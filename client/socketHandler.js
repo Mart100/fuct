@@ -36,6 +36,9 @@ socket.on('destroyed', (data) => {
   })
   
 })
+socket.on('clones', (data) => {
+  clones = data
+})
 
 socket.on('leaderboard', (data) => {
   let html = ''

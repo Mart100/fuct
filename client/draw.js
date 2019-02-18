@@ -23,7 +23,7 @@ async function frame() {
 
     // draw
     draw.background()
-    draw.grid()
+    if(settings.grid) draw.grid()
     draw.otherPlayers()
     draw.inhand()
     draw.objects()
@@ -83,19 +83,16 @@ const draw = {
     let pz = player.zoom // player zoom
     let pp = player.pos // player pos
 
-    for(let pid in players) {
-      let player = players[pid]
-      for(let clone of player.clones) {
-        if(clone == undefined) continue
-        ctx.beginPath()
-        ctx.fillStyle = player.color
-        ctx.lineWidth = player.zoom / 10
-        ctx.strokeStyle = "#383838"
-        let cp = clone.pos // clone pos
-        ctx.arc(canvas.width/2 + (cp.x-pp.x)*pz, canvas.height/2 + (cp.y-pp.y)*pz, pz/4, 0, 2*Math.PI)
-        ctx.fill()
-        ctx.stroke()
-      }
+    for(let clone of clones) {
+      if(clone == undefined) continue
+      ctx.beginPath()
+      ctx.fillStyle = player.color
+      ctx.lineWidth = player.zoom / 15
+      ctx.strokeStyle = "#383838"
+      let cp = clone.pos // clone pos
+      ctx.arc(canvas.width/2 + (cp.x-pp.x)*pz, canvas.height/2 + (cp.y-pp.y)*pz, pz/4, 0, 2*Math.PI)
+      ctx.fill()
+      ctx.stroke()
     }
   },
   objects() {

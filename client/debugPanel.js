@@ -9,11 +9,6 @@ const Calculate = {
      }
    }
    return counting
- },
- totalClones() {
-    let a = 0
-    for(i in players) for(j of players[i].clones) if(j != undefined) a++
-    return a
  }
 }
 
@@ -32,7 +27,7 @@ function updateDebug() {
 &nbsp;height: ${screen.height} <br>
 <b>World: </b> <br>
 &nbsp;bullets: ${Calculate.totalbullets()} <br>
-&nbsp;clones: ${Calculate.totalClones()} <br>
+&nbsp;clones rendered: ${clones.length} <br>
 <b>Other: </b> <br>
 &nbsp;FPS: ${fps} <br>
 &nbsp;PING: ${ping.pong} <br>
