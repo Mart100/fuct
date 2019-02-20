@@ -8,6 +8,8 @@
   width: 400px;
   height: 300px;
   z-index: 1;
+  user-select: none;
+  -moz-user-select: none;
 }
 #playButton {
   padding: 20px 0;
