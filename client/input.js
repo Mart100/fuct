@@ -5,7 +5,7 @@ function keyListener() {
     player.keys[event.keyCode] = false
 
     // wait 10ms. Until keydown has been send
-    let timeout = (latestKeyDown - Date.now())+100
+    let timeout = (latestKeyDown - Date.now())+150
     console.log(timeout)
     if(timeout < 0) timeout = 1
     setTimeout(() => {
