@@ -63,7 +63,7 @@ function build() {
     // go away if out of range
     if(4 < getDistanceBetween({x: pos.x+0.5, y: pos.y+0.5}, player.pos)) return
     socket.emit('BUILD_DATA', { pos: pos, type: 'add', typeBuilding: player.building.selected })
-    setTimeout(() => {updateBuildbar()}, 100)
+    setTimeout(() => {updateBuildbar()}, 200)
 }
 
 function updateBuildbar(args) {
