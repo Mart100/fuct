@@ -93,6 +93,7 @@ $(() => {
 })
 
 function onPlayButton() {
+    $("#playButton").off()
     player.id = socket.id
 
     if($('#nameInput').val() != '') player.username = $('#nameInput').val().trim()
@@ -132,6 +133,10 @@ function joinedWorld() {
 
     // Begin drawing
     frame()
+
+    // send admin request. When has cookie
+    let adminPass = getCookie('adminPass')
+    if(adminPass != undefined) socket.emit('requestAdmin', adminPass)
 }
 
 function getDistanceBetween(a, b) {
