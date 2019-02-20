@@ -1,39 +1,39 @@
 
 function keyListener() {
-    $(document).keyup(function(event) {
-      player.keys[event.keyCode] = false
+  $(document).keyup(function(event) {
+    player.keys[event.keyCode] = false
+
+    // WASD moving
+    if(!player.typing) {
+        let kc = event.keyCode
+        if((kc == 87 || kc == 38) && player.moving.north) socket.emit('PLAYER_DATA', {type: 'movement', world: player.world, direction: 'north', isDown: false})
+        if((kc == 68 || kc == 39) && player.moving.east) socket.emit('PLAYER_DATA', {type: 'movement', world: player.world, direction: 'east', isDown: false})
+        if((kc == 83 || kc == 40) && player.moving.south) socket.emit('PLAYER_DATA', {type: 'movement', world: player.world, direction: 'south', isDown: false})
+        if((kc == 65 || kc == 37) && player.moving.west) socket.emit('PLAYER_DATA', {type: 'movement', world: player.world, direction: 'west', isDown: false})
+    }
+  })
+  $(document).keydown(function(event) {
+    player.keys[event.keyCode] = true
+
+    // WASD moving
+    if(!player.typing) {
+        let kc = event.keyCode
+        if((kc == 87 || kc == 38) && !player.moving.north) socket.emit('PLAYER_DATA', {type: 'movement', world: player.world, direction: 'north', isDown: true})
+        if((kc == 68 || kc == 39) && !player.moving.east) socket.emit('PLAYER_DATA', {type: 'movement', world: player.world, direction: 'east', isDown: true})
+        if((kc == 83 || kc == 40) && !player.moving.south) socket.emit('PLAYER_DATA', {type: 'movement', world: player.world, direction: 'south', isDown: true})
+        if((kc == 65 || kc == 37) && !player.moving.west) socket.emit('PLAYER_DATA', {type: 'movement', world: player.world, direction: 'west', isDown: true})
+    }
+  })
+  $(document).keypress(function(event) {
   
-      // WASD moving
       if(!player.typing) {
-          let kc = event.keyCode
-          if((kc == 87 || kc == 38) && player.moving.north) socket.emit('PLAYER_DATA', {type: 'movement', world: player.world, direction: 'north', isDown: false})
-          if((kc == 68 || kc == 39) && player.moving.east) socket.emit('PLAYER_DATA', {type: 'movement', world: player.world, direction: 'east', isDown: false})
-          if((kc == 83 || kc == 40) && player.moving.south) socket.emit('PLAYER_DATA', {type: 'movement', world: player.world, direction: 'south', isDown: false})
-          if((kc == 65 || kc == 37) && player.moving.west) socket.emit('PLAYER_DATA', {type: 'movement', world: player.world, direction: 'west', isDown: false})
-      }
-    })
-    $(document).keydown(function(event) {
-      player.keys[event.keyCode] = true
-  
-      // WASD moving
-      if(!player.typing) {
-          let kc = event.keyCode
-          if((kc == 87 || kc == 38) && !player.moving.north) socket.emit('PLAYER_DATA', {type: 'movement', world: player.world, direction: 'north', isDown: true})
-          if((kc == 68 || kc == 39) && !player.moving.east) socket.emit('PLAYER_DATA', {type: 'movement', world: player.world, direction: 'east', isDown: true})
-          if((kc == 83 || kc == 40) && !player.moving.south) socket.emit('PLAYER_DATA', {type: 'movement', world: player.world, direction: 'south', isDown: true})
-          if((kc == 65 || kc == 37) && !player.moving.west) socket.emit('PLAYER_DATA', {type: 'movement', world: player.world, direction: 'west', isDown: true})
-      }
-    })
-    $(document).keypress(function(event) {
-    
-        if(!player.typing) {
-            //get number pressed
-            let slotID = event.originalEvent.key
-            if(isNaN(slotID)) return
-            player.hotbar.selected = slotID
-            changeHotbarSlot()
-        } 
-    })
+          //get number pressed
+          let slotID = event.originalEvent.key
+          if(isNaN(slotID)) return
+          player.hotbar.selected = slotID
+          changeHotbarSlot()
+      } 
+  })
 }
 function mouseListener() {
     // Clicking on hotbar
