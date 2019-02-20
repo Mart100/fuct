@@ -66,7 +66,7 @@ function build() {
     setTimeout(() => {updateBuildbar()}, 100)
 }
 
-function updateBuildbar() {
+function updateBuildbar(args) {
     $('#buildbar').html('')
     for(let name in player.building.list) {
 
@@ -85,6 +85,7 @@ function updateBuildbar() {
         `)
     }
 
+    if(args.show == false) return
     // update width of buildBar
     let buildbarCurrentWidth = $('#buildbar').width()
     let buildbarAutoWidth = $('#buildbar').css('width', 'auto').width()

@@ -127,7 +127,7 @@ function joinedWorld() {
     updateHotbar()
     keyListener()
     mouseListener()
-    updateBuildbar()
+    updateBuildbar({show: false})
     createBackground()
 
     // Begin drawing
