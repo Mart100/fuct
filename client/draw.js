@@ -324,11 +324,11 @@ const draw = {
       ctx.stroke()
       // draw name
       ctx.beginPath()
-      ctx.font = ( 10 + player.zoom/2) + "px Arial";
+      ctx.font = ( 10 + player.zoom/4) + "px Arial";
       ctx.textAlign = "center"
       ctx.fillStyle = "#e2e2e2" //#5cd1a6
       ctx.strokeStyle = "#e2e2e2"
-      ctx.fillText(username, canvas.width/2 + (players[id].pos.x-player.pos.x)*player.zoom, canvas.height/2 + (players[id].pos.y-player.pos.y)*player.zoom + player.zoom);
+      ctx.fillText(username, canvas.width/2 + (players[id].pos.x-player.pos.x)*player.zoom, canvas.height/2 + (players[id].pos.y-player.pos.y)*player.zoom + player.zoom/1.5)
       ctx.stroke()
       // draw healthBar
       // draw progress
