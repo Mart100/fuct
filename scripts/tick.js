@@ -121,6 +121,7 @@ function buildingTick(id, world) {
         maxHealth: 100,
         speed: 0.05,
         moving: {north: false, east: false, south: false, west: false},
+        id: Math.round(Math.random()*1e10),
         attack: {
 
         },
@@ -182,11 +183,10 @@ function turretTick(building, world) {
       if(id == building.owner) continue
       let distance = getDistanceBetween(player.pos, buildingMiddlePos)
 
-      // continue if target is to far away
-      if(distance > building.range) continue
+      // find if clone is closest
 
       // if closer.
-      if(distance < closestPlayer) {
+      if(distance < closestPlayer && distance > building.range) {
         closestPlayer = distance
         closestPlayerID = id
       }
