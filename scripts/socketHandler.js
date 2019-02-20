@@ -1,5 +1,6 @@
 const commands = require('./commands.js')
 const getShopPrices = require('./shopPrices.js')
+const loginSystem = require('./firebase.js')
 
 
 class SocketHandler {
@@ -21,6 +22,8 @@ class SocketHandler {
         socket.on('Ping', data => this.ping(data, socket))
         socket.on('requestAdmin', data => this.requestAdmin(data, socket))
         socket.on('cloneMode', mode => this.cloneMode(mode, socket))
+        socket.on('login', data => loginSystem.login(data, socket, this.world))
+        socket.on('register', data => loginSystem.register(data, socket, this.world))
         let world = this.world
 
         

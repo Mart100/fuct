@@ -8,13 +8,14 @@ let tps = 0
 
 
 // init project
-var express = require('express');
-var Socket = require('socket.io');
+var express = require('express')
+var Socket = require('socket.io')
 var app = express();
 
 // require scripts
 const World = require('./scripts/world.js')
 const buildingsData = require('./scripts/buildingsData.js')
+const firebase = require('./scripts/firebase.js')
 
 // Create Main World
 let mainWorldSettings = {
@@ -87,3 +88,6 @@ io.on('connection', function(socket) {
   })
   
 })
+
+// connect firebase
+firebase.connect()
