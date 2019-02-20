@@ -271,7 +271,7 @@ const draw = {
         default: {
           ctx.beginPath()
           ctx.fillStyle = players[building.owner].color
-          let edges = 10
+          let edges = player.zoom/14 * bs.x
           ctx.rect(cw/2 + (bpx-ppx)*pz + edges, ch/2 + (bpy-ppy)*pz + edges, pz*bs.x - edges*2, pz*bs.y - edges*2)
           ctx.fill()
           let image = images[building.type]
