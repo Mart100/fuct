@@ -370,6 +370,7 @@ class SocketHandler {
     sendClones() {
         for(let socketID in this.sockets) {
             let player = this.players[socketID]
+            if(player == undefined) continue
             let clones = []
             for(let id in this.players) {
                 for(let clone of this.players[id].clones) {
