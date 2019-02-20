@@ -136,7 +136,7 @@ function joinedWorld() {
 
     // send admin request. When has cookie
     let adminPass = getCookie('adminPass')
-    if(adminPass != undefined) socket.emit('requestAdmin', adminPass)
+    if(adminPass != "") socket.emit('requestAdmin', adminPass)
 }
 
 function getDistanceBetween(a, b) {
