@@ -2,6 +2,7 @@ $(function() {
     // Toggle BuildMode with b
     $('body').on('keydown', (event) => {
         if(isChatting()) return
+        if(inMenu) return
         if(event.keyCode == 66 && !player.buildmodeFired) {
             player.buildmodeFired = true
             // No longer in buildmode

@@ -3,10 +3,13 @@ let ping = {pong: 0, ping: 0}
 let tps = 0
 let clones = []
 let latestframe
+let firebaseUser
 let cookiesAccepted = false
 let buildingsData
 let background = []
 let framecount = 0
+let inMenu = true
+let uid = ''
 const images = {}
 let settings = {
     volume: 50,
@@ -130,6 +133,7 @@ function joinedWorld() {
     mouseListener()
     updateBuildbar({show: false})
     createBackground()
+    inMenu = false
 
     // Begin drawing
     frame()

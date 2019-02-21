@@ -34,24 +34,6 @@ body {
   -moz-user-select: none;
   cursor: default;
 }
-#nameInput {
-  position: relative;
-  padding: 5px;
-  color: white;
-  text-align: center;
-  top: 25px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 350px;
-  height: 50px;
-  background-color: rgba(0, 0, 0, 0.3);
-  border-radius: 5px;
-  border: none;
-  font-size: 150%;
-}
-#nameInput:focus {
-    outline: none;
-}
 
 #adminpassInput {
   position: absolute;

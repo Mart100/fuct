@@ -2,7 +2,7 @@
   position: absolute;
   background-color: rgba(0, 0, 0, 0.6);
   left: 50%;
-  top: 30%;
+  top: 20%;
   transform: translateX(-50%);
   border-radius: 2px;
   width: 400px;
@@ -10,6 +10,38 @@
   z-index: 1;
   user-select: none;
   -moz-user-select: none;
+}
+#playScreen #nav {
+  top: 0px;
+  width: 100%;
+  height: 50px;
+  background-color: rgba(0, 0, 0, 0.35);
+  border-radius: 2px 2px 0px 0px;
+}
+#playScreen #nav div {
+  position: absolute;
+  top: 0px;
+  font-size: 20px;
+  width: 50%;
+  padding: 14px 0px;
+  color: white;
+  cursor: pointer;
+  text-align: center;
+}
+#playScreen #nav div:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+#playScreen #nav div.selected {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+#playScreen #nav #login {
+  right: 0px;
+}
+#playScreen #nav #playAsGuest {
+  left: 0px;
+}
+#playScreen #content {
+  height: 250px;
 }
 #playButton {
   padding: 20px 0;
@@ -20,7 +52,7 @@
   border-radius: 2px;
   font-size: 200%;
   color: #165b1e;
-  top: 35%;
+  top: 30%;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
@@ -54,4 +86,22 @@
 }
 #info b {
   font-weight: 800;
+}
+
+#playScreen #content > input {
+  position: relative;
+  padding: 5px;
+  color: white;
+  text-align: center;
+  top: 25px;
+  margin: 5px 25px;
+  width: 350px;
+  height: 50px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  border: none;
+  font-size: 150%;
+}
+#playScreen #content > input:focus {
+  outline: none;
 }

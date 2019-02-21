@@ -2,13 +2,13 @@
     <head>
         <title>Fuct</title>
         <meta charset="utf-8"/>
-        <!-- InfoLinks-->
+        <!-- InfoLinks -->
         <script type="text/javascript">
             var infolinks_pid = 3166145; 
             var infolinks_wsid = 0; 
         </script> 
         <script type="text/javascript" src="//resources.infolinks.com/js/infolinks_main.js"></script>
-        <!-- Own CSS files-->
+        <!-- Own CSS files -->
         <link rel="stylesheet" type="text/css" href="./styles.css">
         <link rel="stylesheet" type="text/css" href="./styles/shop.css">
         <link rel="stylesheet" type="text/css" href="./styles/chat.css">
@@ -21,8 +21,27 @@
         <link rel="stylesheet" type="text/css" href="./styles/cloneControl.css">
         <link rel="stylesheet" type="text/css" href="./styles/loginSystem.css">
           
-        <!-- Jquery-->
+        <!-- Jquery -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+        <!-- FireBase -->
+        <script src="https://www.gstatic.com/firebasejs/5.8.3/firebase.js"></script>
+        <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyCfPRAOx1GC36uRPsd4Vjbl4CiSUCbjG3I",
+            authDomain: "fuct-a1df5.firebaseapp.com",
+            databaseURL: "https://fuct-a1df5.firebaseio.com",
+            projectId: "fuct-a1df5",
+            storageBucket: "fuct-a1df5.appspot.com",
+            messagingSenderId: "127511782603"
+        };
+        firebase.initializeApp(config);
+        </script>
+
+        <!-- FireBaseUI -->
+        <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+        <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
 
 
         <!-- Own Scripts -->
@@ -55,8 +74,14 @@
         <div id="alerts"></div>
         <div id="menu">
             <div id="playScreen">
-                <input id="nameInput" placeholder="username" maxlength="20"></input>
-                <div id="playButton">Play</div>
+                <div id="nav">
+                    <div id="playAsGuest" class="selected">Play as Guest</div>
+                    <div id="login">Login</div>
+                </div>
+                <div id="content">
+                    <input id="nameInput" placeholder="username" maxlength="20"></input>
+                    <div id="playButton">Play</div>
+                </div>
             </div>
             <div id="info">
                 <span><b>Controls:</b></span>
